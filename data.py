@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 1: Rule-Based Systems
+
 # Warning: If you change the data sets in this file, local tests may fail.
 # However, feel free to add additional data sets.
 
@@ -73,10 +75,10 @@ grandparent_test_data = [ 'person jay',
                           'person alex',
                           'parent jay claire',
                           'parent claire alex' ]
-                
-anonymous_family_test_data = [ 'person a1', 'person b1', 'person b2', 
-                               'person c1', 'person c2', 'person c3', 
-                               'person c4', 'person d1', 'person d2', 
+
+anonymous_family_test_data = [ 'person a1', 'person b1', 'person b2',
+                               'person c1', 'person c2', 'person c3',
+                               'person c4', 'person d1', 'person d2',
                                'person d3', 'person d4',
                                'parent a1 b1',
                                'parent a1 b2',
@@ -92,77 +94,77 @@ anonymous_family_test_data = [ 'person a1', 'person b1', 'person b2',
 # rules and data for zookeeper
 
 zookeeper_rules = (
-    
+
     IF( AND( '(?x) has hair' ),         # Z1
         THEN( '(?x) is a mammal' )),
-   
+
     IF( AND( '(?x) gives milk' ),       # Z2
         THEN( '(?x) is a mammal' )),
-    
+
     IF( AND( '(?x) has feathers' ),     # Z3
         THEN( '(?x) is a bird' )),
-   
+
     IF( AND( '(?x) flies',              # Z4
              '(?x) lays eggs' ),
         THEN( '(?x) is a bird' )),
-   
+
     IF( AND( '(?x) is a mammal',        # Z5
              '(?x) eats meat' ),
         THEN( '(?x) is a carnivore' )),
-   
+
     IF( AND( '(?x) is a mammal',        # Z6
              '(?x) has pointed teeth',
              '(?x) has claws',
              '(?x) has forward-pointing eyes' ),
         THEN( '(?x) is a carnivore' )),
-    
+
     IF( AND( '(?x) is a mammal',        # Z7
              '(?x) has hoofs' ),
         THEN( '(?x) is an ungulate' )),
-    
+
     IF( AND( '(?x) is a mammal',        # Z8
              '(?x) chews cud' ),
         THEN( '(?x) is an ungulate' )),
-    
+
     IF( AND( '(?x) is a carnivore',     # Z9
              '(?x) has tawny color',
              '(?x) has dark spots' ),
         THEN( '(?x) is a cheetah' )),
-    
+
     IF( AND( '(?x) is a carnivore',     # Z10
              '(?x) has tawny color',
              '(?x) has black stripes' ),
         THEN( '(?x) is a tiger' )),
-    
+
     IF( AND( '(?x) is an ungulate',     # Z11
              '(?x) has long legs',
              '(?x) has long neck',
              '(?x) has tawny color',
              '(?x) has dark spots' ),
         THEN( '(?x) is a giraffe' )),
-    
+
     IF( AND( '(?x) is an ungulate',     # Z12
              '(?x) has white color',
              '(?x) has black stripes' ),
         THEN( '(?x) is a zebra' )),
-    
+
     IF( AND( '(?x) is a bird',          # Z13
              '(?x) does not fly',
              '(?x) has long legs',
              '(?x) has long neck',
              '(?x) has black and white color' ),
         THEN( '(?x) is an ostrich' )),
-    
+
     IF( AND( '(?x) is a bird',          # Z14
              '(?x) does not fly',
              '(?x) swims',
              '(?x) has black and white color' ),
         THEN( '(?x) is a penguin' )),
-    
+
     IF( AND( '(?x) is a bird',        # Z15
              '(?x) is a good flyer' ),
         THEN( '(?x) is an albatross' )),
-    
+
     )
 
 zoo_data = [ 'tim has feathers',

@@ -1,4 +1,6 @@
-# Fall 2016 6.034 Lab 1: Rule-Based Systems
+#!/usr/bin/env python2
+
+# MIT 6.034 Lab 1: Rule-Based Systems
 
 import xmlrpclib
 import traceback
@@ -12,6 +14,7 @@ except ImportError:
     from StringIO import StringIO
 
 try:
+    sys.path.insert(0,'..')
     from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
 except ImportError:
     print "Error: Can't find your 'key.py' file!  Please go download one from"
@@ -32,8 +35,8 @@ def show_result(testsummary, testcode, correct, got, expected, verbosity):
     else:
         print "%s: Incorrect." % testsummary
         print_testcode(testcode)
-        print "Got:     ", got
-        print "Expected:", expected
+        print "Got:     ", got, "\n"
+        print "Expected:", expected, "\n"
 
 def print_testcode(testcode):
     if isinstance(testcode, (tuple, list)) and len(testcode) >= 3:
@@ -134,30 +137,22 @@ def run_test(test, lab):
     if mytype == 'VALUE':
         return attr
     elif mytype == 'FUNCTION':
-        try:
-            return apply(attr, args)
-        except NotImplementedError:
-            print "NotImplementedError: You have to implement this function before we can test it!"
-            return None
+        return apply(attr, args)
     elif mytype == 'MULTIFUNCTION':
-        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab) for FN in args ]
+        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab)
+                for FN in type_decode(args, lab) ]
     elif mytype == 'FUNCTION_ENCODED_ARGS':
         return run_test( (id, 'FUNCTION', attr_name, type_decode(args, lab)), lab )
     else:
-        raise Exception, "Test Error: Unknown TYPE '%s'.  Please make sure you have downloaded the latest version of the tester script.  If you continue to see this error, contact a TA."
+        raise Exception("Test Error: Unknown TYPE: " + str(mytype)
+                        + ".  Please make sure you have downloaded the latest"
+                        + "version of the tester script.  If you continue to "
+                        + "see this error, contact a TA.")
 
 
 def test_offline(verbosity=1):
     """ Run the unit tests in 'tests.py' """
     import tests as tests_module
-
-#    tests = [ (x[:-8],
-#               getattr(tests_module, x),
-#               getattr(tests_module, "%s_testanswer" % x[:-8]),
-#               getattr(tests_module, "%s_expected" % x[:-8]),
-#               "_".join(x[:-8].split('_')[:-1]))
-#              for x in tests_module.__dict__.keys() if x[-8:] == "_getargs" ]
-
     tests = tests_module.get_tests()
 
     ntests = len(tests)
@@ -179,13 +174,17 @@ def test_offline(verbosity=1):
             show_exception(summary, testname)
             continue
 
-        correct = testanswer(answer)
+        # This prevents testanswer from throwing errors. eg, if return type is
+        # incorrect, testanswer returns False instead of raising an exception.
+        try:
+            correct = testanswer(answer)
+        except:
+            correct = False
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
 
     print "Passed %d of %d tests." % (ncorrect, ntests)
-    if ncorrect == ntests:
-        print "You're done! Run 'python %s submit' to submit your code and have it graded." % sys.argv[0]
+    return ncorrect == ntests
 
 
 def get_target_upload_filedir():
@@ -251,6 +250,11 @@ def test_online(verbosity=1):
             print "Linux Athena computers are known to support HTTPS,"
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
+    except xmlrpclib.Fault:
+        print "\nError: Either your key.py file is out of date, or online "
+        print "tests for " + lab.__name__ + " are not currently available."
+        print "If you believe this is may be a mistake, please contact a TA.\n"
+        sys.exit(0)
 
     ntests = len(tests)
     ncorrect = 0
@@ -286,14 +290,6 @@ def test_online(verbosity=1):
     print response
 
 
-
-if __name__ == '__main__':
-    if 'submit' in sys.argv:
-        test_online()
-    else:
-        test_offline()
-
-
 def make_test_counter_decorator():
     tests = []
     def make_test(getargs, testanswer, expected_val, name = None, type = 'FUNCTION'):
@@ -319,3 +315,14 @@ def make_test_counter_decorator():
 
 
 make_test, get_tests = make_test_counter_decorator()
+
+
+if __name__ == '__main__':
+    if 'submit' in sys.argv:
+        test_online()
+    elif test_offline():
+        if "IDLE" in sys.executable:
+            print "submitting and testing online..."
+            test_online()
+        else:
+            print "Local tests passed! Run 'python %s submit' to submit your code and have it graded." % sys.argv[0]

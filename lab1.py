@@ -1,17 +1,20 @@
+# MIT 6.034 Lab 1: Rule-Based Systems
+# Written by past 6.034 staff
+
 from production import IF, AND, OR, NOT, THEN, forward_chain
 from data import *
 
 #### Part 1: Multiple Choice #########################################
 
-ANSWER_1 = 'your answer here'
+ANSWER_1 = ''
 
-ANSWER_2 = 'your answer here'
+ANSWER_2 = ''
 
-ANSWER_3 = 'your answer here'
+ANSWER_3 = ''
 
-ANSWER_4 = 'your answer here'
+ANSWER_4 = ''
 
-ANSWER_5 = 'your answer here'
+ANSWER_5 = ''
 
 
 #### Part 2: Transitive Rule #########################################
@@ -42,9 +45,9 @@ family_rules = [ ]
 
 # The following should generate 14 cousin relationships, representing 7 pairs
 # of people who are cousins:
-black_family_cousins = [ 
-    relation for relation in 
-    forward_chain(family_rules, black_data, verbose=False) 
+black_family_cousins = [
+    relation for relation in
+    forward_chain(family_rules, black_data, verbose=False)
     if "cousin" in relation ]
 
 # To see if you found them all, uncomment this line:

@@ -1,4 +1,6 @@
-# NOTE: We do not expected you to read this file.  All the information you need
+# MIT 6.034 Lab 1: Rule-Based Systems
+
+# NOTE: We do not expected you to read this file.  All the information you need #todo make this more admissible
 # should be on the wiki.  If you want more information, you can also access the
 # documentation in this file from a Python prompt:
 #

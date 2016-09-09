@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 1: Rule-Based Systems
+
 from UserDict import DictMixin
 import re
 
@@ -16,7 +18,7 @@ class NoClobberDict(DictMixin):
             self._dict = {}
         else:
             self._dict = dict(initial_dict)
-        
+
     def __getitem__(self, key):
         return self._dict[key]
 
@@ -37,7 +39,7 @@ class NoClobberDict(DictMixin):
 
     def iteritems(self):
         return self._dict.iteritems()
-        
+
     def keys(self):
         return self._dict.keys()
 
