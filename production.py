@@ -1,19 +1,18 @@
 # MIT 6.034 Lab 1: Rule-Based Systems
 
-# NOTE: We do not expected you to read this file.  All the information you need #todo make this more admissible
-# should be on the wiki.  If you want more information, you can also access the
-# documentation in this file from a Python prompt:
+# NOTE: Although you are welcome to read this file, all the information you need
+# for Lab 1 should be on the wiki.  If you want more information, you can access
+# the documentation in this file from a Python prompt:
 #
 # >>> import production
 # >>> help(production)
 
-# If you do choose to read this file (not recommended!), the following
-# nomenclature may be helpful:
-#
-# rule = IF(..., THEN(...))
-#      = antecedent (consisting of 1+ conditions) + consequent (aka action)
-#
-# data = set of assertions
+# If you do choose to read this file (which we wouldn't recommend), the
+# following nomenclature conventions may be helpful:
+# * The variable "rule" generally represents a rule, which takes the form
+#   "IF(..., THEN(...))".  A rule has an "antecedent" (consisting of one or more
+#   "conditions") and a "consequent" (also called an "action" in some places).
+# * The variable "data" generally represents a set of "assertions".
 
 import re
 from utils import *
