@@ -39,6 +39,8 @@ def forward_chain(rules, data, apply_only_one=False, verbose=False):
     variables at the same time, making the code considerably more efficient. In
     the end, only DELETE rules will act differently.
     """
+    if rules == []:
+        raise NotImplementedError("forward_chain requires a non-empty list of rules")
     old_data = ()
 
     while set(old_data) != set(data):
