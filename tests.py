@@ -26,7 +26,7 @@ def test_short_answer_0_testanswer(val, original_val = None):
 make_test(type = 'VALUE',
           getargs = test_short_answer_0_getargs,
           testanswer = test_short_answer_0_testanswer,
-          expected_val = "correct value of ANSWER_0 ('1', '2', or '3')",
+          expected_val = "correct value of ANSWER_0 ('1', '2', '3', or '4')",
           name = test_short_answer_0_getargs
           )
 
@@ -44,7 +44,7 @@ def test_short_answer_1_testanswer(val, original_val = None):
 make_test(type = 'VALUE',
           getargs = test_short_answer_1_getargs,
           testanswer = test_short_answer_1_testanswer,
-          expected_val = "correct value of ANSWER_1 ('1', '2', or '3')",
+          expected_val = "correct value of ANSWER_1 ('1', '2', '3', or '4')",
           name = test_short_answer_1_getargs
           )
 
