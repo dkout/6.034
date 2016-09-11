@@ -60,6 +60,18 @@ black_family_cousins = [
 from production import PASS, FAIL, match, populate, simplify, variables
 
 def backchain_to_goal_tree(rules, hypothesis):
+    """
+    Takes a hypothesis (string) and a list of rules (list 
+    of IF objects), returning an AND/OR tree representing the 
+    backchain of possible statements we may need to test
+    to determine if this hypothesis is reachable or not.
+
+    This method should return an AND/OR tree, that is, an 
+    AND or OR object, whose constituents are the subgoals that 
+    need to be tested. The leaves of this tree should be strings 
+    (possibly with unbound variables), *not* AND or OR objects.
+    Make sure to use simplify(...) to flatten trees where appropriate.
+    """
     raise NotImplementedError
 
 # Uncomment this to run your backward chainer:
