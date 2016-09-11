@@ -1,7 +1,7 @@
 # MIT 6.034 Lab 1: Rule-Based Systems
 # Written by past 6.034 staff
 
-from production import IF, AND, OR, NOT, THEN, forward_chain
+from production import IF, AND, OR, NOT, THEN, DELETE, forward_chain
 from data import *
 
 #### Part 1: Multiple Choice #########################################
