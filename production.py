@@ -149,11 +149,12 @@ class IF(object):
         return immediately instead of continuing. This is the
         behavior described in class, but it is slower.
         """
-        new_data = set(data)
+        new_data = data[:] # Preserve ordering of data to get bindings!
         old_data_count = len(new_data) #original number of assertions
         bindings = RuleExpression().test_term_matches(self._conditional,
                                                       new_data)
 
+        new_data = set(new_data)
         for k in bindings:
             for a in self._action:
                 new_data.add( populate(a, k) )
@@ -223,7 +224,7 @@ class RuleExpression(list):
         Given an condition (which might be just a string), check
         it against the data (assertions).
         """
-        data = set(data)
+        data = list(data)
         if context_so_far == None: context_so_far = {}
 
         # Deal with nesting first
