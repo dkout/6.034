@@ -207,23 +207,32 @@ def get_target_upload_filedir():
 
     return target_dir
 
+def filter_files(tarinfo):
+    "Avoid uploading .pyc files or the .git subdirectory (if any)"
+    name=os.path.split(tarinfo.name)[1]
+    if name==".git":
+        return None
+    if os.path.splitext(name)[1]==".pyc":
+        return None
+    return tarinfo
+
 def get_tarball_data(target_dir, filename):
     """ Return a binary String containing the binary data for a tarball of the specified directory """
     data = StringIO()
-    file = tarfile.open(filename, "w|bz2", data)
+    tar = tarfile.open(filename, "w|bz2", data)
 
     print "Preparing the lab directory for transmission..."
 
-    file.add(target_dir)
+    tar.add(target_dir, arcname=os.path.split(target_dir)[1], filter=filter_files)
 
     print "Done."
     print
     print "The following files have been added:"
 
-    for f in file.getmembers():
+    for f in tar.getmembers():
         print f.name
 
-    file.close()
+    tar.close()
 
     return data.getvalue()
 
