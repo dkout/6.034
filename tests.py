@@ -13,15 +13,33 @@ except NameError:
     from sets import Set as set, ImmutableSet as frozenset
 
 
-### TEST 1 ###
+### TEST 0 ###
 
 # The antecedent checks data, it does not add any -- it lists the
-# questions asked to see if the rule should fire.
+# questions asked to see if the rule should fire. 
+
+test_short_answer_0_getargs = "ANSWER_0"
+
+def test_short_answer_0_testanswer(val, original_val = None):
+    return str(val) == '2'
+
+make_test(type = 'VALUE',
+          getargs = test_short_answer_0_getargs,
+          testanswer = test_short_answer_0_testanswer,
+          expected_val = "correct value of ANSWER_0 ('1', '2', or '3')",
+          name = test_short_answer_0_getargs
+          )
+
+
+### TEST 1 ###
+
+# Backwards chaining does not produce assertions, so neither
+# part of the rule will apper as a new assertion
 
 test_short_answer_1_getargs = "ANSWER_1"
 
 def test_short_answer_1_testanswer(val, original_val = None):
-    return str(val) == '2'
+    return str(val) == '4'
 
 make_test(type = 'VALUE',
           getargs = test_short_answer_1_getargs,

@@ -6,6 +6,8 @@ from data import *
 
 #### Part 1: Multiple Choice #########################################
 
+ANSWER_0 = ''
+
 ANSWER_1 = ''
 
 ANSWER_2 = ''
