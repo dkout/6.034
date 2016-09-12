@@ -1,23 +1,24 @@
 # MIT 6.034 Lab 1: Rule-Based Systems
-# Written by past 6.034 staff
+# Written by 6.034 staff
 
 from production import IF, AND, OR, NOT, THEN, DELETE, forward_chain
 from data import *
 
 #### Part 1: Multiple Choice #########################################
 
-ANSWER_0 = ''
-
 ANSWER_1 = ''
 
 ANSWER_2 = ''
 
-ANSWER_3 = ''
+ANSWER_3 = None #replace this with a list
 
-ANSWER_4 = ''
+ANSWER_4 = None
 
-ANSWER_5 = ''
+ANSWER_5 = None
 
+ANSWER_6 = ''
+
+ANSWER_7 = ''
 
 #### Part 2: Transitive Rule #########################################
 
@@ -63,14 +64,14 @@ from production import PASS, FAIL, match, populate, simplify, variables
 
 def backchain_to_goal_tree(rules, hypothesis):
     """
-    Takes a hypothesis (string) and a list of rules (list 
-    of IF objects), returning an AND/OR tree representing the 
+    Takes a hypothesis (string) and a list of rules (list
+    of IF objects), returning an AND/OR tree representing the
     backchain of possible statements we may need to test
     to determine if this hypothesis is reachable or not.
 
-    This method should return an AND/OR tree, that is, an 
-    AND or OR object, whose constituents are the subgoals that 
-    need to be tested. The leaves of this tree should be strings 
+    This method should return an AND/OR tree, that is, an
+    AND or OR object, whose constituents are the subgoals that
+    need to be tested. The leaves of this tree should be strings
     (possibly with unbound variables), *not* AND or OR objects.
     Make sure to use simplify(...) to flatten trees where appropriate.
     """

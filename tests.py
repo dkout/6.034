@@ -14,37 +14,17 @@ except NameError:
     from sets import Set as set, ImmutableSet as frozenset
 
 
-### TEST 0 ###
+### TEST 1 ###
 
 # The antecedent checks data, it does not add any -- it lists the
 # questions asked to see if the rule should fire.
-
-test_short_answer_0_getargs = "ANSWER_0"
-
-def test_short_answer_0_testanswer(val, original_val = None):
-    if val == '':
-        raise NotImplementedError
-    return str(val) == '2'
-
-make_test(type = 'VALUE',
-          getargs = test_short_answer_0_getargs,
-          testanswer = test_short_answer_0_testanswer,
-          expected_val = "correct value of ANSWER_0 ('1', '2', '3', or '4')",
-          name = test_short_answer_0_getargs
-          )
-
-
-### TEST 1 ###
-
-# Backwards chaining does not produce assertions, so neither
-# part of the rule will apper as a new assertion
 
 test_short_answer_1_getargs = "ANSWER_1"
 
 def test_short_answer_1_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
-    return str(val) == '4'
+    return str(val) == '2'
 
 make_test(type = 'VALUE',
           getargs = test_short_answer_1_getargs,
@@ -56,99 +36,124 @@ make_test(type = 'VALUE',
 
 ### TEST 2 ###
 
-# Because 'not' is coded in two separate ways.  You and I can
-# tell what was meant to happen, but the forward chaining doesn't
-# understand English, it just sees meaningless bits, and those do
-# not match, in this case.
+# Backwards chaining does not produce assertions, so neither
+# part of the rule will apper as a new assertion
 
 test_short_answer_2_getargs = "ANSWER_2"
 
 def test_short_answer_2_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
-    return str(val) == 'no'
+    return str(val) == '4'
 
 make_test(type = 'VALUE',
           getargs = test_short_answer_2_getargs,
           testanswer = test_short_answer_2_testanswer,
-          expected_val = "correct value of ANSWER_2 ('yes' or 'no')",
+          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
           name = test_short_answer_2_getargs
           )
 
 
 ### TEST 3 ###
 
-# The answer is 2 because, as it says in the lab description, "A
-# NOT clause should not introduce new variables - the matcher
-# won't know what to do with them."  In forward chaining, let's
-# suppose there were no assertions of the form '(?x) is dead',
-# then we would try to instantiate the consequent, but what would
-# we fill the variable with?  So we cannot forward chain.  Let's
-# suppose instead that we found 'Polly is dead' so we did not
-# instantiate the consequent.  But then in backward chaining, we
-# might need 'Martha is pining for the fjords', and nothing says
-# that 'Martha is dead' so it would work -- and different forward
-# and backward chaining results would be a disaster.  So NOT
-# statements in the antecedent must not have any unbound variables.
-#
-# You will also note that one pines for the fjords,
-# metaphorically speaking, when one *is* dead.  But that's an
-# error in knowledge discovery or entry, not in programming.
+#todo explanation
+# Because 'not' is coded in two separate ways.  You and I can
+# tell what was meant to happen, but the forward chaining doesn't
+# understand English, it just sees meaningless bits, and those do
+# not match, in this case.
 
 test_short_answer_3_getargs = "ANSWER_3"
 
 def test_short_answer_3_testanswer(val, original_val = None):
-    if val == '':
+    if val == None:
         raise NotImplementedError
-    return str(val) == '2'
+    return val == [2]
 
 make_test(type = 'VALUE',
           getargs = test_short_answer_3_getargs,
           testanswer = test_short_answer_3_testanswer,
-          expected_val = "correct value of ANSWER_3 ('1' or '2')",
+          expected_val = "correct value of ANSWER_3 (a list of numbers, or an empty list)",
           name = test_short_answer_3_getargs
           )
 
 
 ### TEST 4 ###
 
-# Rule 1's preconditions, that some one thing both have feathers
-# and a beak, are met by the data when that thing is Pendergast.
-# The consequent changes the data, so the rule fires.
+#todo explanation
 
 test_short_answer_4_getargs = "ANSWER_4"
 
 def test_short_answer_4_testanswer(val, original_val = None):
-    if val == '':
+    if val == None:
         raise NotImplementedError
-    return str(val) == '1'
+    return val == []
 
 make_test(type = 'VALUE',
           getargs = test_short_answer_4_getargs,
           testanswer = test_short_answer_4_testanswer,
-          expected_val = "correct value of ANSWER_4 ('0', '1', or '2')",
+          expected_val = "correct value of ANSWER_4 (a list of numbers, or an empty list)",
           name = test_short_answer_4_getargs
           )
 
 
 ### TEST 5 ###
 
-# The preconditions for Rule 2 are met, but the consequent is
-# already present, so it doesn't fire.  Same for Rule 1.  So no
-# rule fires.
+#todo explanation
 
 test_short_answer_5_getargs = "ANSWER_5"
 
 def test_short_answer_5_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == [3]
+
+make_test(type = 'VALUE',
+          getargs = test_short_answer_5_getargs,
+          testanswer = test_short_answer_5_testanswer,
+          expected_val = "correct value of ANSWER_5 (a list of numbers, or an empty list)",
+          name = test_short_answer_5_getargs
+          )
+
+
+### TEST 6 ###
+
+# Rule 1's preconditions, that some one thing both have feathers
+# and a beak, are met by the data when that thing is Pendergast.
+# The consequent changes the data, so the rule fires.
+
+test_short_answer_6_getargs = "ANSWER_6"
+
+def test_short_answer_6_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '1'
+
+make_test(type = 'VALUE',
+          getargs = test_short_answer_6_getargs,
+          testanswer = test_short_answer_6_testanswer,
+          expected_val = "correct value of ANSWER_6 ('0', '1', or '2')",
+          name = test_short_answer_6_getargs
+          )
+
+
+### TEST 7 ###
+
+# The preconditions for Rule 2 are met, but the consequent is
+# already present, so it doesn't fire.  Same for Rule 1.  So no
+# rule fires.
+
+test_short_answer_7_getargs = "ANSWER_7"
+
+def test_short_answer_7_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
     return str(val) == '0'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_5_getargs,
-          testanswer = test_short_answer_5_testanswer,
-          expected_val = "correct value of ANSWER_5 ('0', '1', or '2')",
-          name = test_short_answer_5_getargs
+          getargs = test_short_answer_7_getargs,
+          testanswer = test_short_answer_7_testanswer,
+          expected_val = "correct value of ANSWER_7 ('0', '1', or '2')",
+          name = test_short_answer_7_getargs
           )
 
 
