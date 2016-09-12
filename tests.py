@@ -157,7 +157,7 @@ make_test(type = 'VALUE',
           )
 
 
-### TEST 6 ###
+### TEST 8 ###
 
 # This test checks to make sure that your transitive rule
 # produces the correct set of statements given the a/b/c data.
@@ -177,7 +177,7 @@ make_test(type = 'VALUE',
           )
 
 
-### TEST 7 ###
+### TEST 9 ###
 
 # This test checks to make sure that your transitive rule produces
 # the correct set of statements given the rock-paper-scissors data.
@@ -207,7 +207,7 @@ make_test(type = 'VALUE',
           )
 
 
-### TEST 8 ###
+### TEST 10 ###
 
 # This test checks that your family rules produce the correct set of
 # statements given the sibling data.
@@ -234,7 +234,7 @@ make_test(type = 'VALUE',
           )
 
 
-### TEST 9 ###
+### TEST 11 ###
 
 # This test checks that your family rules produce the correct set of
 # statements given the grandparent data.
@@ -259,7 +259,7 @@ make_test(type = 'VALUE',
           )
 
 
-### TEST 10 ###
+### TEST 12 ###
 
 # This test checks that your family rules produce the correct set of
 # statements given the a/b/c/d anonymous family data.
@@ -292,7 +292,7 @@ make_test(type = 'VALUE',
           )
 
 
-### TEST 11 ###
+### TEST 13 ###
 
 # This test checks to make sure that your backchainer produces
 # the correct goal tree given a hypothesis and an empty set of
@@ -312,7 +312,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           )
 
 
-### TEST 12 ###
+### TEST 14 ###
 
 # This test checks to make sure that your backchainer produces
 # the correct goal tree given the hypothesis 'alice is an
@@ -345,7 +345,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           )
 
 
-### TEST 13 ###
+### TEST 15 ###
 
 # This test checks to make sure that your backchainer produces
 # the correct goal tree given the hypothesis 'geoff is a giraffe'
@@ -380,7 +380,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           )
 
 
-### TEST 14 ###
+### TEST 16 ###
 
 # This test checks to make sure that your backchainer produces
 # the correct goal tree given the hypothesis 'gershwin could not
@@ -411,7 +411,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           )
 
 
-### TEST 15 ###
+### TEST 17 ###
 
 # This test checks to make sure that your backchainer produces
 # the correct goal tree given the hypothesis 'zot' and using the
