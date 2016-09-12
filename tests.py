@@ -160,7 +160,7 @@ make_test(type = 'VALUE',
 abc_answer = ( 'a beats b', 'b beats c', 'a beats c' )
 
 def transitive_rule_abc_testanswer(val, original_val = None):
-    if transitive_rule == IF( AND(), THEN() ): #todo fix this (because __eq__ probably isn't implemented for IF?)
+    if repr(transitive_rule) == repr(IF( AND(), THEN() )):
         raise NotImplementedError
     return ( set(val)  == set(abc_answer) )
 
@@ -190,7 +190,7 @@ poker_answer = ('flush beats pair', 'flush beats straight',
                 'three-of-a-kind beats two-pair', 'two-pair beats pair')
 
 def transitive_rule_poker_testanswer(val, original_val = None):
-    if transitive_rule == IF( AND(), THEN() ): #todo fix this (because __eq__ probably isn't implemented for IF?)
+    if repr(transitive_rule) == repr(IF( AND(), THEN() )):
         raise NotImplementedError
     return ( set(val) == set(poker_answer) )
 
