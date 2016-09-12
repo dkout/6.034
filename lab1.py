@@ -10,11 +10,11 @@ ANSWER_1 = ''
 
 ANSWER_2 = ''
 
-ANSWER_3 = None #replace this with a list
+ANSWER_3 = ''
 
-ANSWER_4 = None
+ANSWER_4 = ''
 
-ANSWER_5 = None
+ANSWER_5 = ''
 
 ANSWER_6 = ''
 

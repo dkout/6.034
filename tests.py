@@ -19,18 +19,18 @@ except NameError:
 # The antecedent checks data, it does not add any -- it lists the
 # questions asked to see if the rule should fire.
 
-test_short_answer_1_getargs = "ANSWER_1"
+ANSWER_1_getargs = "ANSWER_1"
 
-def test_short_answer_1_testanswer(val, original_val = None):
+def ANSWER_1_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
     return str(val) == '2'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_1_getargs,
-          testanswer = test_short_answer_1_testanswer,
+          getargs = ANSWER_1_getargs,
+          testanswer = ANSWER_1_testanswer,
           expected_val = "correct value of ANSWER_1 ('1', '2', '3', or '4')",
-          name = test_short_answer_1_getargs
+          name = ANSWER_1_getargs
           )
 
 
@@ -39,18 +39,18 @@ make_test(type = 'VALUE',
 # Backwards chaining does not produce assertions, so neither
 # part of the rule will apper as a new assertion
 
-test_short_answer_2_getargs = "ANSWER_2"
+ANSWER_2_getargs = "ANSWER_2"
 
-def test_short_answer_2_testanswer(val, original_val = None):
+def ANSWER_2_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
     return str(val) == '4'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_2_getargs,
-          testanswer = test_short_answer_2_testanswer,
+          getargs = ANSWER_2_getargs,
+          testanswer = ANSWER_2_testanswer,
           expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
-          name = test_short_answer_2_getargs
+          name = ANSWER_2_getargs
           )
 
 
@@ -66,18 +66,18 @@ make_test(type = 'VALUE',
 #
 # rule3: No, because "Kitty is alive" is in the list of assertions.
 
-test_short_answer_3_getargs = "ANSWER_3"
+ANSWER_3_getargs = "ANSWER_3"
 
-def test_short_answer_3_testanswer(val, original_val = None):
-    if val == None:
+def ANSWER_3_testanswer(val, original_val = None):
+    if val == '':
         raise NotImplementedError
-    return val == [2]
+    return val == '2'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_3_getargs,
-          testanswer = test_short_answer_3_testanswer,
-          expected_val = "correct value of ANSWER_3 (a list of numbers, or an empty list)",
-          name = test_short_answer_3_getargs
+          getargs = ANSWER_3_getargs,
+          testanswer = ANSWER_3_testanswer,
+          expected_val = "correct value of ANSWER_3 (a string containing one or more digits)",
+          name = ANSWER_3_getargs
           )
 
 
@@ -97,18 +97,18 @@ make_test(type = 'VALUE',
 #
 # rule3: No, because "Nyan is alive" is in the list of assertions.
 
-test_short_answer_4_getargs = "ANSWER_4"
+ANSWER_4_getargs = "ANSWER_4"
 
-def test_short_answer_4_testanswer(val, original_val = None):
-    if val == None:
+def ANSWER_4_testanswer(val, original_val = None):
+    if val == '':
         raise NotImplementedError
-    return val == []
+    return val == '0'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_4_getargs,
-          testanswer = test_short_answer_4_testanswer,
-          expected_val = "correct value of ANSWER_4 (a list of numbers, or an empty list)",
-          name = test_short_answer_4_getargs
+          getargs = ANSWER_4_getargs,
+          testanswer = ANSWER_4_testanswer,
+          expected_val = "correct value of ANSWER_4 (a string containing one or more digits)",
+          name = ANSWER_4_getargs
           )
 
 
@@ -123,18 +123,18 @@ make_test(type = 'VALUE',
 #   in the list of assertions.  The matcher ignores extra assertions, such as
 #   "Garfield likes lasagna", if they are not relevant to the rule.
 
-test_short_answer_5_getargs = "ANSWER_5"
+ANSWER_5_getargs = "ANSWER_5"
 
-def test_short_answer_5_testanswer(val, original_val = None):
-    if val == None:
+def ANSWER_5_testanswer(val, original_val = None):
+    if val == '':
         raise NotImplementedError
-    return val == [3]
+    return val == '3'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_5_getargs,
-          testanswer = test_short_answer_5_testanswer,
-          expected_val = "correct value of ANSWER_5 (a list of numbers, or an empty list)",
-          name = test_short_answer_5_getargs
+          getargs = ANSWER_5_getargs,
+          testanswer = ANSWER_5_testanswer,
+          expected_val = "correct value of ANSWER_5 (a string containing one or more digits)",
+          name = ANSWER_5_getargs
           )
 
 
@@ -144,18 +144,18 @@ make_test(type = 'VALUE',
 # and a beak, are met by the data when that thing is Pendergast.
 # The consequent changes the data, so the rule fires.
 
-test_short_answer_6_getargs = "ANSWER_6"
+ANSWER_6_getargs = "ANSWER_6"
 
-def test_short_answer_6_testanswer(val, original_val = None):
+def ANSWER_6_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
     return str(val) == '1'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_6_getargs,
-          testanswer = test_short_answer_6_testanswer,
+          getargs = ANSWER_6_getargs,
+          testanswer = ANSWER_6_testanswer,
           expected_val = "correct value of ANSWER_6 ('0', '1', or '2')",
-          name = test_short_answer_6_getargs
+          name = ANSWER_6_getargs
           )
 
 
@@ -165,18 +165,18 @@ make_test(type = 'VALUE',
 # already present, so it doesn't fire.  Same for Rule 1.  So no
 # rule fires.
 
-test_short_answer_7_getargs = "ANSWER_7"
+ANSWER_7_getargs = "ANSWER_7"
 
-def test_short_answer_7_testanswer(val, original_val = None):
+def ANSWER_7_testanswer(val, original_val = None):
     if val == '':
         raise NotImplementedError
     return str(val) == '0'
 
 make_test(type = 'VALUE',
-          getargs = test_short_answer_7_getargs,
-          testanswer = test_short_answer_7_testanswer,
+          getargs = ANSWER_7_getargs,
+          testanswer = ANSWER_7_testanswer,
           expected_val = "correct value of ANSWER_7 ('0', '1', or '2')",
-          name = test_short_answer_7_getargs
+          name = ANSWER_7_getargs
           )
 
 
