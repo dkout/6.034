@@ -14,7 +14,7 @@ except ImportError:
     from StringIO import StringIO
 
 try:
-    sys.path.insert(0,'..')
+    sys.path.insert(1,'..')
     from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
 except ImportError:
     print "Error: Can't find your 'key.py' file!  Please go download one from"
@@ -191,12 +191,13 @@ def get_target_upload_filedir():
     """ Get, via user prompting, the directory containing the current lab """
     cwd = os.getcwd() # Get current directory.  Play nice with Unicode pathnames, just in case.
 
-    print "Please specify the directory containing your lab."
+    print "Please specify the directory containing your lab,"
+    print "or press Enter to use the default directory."
     print "Note that all files from this directory will be uploaded!"
     print "Labs should not contain large amounts of data; very-large"
     print "files will fail to upload."
     print
-    print "The default path is '%s'" % cwd
+    print "The default directory is '%s'" % cwd
     target_dir = raw_input("[%s] >>> " % cwd)
 
     target_dir = target_dir.strip()
