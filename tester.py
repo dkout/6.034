@@ -14,7 +14,7 @@ except ImportError:
     from StringIO import StringIO
 
 try:
-    sys.path.insert(1,'..')
+    sys.path.append('..')
     from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
 except ImportError:
     print "Error: Can't find your 'key.py' file!  Please go download one from"
@@ -178,7 +178,12 @@ def test_offline(verbosity=1):
         # incorrect, testanswer returns False instead of raising an exception.
         try:
             correct = testanswer(answer)
-        except:
+        except NotImplementedError:
+            print "%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname)
+            continue
+        except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
+            raise
+        except Exception:
             correct = False
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1

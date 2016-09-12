@@ -4,6 +4,7 @@ from production import IF, AND, OR, NOT, THEN, run_conditions
 import production as lab
 from tester import make_test, get_tests, type_encode, type_decode
 from data import *
+from lab1 import transitive_rule, family_rules
 import random
 random.seed()
 
@@ -16,11 +17,13 @@ except NameError:
 ### TEST 0 ###
 
 # The antecedent checks data, it does not add any -- it lists the
-# questions asked to see if the rule should fire. 
+# questions asked to see if the rule should fire.
 
 test_short_answer_0_getargs = "ANSWER_0"
 
 def test_short_answer_0_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return str(val) == '2'
 
 make_test(type = 'VALUE',
@@ -39,6 +42,8 @@ make_test(type = 'VALUE',
 test_short_answer_1_getargs = "ANSWER_1"
 
 def test_short_answer_1_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return str(val) == '4'
 
 make_test(type = 'VALUE',
@@ -59,6 +64,8 @@ make_test(type = 'VALUE',
 test_short_answer_2_getargs = "ANSWER_2"
 
 def test_short_answer_2_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return str(val) == 'no'
 
 make_test(type = 'VALUE',
@@ -91,6 +98,8 @@ make_test(type = 'VALUE',
 test_short_answer_3_getargs = "ANSWER_3"
 
 def test_short_answer_3_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return str(val) == '2'
 
 make_test(type = 'VALUE',
@@ -110,6 +119,8 @@ make_test(type = 'VALUE',
 test_short_answer_4_getargs = "ANSWER_4"
 
 def test_short_answer_4_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return str(val) == '1'
 
 make_test(type = 'VALUE',
@@ -129,6 +140,8 @@ make_test(type = 'VALUE',
 test_short_answer_5_getargs = "ANSWER_5"
 
 def test_short_answer_5_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
     return str(val) == '0'
 
 make_test(type = 'VALUE',
@@ -147,6 +160,8 @@ make_test(type = 'VALUE',
 abc_answer = ( 'a beats b', 'b beats c', 'a beats c' )
 
 def transitive_rule_abc_testanswer(val, original_val = None):
+    if transitive_rule == IF( AND(), THEN() ): #todo fix this (because __eq__ probably isn't implemented for IF?)
+        raise NotImplementedError
     return ( set(val)  == set(abc_answer) )
 
 make_test(type = 'VALUE',
@@ -175,6 +190,8 @@ poker_answer = ('flush beats pair', 'flush beats straight',
                 'three-of-a-kind beats two-pair', 'two-pair beats pair')
 
 def transitive_rule_poker_testanswer(val, original_val = None):
+    if transitive_rule == IF( AND(), THEN() ): #todo fix this (because __eq__ probably isn't implemented for IF?)
+        raise NotImplementedError
     return ( set(val) == set(poker_answer) )
 
 make_test(type = 'VALUE',
@@ -198,6 +215,8 @@ sibling_answer = ['child luigi papa', 'child mario papa',
                   'sibling luigi mario', 'sibling mario luigi']
 
 def family_rules_sibling_testanswer(val, original_val = None):
+    if family_rules == []:
+        raise NotImplementedError
     return ( set( [ x for x in val
                     if x.split()[0] in ('parent', 'child', 'sibling') ] )
              == set(sibling_answer))
@@ -220,6 +239,8 @@ grandparent_answer = ['child alex claire', 'child claire jay',
                       'parent claire alex', 'parent jay claire']
 
 def family_rules_grandparent_testanswer(val, original_val = None):
+    if family_rules == []:
+        raise NotImplementedError
     return ( set( [ x for x in val
                     if x.split()[0] in ('parent', 'child', 'grandparent',
                                         'grandchild') ] )
@@ -252,6 +273,8 @@ anonymous_family_answer = [ 'cousin c1 c3',
                             'cousin d4 d3' ]
 
 def anonymous_family_testanswer(val, original_val = None):
+    if family_rules == []:
+        raise NotImplementedError
     return ( set( [ x for x in val
                     if x.split()[0] == 'cousin' ] )
              == set(anonymous_family_answer) )
