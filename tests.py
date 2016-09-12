@@ -56,11 +56,15 @@ make_test(type = 'VALUE',
 
 ### TEST 3 ###
 
-#todo explanation
-# Because 'not' is coded in two separate ways.  You and I can
-# tell what was meant to happen, but the forward chaining doesn't
-# understand English, it just sees meaningless bits, and those do
-# not match, in this case.
+# rule1: No, because "NOT('(?x) is alive')" means that 'Kitty is alive' must NOT
+#   be in the list of assertions.  In fact, rule1 will never match any set of
+#   assertions, because it's impossible to have '(?x) is alive' simultaneously
+#   be in your list of assertions and not be in your list of assertions.
+#
+# rule2: Yes.  The assertions perfectly match the consequent of the rule, and
+#   the matcher doesn't care that "dead" and "alive" are opposites.
+#
+# rule3: No, because "Kitty is alive" is in the list of assertions.
 
 test_short_answer_3_getargs = "ANSWER_3"
 
@@ -79,7 +83,19 @@ make_test(type = 'VALUE',
 
 ### TEST 4 ###
 
-#todo explanation
+# rule1: No. This is tricky because "not" is coded in two separate ways.
+#   As humans, we know that "Nyan is not alive" is semantically the opposite of
+#   "Nyan is alive", but the matcher only sees a string of characters.
+# In this case, rule1 doesn't match because "NOT('(?x) is alive')" means that
+#   'Nyan is alive' must NOT be in the list of assertions.  In fact, rule1 will
+#   never match any set of assertions, because it's impossible to have
+#   '(?x) is alive' simultaneously be in your list of assertions and not be in
+#   your list of assertions.
+#
+# rule2: No, because "Nyan is dead" is not in the list of assertions.
+#   The matcher doesn't know that "dead" and "not alive" have the same meaning.
+#
+# rule3: No, because "Nyan is alive" is in the list of assertions.
 
 test_short_answer_4_getargs = "ANSWER_4"
 
@@ -98,7 +114,14 @@ make_test(type = 'VALUE',
 
 ### TEST 5 ###
 
-#todo explanation
+# rule1: No, because "Garfield is alive" is not in the list of assertions.
+#
+# rule2: No, because "Garfield is alive" and "Garfield is dead" are both not in
+#   the list of assertions.
+#
+# rule3: Yes, because neither "Garfield is alive" nor "Garfield is dead" are
+#   in the list of assertions.  The matcher ignores extra assertions, such as
+#   "Garfield likes lasagna", if they are not relevant to the rule.
 
 test_short_answer_5_getargs = "ANSWER_5"
 
