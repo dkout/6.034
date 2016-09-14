@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 2: Search
+
 from tester import make_test, get_tests
 
 from lab2 import (generic_dfs, generic_bfs, generic_hill_climbing,

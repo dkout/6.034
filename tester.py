@@ -1,4 +1,6 @@
-# Fall 2016 6.034 Lab 2: Search
+#!/usr/bin/env python2
+
+# MIT 6.034 Lab 2: Search
 
 import xmlrpclib
 import traceback

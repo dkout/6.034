@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 2: Search
+
 from search import UndirectedGraph
 
 def get_graphs(file_name="graphs.txt", verbose=False):
