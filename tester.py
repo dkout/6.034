@@ -35,8 +35,8 @@ def show_result(testsummary, testcode, correct, got, expected, verbosity):
     else:
         print "%s: Incorrect." % testsummary
         print_testcode(testcode)
-        print "Got:     ", got
-        print "Expected:", expected
+        print "Got:     ", got, "\n"
+        print "Expected:", expected, "\n"
 
 def print_testcode(testcode):
     if isinstance(testcode, (tuple, list)) and len(testcode) >= 3:
@@ -120,27 +120,24 @@ def type_decode(arg, lab):
             q = apply(find_attr(lab, mytype), [ type_decode(x, lab) for x in data ])
 
             return q
-            #return q.edges
 
             return [type_decode(x, lab) for x in data]
             return [q.nodes, q.edges, q.favorite, q.combust]
 
-        elif arg[0] in ['Edge']:
+        elif arg[0] == 'Edge':
             mytype = arg[0]
             data = arg[1:]
             q = apply(find_attr(lab, mytype), [ type_decode(x, lab) for x in data ])
             return q
-        elif arg[0] in ['Graph', 'IF']:
+        elif arg[0] == 'Graph':
             try:
                 mytype = arg[0]
                 data = arg[1:]
                 return apply(find_attr(lab, mytype), [ type_decode(x, lab) for x in data ])
             except AttributeError:
                 traceback.print_exc()
-                #return [ type_decode(x, lab) for x in arg ]
             except TypeError:
                 traceback.print_exc()
-                #return [ type_decode(x, lab) for x in arg ]
         else:
             return arg
     else:
@@ -149,11 +146,8 @@ def type_decode(arg, lab):
 
 def type_encode(arg):
     "Encode objects as lists in a way that can be decoded by 'type_decode'"
-    #print "enc", arg, arg.__class__.__name__ if hasattr(arg, '__class__') else 0
-    if isinstance(arg, list) and not type(arg) in (list,tuple):
+    if isinstance(arg, list):
         return [ arg.__class__.__name__ ] + [ type_encode(x) for x in arg ]
-    elif hasattr(arg, '__class__') and arg.__class__.__name__ == 'IF':
-        return [ 'IF', type_encode(arg._conditional), type_encode(arg._action), type_encode(arg._delete_clause) ]
     elif hasattr(arg, '__class__') and arg.__class__.__name__ == "Graph":
         return [ 'Graph', type_encode(arg.nodes), type_encode(arg.edges), type_encode(arg.heuristic) ]
     elif hasattr(arg, '__class__') and arg.__class__.__name__ == "UndirectedGraph":
@@ -189,7 +183,8 @@ def run_test(test, lab):
     elif mytype == 'NESTED_FUNCTION': #for offline tests only
         return apply(apply(attr, args[0]), args[1])
     elif mytype == 'MULTIFUNCTION':
-        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab) for FN in args ]
+        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab)
+                for FN in type_decode(args, lab) ]
     elif mytype == 'FUNCTION_ENCODED_ARGS':
         return run_test( (id, 'FUNCTION', attr_name, type_decode(args, lab)), lab )
     else:
@@ -203,15 +198,7 @@ def test_offline(verbosity=1):
     """ Run the unit tests in 'tests.py' """
     import tests as tests_module
 
-#    tests = [ (x[:-8],
-#               getattr(tests_module, x),
-#               getattr(tests_module, "%s_testanswer" % x[:-8]),
-#               getattr(tests_module, "%s_expected" % x[:-8]),
-#               "_".join(x[:-8].split('_')[:-1]))
-#              for x in tests_module.__dict__.keys() if x[-8:] == "_getargs" ]
-
     tests = tests_module.get_tests()
-
     ntests = len(tests)
     ncorrect = 0
 
@@ -231,7 +218,18 @@ def test_offline(verbosity=1):
             show_exception(summary, testname)
             continue
 
-        correct = testanswer(answer)
+        # This prevents testanswer from throwing errors. eg, if return type is
+        # incorrect, testanswer returns False instead of raising an exception.
+        try:
+            correct = testanswer(answer)
+        except NotImplementedError:
+            print "%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname)
+            continue
+        except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
+            raise
+        except Exception:
+            correct = False
+
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
 
@@ -243,12 +241,13 @@ def get_target_upload_filedir():
     """ Get, via user prompting, the directory containing the current lab """
     cwd = os.getcwd() # Get current directory.  Play nice with Unicode pathnames, just in case.
 
-    print "Please specify the directory containing your lab."
+    print "Please specify the directory containing your lab,"
+    print "or press Enter to use the default directory."
     print "Note that all files from this directory will be uploaded!"
     print "Labs should not contain large amounts of data; very-large"
     print "files will fail to upload."
     print
-    print "The default path is '%s'" % cwd
+    print "The default directory is '%s'" % cwd
     target_dir = raw_input("[%s] >>> " % cwd)
 
     target_dir = target_dir.strip()
@@ -259,23 +258,32 @@ def get_target_upload_filedir():
 
     return target_dir
 
+def filter_files(tarinfo):
+    "Avoid uploading .pyc files or the .git subdirectory (if any)"
+    name=os.path.split(tarinfo.name)[1]
+    if name==".git":
+        return None
+    if os.path.splitext(name)[1]==".pyc":
+        return None
+    return tarinfo
+
 def get_tarball_data(target_dir, filename):
     """ Return a binary String containing the binary data for a tarball of the specified directory """
     data = StringIO()
-    file = tarfile.open(filename, "w|bz2", data)
+    tar = tarfile.open(filename, "w|bz2", data)
 
     print "Preparing the lab directory for transmission..."
 
-    file.add(target_dir)
+    tar.add(target_dir, arcname=os.path.split(target_dir)[1], filter=filter_files)
 
     print "Done."
     print
     print "The following files have been added:"
 
-    for f in file.getmembers():
+    for f in tar.getmembers():
         print f.name
 
-    file.close()
+    tar.close()
 
     return data.getvalue()
 
@@ -302,6 +310,11 @@ def test_online(verbosity=1):
             print "Linux Athena computers are known to support HTTPS,"
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
+    except xmlrpclib.Fault:
+        print "\nError: Either your key.py file is out of date, or online "
+        print "tests for " + lab.__name__ + " are not currently available."
+        print "If you believe this is may be a mistake, please contact a TA.\n"
+        sys.exit(0)
 
     ntests = len(tests)
     ncorrect = 0
