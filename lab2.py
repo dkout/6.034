@@ -11,8 +11,6 @@ GRAPH_2 = all_graphs['GRAPH_2']
 GRAPH_3 = all_graphs['GRAPH_3']
 GRAPH_FOR_HEURISTICS = all_graphs['GRAPH_FOR_HEURISTICS']
 
-#Change this to True if you want to run additional local tests for debugging:
-RUN_ADDITIONAL_TESTS = False
 
 #### PART 1: Helper Functions ##################################################
 

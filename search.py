@@ -105,9 +105,9 @@ class UndirectedGraph:
                             "nodes: " + str(self.nodes),
                             "edges: " + str(self.edges),
                             "heuristic: " + str(self.heuristic_dict)]) + "\n>"
+    __repr__ = __str__
 
-
-# Change to True for example of graph creation:
+# Change to True for an example of graph creation:
 if False:
     g = UndirectedGraph()
     g.nodes = ["A","B","C","D","E"]
