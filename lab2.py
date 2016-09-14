@@ -1,3 +1,6 @@
+# MIT 6.034 Lab 2: Search
+# Written by Dylan Holmes (dxh) and Jessica Noss (jmn), with inspiration from past 6.034 staff
+
 from search import Edge, UndirectedGraph, do_nothing_fn, make_generic_search
 import read_graphs
 
@@ -11,7 +14,7 @@ GRAPH_FOR_HEURISTICS = all_graphs['GRAPH_FOR_HEURISTICS']
 #Change this to True if you want to run additional local tests for debugging:
 RUN_ADDITIONAL_TESTS = False
 
-#### PART 1: Helper Functions #########################################
+#### PART 1: Helper Functions ##################################################
 
 def path_length(graph, path):
     raise NotImplementedError
@@ -29,54 +32,18 @@ def sort_by_heuristic(graph, goalNode, nodes):
     raise NotImplementedError
 
 
-# You can ignore the following line.  It allows generic_search (PART 3) to 
-# access the extensions and has_loops functions that you defined in PART 1.
+# You can ignore the following line.  It allows generic_search (PART 2) to
+# access the extensions and has_loops functions that you just defined in PART 1.
 generic_search = make_generic_search(extensions, has_loops)  # DO NOT CHANGE
 
-#### PART 2: Search Algorithms #########################################
 
-# Note: Optionally, you may skip to Part 3: Generic Search,
-# then complete Part 2 using your answers from Part 3.
+#### PART 2: Generic Search ####################################################
 
-def dfs(graph, startNode, goalNode):
-    raise NotImplementedError
+# Note: If you would prefer to get some practice with implementing search
+# algorithms before working on Generic Search, you are welcome to do PART 3
+# before PART 2.
 
-
-def bfs(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def hill_climbing(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def best_first(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def beam(graph, startNode, goalNode, beam_width):
-    raise NotImplementedError
-
-
-def branch_and_bound(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def branch_and_bound_with_heuristic(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def branch_and_bound_with_extended_set(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def a_star(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-#### PART 3: Generic Search #######################################
-
-# Define your custom path-sorting functions here.  
+# Define your custom path-sorting functions here.
 # Each path-sorting function should be in this form:
 
 # def my_sorting_fn(graph, goalNode, paths):
@@ -127,7 +94,50 @@ generic_beam = [None, None, None, None]
 #print generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2)
 
 
-#### PART 4: Heuristics ###################################################
+#### PART 3: Search Algorithms #################################################
+
+# Note: It's possible to implement the following algorithms by calling
+# generic_search with the arguments you defined in PART 2.  But you're also
+# welcome to code them without using generic_search if you would prefer to
+# implement the algorithms by yourself.
+
+def dfs(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def bfs(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def hill_climbing(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def best_first(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def beam(graph, startNode, goalNode, beam_width):
+    raise NotImplementedError
+
+
+def branch_and_bound(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def branch_and_bound_with_heuristic(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def branch_and_bound_with_extended_set(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+def a_star(graph, startNode, goalNode):
+    raise NotImplementedError
+
+
+#### PART 4: Heuristics ########################################################
 
 def is_admissible(graph, goalNode):
     raise NotImplementedError
@@ -189,7 +199,7 @@ heuristic_4['G']['C'] = h4_C
 heuristic_4['G']['G'] = h4_G
 
 
-#### SURVEY ###################################################
+#### SURVEY ####################################################################
 
 NAME = None
 COLLABORATORS = None
@@ -203,7 +213,7 @@ SUGGESTIONS = None
 ### Ignore everything below this line; for testing only ###
 ###########################################################
 
-# The following lines are used in the tester. DO NOT CHANGE!
+# The following lines are used in the online tester. DO NOT CHANGE!
 
 generic_dfs_sort_new_paths_fn = generic_dfs[0]
 generic_bfs_sort_new_paths_fn = generic_bfs[0]

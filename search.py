@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 2: Search
+
 def distinct(seq):
     seen = set()
     seen_add = seen.add
@@ -22,27 +24,27 @@ class Edge:
 
     def __str__(self):
         return "Edge<"+",".join([self.startNode, self.endNode, str(self.length)])+">"
-    
+
     __repr__ = __str__
 
 
-class UndirectedGraph:    
+class UndirectedGraph:
     def __init__(self, nodes=[], edges=[], heuristic_dict={}):
         self.nodes = nodes[:]
         self.edges = edges[:]
         self.heuristic_dict = heuristic_dict.copy()
-    
+
     def is_valid_path(self, path) :
         # all nodes are nodes in the path, and consecutive nodes are neighbors
         return all([x in self.nodes for x in path]) and all([self.get_edge(a,b) for (a,b) in zip(path, path[1:])])
-    
+
     def get_edges(self, startNode=None, endNode=None):
         """ Return a list of all the edges in the graph.  If start or end are
         provided, restricts to edges that start/end at particular nodes. """
 
-        pred1 =  lambda node: (startNode is None) or (node == startNode) 
+        pred1 =  lambda node: (startNode is None) or (node == startNode)
         pred2 =  lambda node: (endNode is None)   or (node == endNode)
-        
+
         return filter(
             lambda e: e is not None,
             [e if pred1(e.startNode) and pred2(e.endNode) else
@@ -67,13 +69,13 @@ class UndirectedGraph:
             return None
         else:
             return edges[0]
-    
+
     def is_neighbor(self, startNode, endNode):
         "Returns True if there is an edge connecting startNode to endNode, else False"
         return any([endNode == e.endNode for e in self.get_edges(startNode)])
-        
+
     # CREATE AND MODIFY THE GRAPH
-    
+
     def join(self, startNode, endNode, edgeLength=None):
         # check whether edge already exists
         if self.is_neighbor(startNode, endNode):
@@ -117,12 +119,12 @@ def do_nothing_fn(graph, goalNode, paths):
     return paths
 
 def make_generic_search(extensions_fn, has_loops_fn): #hack to avoid circular imports
-    
+
     def generic_search(sort_new_paths_fn = do_nothing_fn,
                        add_paths_to_front_of_agenda = True,
                        sort_agenda_fn = do_nothing_fn,
                        use_extended_set = False):
-    
+
         # To prevent tester from throwing unexpected errors
         args = [sort_new_paths_fn, add_paths_to_front_of_agenda,
                 sort_agenda_fn, use_extended_set]
@@ -130,16 +132,16 @@ def make_generic_search(extensions_fn, has_loops_fn): #hack to avoid circular im
             raise NotImplementedError("To implement, call with non-None arguments")
         elif None in args:
             raise TypeError("'None' is not a valid argument for generic_search")
-    
+
         # Make search algorithm with arguments specified above
         def search_algorithm(graph, start, goal, beam_width=None):
             agenda = [[start]]
             extended_set = set()
-            
+
             while(agenda):
                 path = agenda.pop(0)
                 lastNode = path[-1]
-    
+
                 if(lastNode == goal):
                     return path
                 elif use_extended_set and lastNode in extended_set:
@@ -153,15 +155,15 @@ def make_generic_search(extensions_fn, has_loops_fn): #hack to avoid circular im
                         agenda = new_paths + agenda
                     else:
                         agenda = agenda + new_paths
-                    
+
                     if beam_width == None:
                         agenda = sort_agenda_fn(graph, goal, agenda)
                     else:
                         agenda = sort_agenda_fn(graph, goal, agenda, beam_width)
-                
+
             # no path found
             return None
-    
+
         return search_algorithm
-        
+
     return generic_search
