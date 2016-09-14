@@ -22,44 +22,44 @@ GRAPH_FOR_HEURISTICS = all_graphs['GRAPH_FOR_HEURISTICS']
 
 #### PART 1: Helper Functions #########################################
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 1
           getargs = [GRAPH_1, ['a', 'c', 'b', 'd']],
           testanswer = lambda val, original_val=None: val == 11,
           expected_val = 11,
           name = 'path_length')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 2
           getargs = [GRAPH_2, ['D', 'C', 'A', 'D', 'E', 'G', 'F']],
           testanswer = lambda val, original_val=None: val == 53,
           expected_val = 53,
           name = 'path_length')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 3
           getargs = [GRAPH_1, ['a']],
           testanswer = lambda val, original_val=None: val == 0,
           expected_val = 0,
           name = 'path_length')
 
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 4
           getargs = [['node1', 'node3', 'node2']],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'has_loops')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 5
           getargs = [['d', 'a', 'c', 'a', 'b']],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'has_loops')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 6
           getargs = [list('SBCA')],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'has_loops')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 7
           getargs = [['X']],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
@@ -72,7 +72,7 @@ def nested_list_to_set(list0):
     return set([str(x) for x in list0])
 
 extensions_test1_answer = [['n2', 'n1'], ['n2', 'n3']]
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 8
           getargs = [GRAPH_0, ['n2']],
           testanswer = (lambda val, original_val=None:
                         compare_nested_lists_as_sets(val, extensions_test1_answer)),
@@ -80,7 +80,7 @@ make_test(type = 'FUNCTION',
           name = 'extensions')
 
 extensions_test2_answer = [['n2', 'n3', 'n4']]
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 9
           getargs = [GRAPH_0, ['n2', 'n3']],
           testanswer = (lambda val, original_val=None:
                         compare_nested_lists_as_sets(val, extensions_test2_answer)),
@@ -90,7 +90,7 @@ make_test(type = 'FUNCTION',
 extensions_test3_answer = [['S', 'A', 'C', 'E', 'D'],
                            ['S', 'A', 'C', 'E', 'F'],
                            ['S', 'A', 'C', 'E', 'G']]
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 10
           getargs = [GRAPH_2, ['S', 'A', 'C', 'E']],
           testanswer = (lambda val, original_val=None:
                         compare_nested_lists_as_sets(val, extensions_test3_answer)),
@@ -99,14 +99,14 @@ make_test(type = 'FUNCTION',
 
 
 sortby_test1_answer = ['c', 'a', 'b', 'd']
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 11
           getargs = [GRAPH_1, 'c', ['d', 'a', 'b', 'c']],
           testanswer = lambda val, original_val=None: val == sortby_test1_answer,
           expected_val = sortby_test1_answer,
           name = 'sort_by_heuristic')
 
 sortby_test2_answer = ['H', 'D', 'F', 'C', 'C', 'A', 'B']
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 12
           getargs = [GRAPH_2, 'G', ['D', 'C', 'B', 'H', 'A', 'F', 'C']],
           testanswer = lambda val, original_val=None: val == sortby_test2_answer,
           expected_val = sortby_test2_answer,
@@ -153,6 +153,7 @@ search_tests = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
 def str_to_list(string):
     return [char for char in string]
 
+# Tests 13-32
 for arg_list in search_tests:
     if arg_list[0] == 'beam':
         if TEST_GENERIC_BEAM:
@@ -179,7 +180,7 @@ bb_extended_set_tests = [["generic_branch_and_bound", False],
                          ["generic_branch_and_bound_with_heuristic", False],
                          ["generic_branch_and_bound_with_extended_set", True]]
 
-for arg_list in bb_extended_set_tests:
+for arg_list in bb_extended_set_tests:  #Tests 33-35
     (lambda method, answer :
      make_test(type = 'VALUE',
                getargs = method,
@@ -192,7 +193,7 @@ for arg_list in bb_extended_set_tests:
 
 #### PART 3: Search Algorithms #########################################
 
-# no-path-found tests with nonexistent goal node:
+# no-path-found tests with nonexistent goal node: #Tests 36-39
 for search_method in ['dfs', 'bfs', 'branch_and_bound',
                       'branch_and_bound_with_extended_set']:
     (lambda method :
@@ -204,13 +205,13 @@ for search_method in ['dfs', 'bfs', 'branch_and_bound',
     )(search_method)
 
 # no-path-found test for beam:
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 40
           getargs = [GRAPH_2, 'C', 'G', 1],
           testanswer = (lambda val, original_val=None: val == None),
           expected_val = None,
           name = 'beam')
 
-
+# Tests 41-64
 for arg_list in search_tests:
     if arg_list[0] == 'beam':
         (lambda method, graph, startNode, endNode, beam_width, answer_string :
@@ -234,54 +235,72 @@ for arg_list in search_tests:
 
 #### PART 4: Heuristics ###################################################
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 65
           getargs = [GRAPH_1, 'd'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_admissible')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 66
           getargs = [GRAPH_1, 'c'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_admissible')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 67
           getargs = [GRAPH_2, 'G'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_admissible')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 68
           getargs = [GRAPH_3, 'g'],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'is_admissible')
 
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 69
           getargs = [GRAPH_1, 'd'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_consistent')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 70
           getargs = [GRAPH_1, 'c'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_consistent')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 71
           getargs = [GRAPH_2, 'G'],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'is_consistent')
 
-make_test(type = 'FUNCTION',
+make_test(type = 'FUNCTION',  #TEST 72
           getargs = [GRAPH_3, 'g'],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'is_consistent')
+
+
+#### Optional tests ############################################################
+
+if TEST_GENERIC_BEAM:
+
+    for arg_list in search_tests:
+        if arg_list[0] == 'beam':
+            (lambda method, graph, startNode, endNode, beam_width, answer_string :
+             make_test(type = 'NESTED_FUNCTION',
+                       getargs = [search_args[method],
+                                  [graph, startNode, endNode, beam_width]],
+                       testanswer = (lambda val, original_val=None:
+                                     val == str_to_list(answer_string)),
+                       expected_val = str_to_list(answer_string),
+                       name = 'generic_search')
+             )(*arg_list[:6])
+
 
 if TEST_HEURISTICS:
 
