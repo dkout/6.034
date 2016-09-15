@@ -15,18 +15,45 @@ GRAPH_FOR_HEURISTICS = all_graphs['GRAPH_FOR_HEURISTICS']
 #### PART 1: Helper Functions ##################################################
 
 def path_length(graph, path):
+    """
+    Returns the total length (sum of edge weights) of a path 
+    defined by a list of nodes coercing an edge-linked traversal
+    through a graph. A path with fewer than 2 nodes should have
+    length of 0. You can assume that all edges coerced from the 
+    nodes have a valid numeric value.
+    """
     raise NotImplementedError
 
 
 def has_loops(path):
+    """
+    Returns True if this path has a loop in it, i.e. if it 
+    visits a node more than once. Returns False otherwise.
+    """
     raise NotImplementedError
 
 
 def extensions(graph, path):
+    """
+    Returns a list of paths. Each path in the list should be 
+    a one-node extension of the input path, where an extension 
+    of a path is defined as the path connected to a node which 
+    is a neighbor of the final node in the path.
+    Returned paths should not have loops, i.e. 
+    should not visit the same node twice.
+    The returned paths should be sorted in lexicographic order.
+    """
     raise NotImplementedError
 
 
 def sort_by_heuristic(graph, goalNode, nodes):
+    """
+    Given several input nodes, sorts them best-to-worst by 
+    the heuristic of that node to the goal node. Here, and in 
+    general for this lab, we consider a lower heuristic to be 
+    "better," since it represents a shorter potential path 
+    to the goal. Break ties lexicographically by the node name.
+    """
     raise NotImplementedError
 
 
@@ -138,10 +165,27 @@ def a_star(graph, startNode, goalNode):
 #### PART 4: Heuristics ########################################################
 
 def is_admissible(graph, goalNode):
+    """
+    Returns True if this graph's heuristic is admissible; else False.
+    An admissible heuristic is one which is always exactly correct 
+    or overly optimistic; it never over-estimates the cost 
+    to the goal.
+    """
     raise NotImplementedError
 
 
 def is_consistent(graph, goalNode):
+    """
+    Returns True if this graph's heuristic is consistent; else False.
+    A consistent heuristic satisfies the following property for all
+    nodes v in the graph:
+        Suppose v is a node in the graph, and N is a neighbor of v, 
+        then, heuristic(v) <= heuristic(N) + edge_length(v, N)
+    In other words, moving from one node to a neighboring node never 
+    unfairly decreases the heuristic. 
+    This is equivalent to the heuristic satisfying the triangle 
+    inequality.
+    """
     raise NotImplementedError
 
 
