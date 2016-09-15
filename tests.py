@@ -124,7 +124,7 @@ search_args = {"dfs": generic_dfs,
                "branch_and_bound_with_extended_set": generic_branch_and_bound_with_extended_set,
                "a_star": generic_a_star}
 
-# Tests 13-32
+# Tests 14-31
 search_tests = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
                 ['dfs', GRAPH_2, 'S', 'G', 'SACDEFG'],
                 ['bfs', GRAPH_1, 'a', 'd', 'abd'],
@@ -168,7 +168,7 @@ bb_extended_set_tests = [["generic_branch_and_bound", False],
                          ["generic_branch_and_bound_with_heuristic", False],
                          ["generic_branch_and_bound_with_extended_set", True]]
 
-for arg_list in bb_extended_set_tests:  #Tests 33-35
+for arg_list in bb_extended_set_tests:  #Tests 32-34
     (lambda method, answer :
      make_test(type = 'VALUE',
                getargs = method,
@@ -181,7 +181,7 @@ for arg_list in bb_extended_set_tests:  #Tests 33-35
 
 #### PART 3: Search Algorithms #########################################
 
-# no-path-found tests with nonexistent goal node: #Tests 36-39
+# no-path-found tests with nonexistent goal node: #Tests 35-38
 for search_method in ['dfs', 'bfs', 'branch_and_bound',
                       'branch_and_bound_with_extended_set']:
     (lambda method :
@@ -193,13 +193,13 @@ for search_method in ['dfs', 'bfs', 'branch_and_bound',
     )(search_method)
 
 # no-path-found test for beam:
-make_test(type = 'FUNCTION',  #TEST 40
+make_test(type = 'FUNCTION',  #TEST 39
           getargs = [GRAPH_2, 'C', 'G', 1],
           testanswer = (lambda val, original_val=None: val == None),
           expected_val = None,
           name = 'beam')
 
-# Tests 41-64
+# Tests 40-60
 for arg_list in search_tests:
     if arg_list[0] == 'beam':
         (lambda method, graph, startNode, endNode, beam_width, answer_string :
@@ -223,50 +223,50 @@ for arg_list in search_tests:
 
 #### PART 4: Heuristics ###################################################
 
-make_test(type = 'FUNCTION',  #TEST 65
+make_test(type = 'FUNCTION',  #TEST 61
           getargs = [GRAPH_1, 'd'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_admissible')
 
-make_test(type = 'FUNCTION',  #TEST 66
+make_test(type = 'FUNCTION',  #TEST 62
           getargs = [GRAPH_1, 'c'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_admissible')
 
-make_test(type = 'FUNCTION',  #TEST 67
+make_test(type = 'FUNCTION',  #TEST 63
           getargs = [GRAPH_2, 'G'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_admissible')
 
-make_test(type = 'FUNCTION',  #TEST 68
+make_test(type = 'FUNCTION',  #TEST 64
           getargs = [GRAPH_3, 'g'],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'is_admissible')
 
 
-make_test(type = 'FUNCTION',  #TEST 69
+make_test(type = 'FUNCTION',  #TEST 65
           getargs = [GRAPH_1, 'd'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_consistent')
 
-make_test(type = 'FUNCTION',  #TEST 70
+make_test(type = 'FUNCTION',  #TEST 66
           getargs = [GRAPH_1, 'c'],
           testanswer = lambda val, original_val=None: val == True,
           expected_val = True,
           name = 'is_consistent')
 
-make_test(type = 'FUNCTION',  #TEST 71
+make_test(type = 'FUNCTION',  #TEST 67
           getargs = [GRAPH_2, 'G'],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
           name = 'is_consistent')
 
-make_test(type = 'FUNCTION',  #TEST 72
+make_test(type = 'FUNCTION',  #TEST 68
           getargs = [GRAPH_3, 'g'],
           testanswer = lambda val, original_val=None: val == False,
           expected_val = False,
@@ -275,71 +275,49 @@ make_test(type = 'FUNCTION',  #TEST 72
 
 #### PART 5: Multiple Choice ###################################################
 
-
-### TEST 1 ###
-
 ANSWER_1_getargs = "ANSWER_1"
-
-def ANSWER_1_testanswer(val, original_val = None):
+def ANSWER_1_testanswer(val, original_val = None):  #TEST 69
     if val == '':
         raise NotImplementedError
     return str(val) == '2'
-
 make_test(type = 'VALUE',
           getargs = ANSWER_1_getargs,
           testanswer = ANSWER_1_testanswer,
-          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
-          name = ANSWER_1_getargs
-          )
-
-### TEST 2 ###
+          expected_val = "correct value of ANSWER_1 ('1', '2', '3', or '4')",
+          name = ANSWER_1_getargs)
 
 ANSWER_2_getargs = "ANSWER_2"
-
-def ANSWER_2_testanswer(val, original_val = None):
+def ANSWER_2_testanswer(val, original_val = None):  #TEST 70
     if val == '':
         raise NotImplementedError
     return str(val) == '4'
-
 make_test(type = 'VALUE',
           getargs = ANSWER_2_getargs,
           testanswer = ANSWER_2_testanswer,
           expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
-          name = ANSWER_2_getargs
-          )
-
-### TEST 3 ###
+          name = ANSWER_2_getargs)
 
 ANSWER_3_getargs = "ANSWER_3"
-
-def ANSWER_3_testanswer(val, original_val = None):
+def ANSWER_3_testanswer(val, original_val = None):  #TEST 71
     if val == '':
         raise NotImplementedError
     return str(val) == '1'
-
 make_test(type = 'VALUE',
           getargs = ANSWER_3_getargs,
           testanswer = ANSWER_3_testanswer,
-          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
-          name = ANSWER_3_getargs
-          )
-
-### TEST 4 ###
-
+          expected_val = "correct value of ANSWER_3 ('1', '2', '3', or '4')",
+          name = ANSWER_3_getargs)
 
 ANSWER_4_getargs = "ANSWER_4"
-
-def ANSWER_4_testanswer(val, original_val = None):
+def ANSWER_4_testanswer(val, original_val = None):  #TEST 72
     if val == '':
         raise NotImplementedError
     return str(val) == '3'
-
 make_test(type = 'VALUE',
           getargs = ANSWER_4_getargs,
           testanswer = ANSWER_4_testanswer,
-          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
-          name = ANSWER_4_getargs
-          )
+          expected_val = "correct value of ANSWER_4 ('1', '2', '3', or '4')",
+          name = ANSWER_4_getargs)
 
 
 #### Optional tests ############################################################
