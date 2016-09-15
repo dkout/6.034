@@ -324,7 +324,7 @@ make_test(type = 'VALUE',
 
 if TEST_GENERIC_BEAM:
 
-    for arg_list in search_tests_generic:
+    for arg_list in search_tests:
         if arg_list[0] == 'beam':
             (lambda method, graph, startNode, endNode, beam_width, answer_string :
              make_test(type = 'NESTED_FUNCTION',
