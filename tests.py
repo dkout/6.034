@@ -168,16 +168,18 @@ bb_extended_set_tests = [["generic_branch_and_bound", False],
                          ["generic_branch_and_bound_with_heuristic", False],
                          ["generic_branch_and_bound_with_extended_set", True]]
 
-def bb_extended_testanswer(val, original_val=None):
-    if val == [None, None, None, None]:
-        raise NotImplementedError
-    return val[3] == answer
+def get_bb_extended_testanswer_fn(answer):
+    def bb_extended_testanswer(val, original_val=None):
+        if val == [None, None, None, None]:
+            raise NotImplementedError
+        return val[3] == answer
+    return bb_extended_testanswer
 
 for arg_list in bb_extended_set_tests:  #Tests 32-34
     (lambda method, answer :
      make_test(type = 'VALUE',
                getargs = method,
-               testanswer = bb_extended_testanswer,
+               testanswer = get_bb_extended_testanswer_fn(answer),
                expected_val = "Correct boolean value indicating whether search uses extended set",
                name = method)
      )(*arg_list)
