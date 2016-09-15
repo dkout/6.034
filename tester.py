@@ -146,7 +146,7 @@ def type_decode(arg, lab):
 
 def type_encode(arg):
     "Encode objects as lists in a way that can be decoded by 'type_decode'"
-    if isinstance(arg, list):
+    if isinstance(arg, list) and not type(arg) in (list,tuple): #The second part of this AND is important -- don't delete it!
         return [ arg.__class__.__name__ ] + [ type_encode(x) for x in arg ]
     elif hasattr(arg, '__class__') and arg.__class__.__name__ == "Graph":
         return [ 'Graph', type_encode(arg.nodes), type_encode(arg.edges), type_encode(arg.heuristic) ]
