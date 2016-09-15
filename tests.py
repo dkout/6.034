@@ -65,25 +65,18 @@ make_test(type = 'FUNCTION',  #TEST 7
           expected_val = False,
           name = 'has_loops')
 
-def compare_nested_lists_as_sets(list1, list2):
-    return nested_list_to_set(list1) == nested_list_to_set(list2)
-
-def nested_list_to_set(list0):
-    return set([str(x) for x in list0])
 
 extensions_test1_answer = [['n2', 'n1'], ['n2', 'n3']]
 make_test(type = 'FUNCTION',  #TEST 8
           getargs = [GRAPH_0, ['n2']],
-          testanswer = (lambda val, original_val=None:
-                        compare_nested_lists_as_sets(val, extensions_test1_answer)),
+          testanswer = lambda val, original_val=None: val == extensions_test1_answer,
           expected_val = extensions_test1_answer,
           name = 'extensions')
 
 extensions_test2_answer = [['n2', 'n3', 'n4']]
 make_test(type = 'FUNCTION',  #TEST 9
           getargs = [GRAPH_0, ['n2', 'n3']],
-          testanswer = (lambda val, original_val=None:
-                        compare_nested_lists_as_sets(val, extensions_test2_answer)),
+          testanswer = lambda val, original_val=None: val == extensions_test2_answer,
           expected_val = extensions_test2_answer,
           name = 'extensions')
 
@@ -92,8 +85,7 @@ extensions_test3_answer = [['S', 'A', 'C', 'E', 'D'],
                            ['S', 'A', 'C', 'E', 'G']]
 make_test(type = 'FUNCTION',  #TEST 10
           getargs = [GRAPH_2, ['S', 'A', 'C', 'E']],
-          testanswer = (lambda val, original_val=None:
-                        compare_nested_lists_as_sets(val, extensions_test3_answer)),
+          testanswer = lambda val, original_val=None: val == extensions_test3_answer,
           expected_val = extensions_test3_answer,
           name = 'extensions')
 
@@ -110,6 +102,13 @@ make_test(type = 'FUNCTION',  #TEST 12
           getargs = [GRAPH_2, 'G', ['D', 'C', 'B', 'H', 'A', 'F', 'C']],
           testanswer = lambda val, original_val=None: val == sortby_test2_answer,
           expected_val = sortby_test2_answer,
+          name = 'sort_by_heuristic')
+
+sortby_test3_answer = ['G', 'X', 'Y', 'F']
+make_test(type = 'FUNCTION',  #TEST 13
+          getargs = [GRAPH_2, 'G', ['X', 'Y', 'G', 'F']],
+          testanswer = lambda val, original_val=None: val == sortby_test3_answer,
+          expected_val = sortby_test3_answer,
           name = 'sort_by_heuristic')
 
 
@@ -130,8 +129,11 @@ search_tests = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
                 ['dfs', GRAPH_2, 'S', 'G', 'SACDEFG'],
                 ['bfs', GRAPH_1, 'a', 'd', 'abd'],
                 ['bfs', GRAPH_2, 'S', 'G', 'SACEG'],
+#                ['hill_climbing', GRAPH_1, 'a', 'd', 'abcd'], #depends on lexicographic tie-breaking
                 ['hill_climbing', GRAPH_2, 'S', 'G', 'SADHFG'],
+#                ['best_first', GRAPH_1, 'a', 'd', 'abcd'], #depends on lexicographic tie-breaking
                 ['best_first', GRAPH_2, 'S', 'G', 'SADEG'],
+#                ['beam', GRAPH_1, 'a', 'd', 2, 'abd'], #depends on lexicographic tie-breaking
                 ['beam', GRAPH_2, 'S', 'G', 2, 'SBYCEG'],
                 ['beam', GRAPH_2, 'S', 'G', 1, 'SADHFG'],
                 ['beam', GRAPH_2, 'S', 'G', 3, 'SADEG'],
