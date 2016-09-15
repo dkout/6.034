@@ -125,15 +125,13 @@ search_args = {"dfs": generic_dfs,
                "branch_and_bound_with_extended_set": generic_branch_and_bound_with_extended_set,
                "a_star": generic_a_star}
 
-search_tests = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
+# Tests 13-32
+search_tests_generic = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
                 ['dfs', GRAPH_2, 'S', 'G', 'SACDEFG'],
                 ['bfs', GRAPH_1, 'a', 'd', 'abd'],
                 ['bfs', GRAPH_2, 'S', 'G', 'SACEG'],
-                ['hill_climbing', GRAPH_1, 'a', 'd', 'abcd'],
                 ['hill_climbing', GRAPH_2, 'S', 'G', 'SADHFG'],
-                ['best_first', GRAPH_1, 'a', 'd', 'abcd'],
                 ['best_first', GRAPH_2, 'S', 'G', 'SADEG'],
-                ['beam', GRAPH_1, 'a', 'd', 2, 'abd'],
                 ['beam', GRAPH_2, 'S', 'G', 2, 'SBYCEG'],
                 ['beam', GRAPH_2, 'S', 'G', 1, 'SADHFG'],
                 ['beam', GRAPH_2, 'S', 'G', 3, 'SADEG'],
@@ -153,20 +151,8 @@ search_tests = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
 def str_to_list(string):
     return [char for char in string]
 
-# Tests 13-32
-for arg_list in search_tests:
-    if arg_list[0] == 'beam':
-        if TEST_GENERIC_BEAM:
-            (lambda method, graph, startNode, endNode, beam_width, answer_string :
-             make_test(type = 'NESTED_FUNCTION',
-                       getargs = [search_args[method],
-                                  [graph, startNode, endNode, beam_width]],
-                       testanswer = (lambda val, original_val=None:
-                                     val == str_to_list(answer_string)),
-                       expected_val = str_to_list(answer_string),
-                       name = 'generic_search')
-             )(*arg_list[:6])
-    else:
+for arg_list in search_tests_generic:
+    if arg_list[0] != 'beam':
         (lambda method, graph, startNode, endNode, answer_string :
          make_test(type = 'NESTED_FUNCTION',
                    getargs = [search_args[method], [graph, startNode, endNode]],
@@ -212,6 +198,28 @@ make_test(type = 'FUNCTION',  #TEST 40
           name = 'beam')
 
 # Tests 41-64
+search_tests = [['dfs', GRAPH_1, 'a', 'd', 'abcd'],
+                ['dfs', GRAPH_2, 'S', 'G', 'SACDEFG'],
+                ['bfs', GRAPH_1, 'a', 'd', 'abd'],
+                ['bfs', GRAPH_2, 'S', 'G', 'SACEG'],
+                ['hill_climbing', GRAPH_2, 'S', 'G', 'SADHFG'],
+                ['best_first', GRAPH_2, 'S', 'G', 'SADEG'],
+                ['beam', GRAPH_2, 'S', 'G', 2, 'SBYCEG'],
+                ['beam', GRAPH_2, 'S', 'G', 1, 'SADHFG'],
+                ['beam', GRAPH_2, 'S', 'G', 3, 'SADEG'],
+                ['branch_and_bound', GRAPH_1, 'a', 'd', 'acd'],
+                ['branch_and_bound', GRAPH_2, 'S', 'G', 'SBCEG'],
+                ['branch_and_bound', GRAPH_3, 's', 'g', 'sxwg'],
+                ['branch_and_bound_with_heuristic', GRAPH_1, 'a', 'd', 'acd'],
+                ['branch_and_bound_with_heuristic', GRAPH_2, 'S', 'G', 'SBCEG'],
+                ['branch_and_bound_with_heuristic', GRAPH_3, 's', 'g', 'szwg'],
+                ['branch_and_bound_with_extended_set', GRAPH_1, 'a', 'd', 'acd'],
+                ['branch_and_bound_with_extended_set', GRAPH_2, 'S', 'G', 'SBCEG'],
+                ['branch_and_bound_with_extended_set', GRAPH_3, 's', 'g', 'sxwg'],
+                ['a_star', GRAPH_1, 'a', 'd', 'acd'],
+                ['a_star', GRAPH_2, 'S', 'G', 'SBCEG'],
+                ['a_star', GRAPH_3, 's', 'g', 'sywg']]
+
 for arg_list in search_tests:
     if arg_list[0] == 'beam':
         (lambda method, graph, startNode, endNode, beam_width, answer_string :
@@ -289,7 +297,7 @@ make_test(type = 'FUNCTION',  #TEST 72
 
 if TEST_GENERIC_BEAM:
 
-    for arg_list in search_tests:
+    for arg_list in search_tests_generic:
         if arg_list[0] == 'beam':
             (lambda method, graph, startNode, endNode, beam_width, answer_string :
              make_test(type = 'NESTED_FUNCTION',
