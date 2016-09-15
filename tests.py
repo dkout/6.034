@@ -276,8 +276,6 @@ make_test(type = 'FUNCTION',  #TEST 72
 
 ### TEST 1 ###
 
-# Explanation
-
 ANSWER_1_getargs = "ANSWER_1"
 
 def ANSWER_1_testanswer(val, original_val = None):
@@ -293,8 +291,6 @@ make_test(type = 'VALUE',
           )
 
 ### TEST 2 ###
-
-# Explanation
 
 ANSWER_2_getargs = "ANSWER_2"
 
@@ -312,8 +308,6 @@ make_test(type = 'VALUE',
 
 ### TEST 3 ###
 
-# Explanation
-
 ANSWER_3_getargs = "ANSWER_3"
 
 def ANSWER_3_testanswer(val, original_val = None):
@@ -330,7 +324,6 @@ make_test(type = 'VALUE',
 
 ### TEST 4 ###
 
-# Explanation
 
 ANSWER_4_getargs = "ANSWER_4"
 
