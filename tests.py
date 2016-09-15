@@ -285,6 +285,82 @@ make_test(type = 'FUNCTION',  #TEST 72
           name = 'is_consistent')
 
 
+#### PART 5: Multiple Choice ###################################################
+
+
+### TEST 1 ###
+
+# Explanation
+
+ANSWER_1_getargs = "ANSWER_1"
+
+def ANSWER_1_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '2'
+
+make_test(type = 'VALUE',
+          getargs = ANSWER_1_getargs,
+          testanswer = ANSWER_1_testanswer,
+          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
+          name = ANSWER_1_getargs
+          )
+
+### TEST 2 ###
+
+# Explanation
+
+ANSWER_2_getargs = "ANSWER_2"
+
+def ANSWER_2_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '4'
+
+make_test(type = 'VALUE',
+          getargs = ANSWER_2_getargs,
+          testanswer = ANSWER_2_testanswer,
+          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
+          name = ANSWER_2_getargs
+          )
+
+### TEST 3 ###
+
+# Explanation
+
+ANSWER_3_getargs = "ANSWER_3"
+
+def ANSWER_3_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '1'
+
+make_test(type = 'VALUE',
+          getargs = ANSWER_3_getargs,
+          testanswer = ANSWER_3_testanswer,
+          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
+          name = ANSWER_3_getargs
+          )
+
+### TEST 4 ###
+
+# Explanation
+
+ANSWER_4_getargs = "ANSWER_4"
+
+def ANSWER_4_testanswer(val, original_val = None):
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '3'
+
+make_test(type = 'VALUE',
+          getargs = ANSWER_4_getargs,
+          testanswer = ANSWER_4_testanswer,
+          expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
+          name = ANSWER_4_getargs
+          )
+
+
 #### Optional tests ############################################################
 
 if TEST_GENERIC_BEAM:
