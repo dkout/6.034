@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 3: Games
+
 from copy import deepcopy
 
 def always_zero(state, maximize=True):

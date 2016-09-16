@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 3: Games
+
 from game_api import *
 from copy import deepcopy
 

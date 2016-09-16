@@ -1,4 +1,4 @@
-# Fall 2015 6.034 Lab 3: Games
+# MIT 6.034 Lab 3: Games
 
 import xmlrpclib
 import traceback
@@ -19,6 +19,7 @@ except ImportError:
     from StringIO import StringIO
 
 try:
+    sys.path.append('..')
     from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
 except ImportError:
     print "Error: Can't find your 'key.py' file!  Please go download one from"

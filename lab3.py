@@ -1,3 +1,6 @@
+# MIT 6.034 Lab 3: Games
+# Written by Dylan Holmes (dxh), Jessica Noss (jmn), and 6.034 staff
+
 from game_api import *
 from boards import *
 INF = float('inf')

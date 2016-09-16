@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 3: Games
+
 from game_api import ConnectFourBoard
 from toytree import *
 

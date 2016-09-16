@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 3: Games
+
 from tester import make_test, get_tests
 from game_api import *
 from boards import *
