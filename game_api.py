@@ -18,7 +18,7 @@ class AbstractGameState :
         self.endgame_score_fn = endgame_score_fn
 
     def __str__(self) :
-        return "AbstractGameState representing:\nself.snapshot.__str__()"
+        return "\n<AbstractGameState representing:\n" + self.snapshot.__str__() + ">"
     __repr__ = __str__
 
     def __eq__(self, other):
@@ -50,6 +50,9 @@ class AbstractGameState :
     def restart(self) :
         self.snapshot = self.starting_state
         return self
+
+    def copy(self):
+        return deepcopy(self)
 
 
 class ConnectFourBoard :
@@ -344,6 +347,8 @@ class AnytimeValue :
         print '*** Done printing AnytimeValue history ***\n'
         print 'Total number of static evaluations:', self.total_evaluations, '\n'
     __repr__ = __str__
+    def copy(self):
+        return deepcopy(self)
 
 def is_class_instance(obj, class_name):
     return hasattr(obj, '__class__') and obj.__class__.__name__ == class_name
@@ -382,5 +387,9 @@ def pretty_print_dfs_type(dfs_result):
 #print board.get_all_chains()
 
 def move_sequence(state, move_indexes=[]) :
+    """Produces a sequence of states, starting with the input state.
+    For Connect Four, note that a move index may be different from a column
+    number; for example, if the first open column is column 2, it will have
+    a move index of 0."""
     return reduce(lambda states, index : states + [states[-1].generate_next_states()[index]],
                   move_indexes, [state])

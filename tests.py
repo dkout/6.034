@@ -64,6 +64,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "False",
           name = 'is_game_over_connectfour')
 
+#chain of length 5 -> True
 def is_game_over_connectfour_5_getargs() :  #TEST 6 #todo increment test numbers after this test (which was added)
     return [BOARD_FIVE_IN_A_ROW]
 def is_game_over_connectfour_5_testanswer(val, original_val = None) :
@@ -300,32 +301,49 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 # MINIMAX ENDGAME SEARCH
-def minimax_0_getargs() :  #TEST 22
+def minimax_endgame_0_getargs() :  #TEST 22
     return [GAME1, True]
 
-def minimax_0_testanswer(val, original_val = None) :
+def minimax_endgame_0_testanswer(val, original_val = None) :
     return (is_dfs_return_type(val) and move_sequence(GAME1, [1,0]) == val[0]
             and (val[1], val[2]) == (4, 16))
 
 make_test(type = 'FUNCTION_ENCODED_ARGS',
-          getargs = minimax_0_getargs,
-          testanswer = minimax_0_testanswer,
+          getargs = minimax_endgame_0_getargs,
+          testanswer = minimax_endgame_0_testanswer,
           expected_val = "List of (best_path, leaf_score, evaluation_count) corresponding to minimax score when the first player is the maximizer.",
           name = 'minimax_endgame_search')
 
-def minimax_1_getargs() :  #TEST 23
+def minimax_endgame_1_getargs() :  #TEST 23
     return [GAME1, False]
 
-def minimax_1_testanswer(val, original_val = None) :
+def minimax_endgame_1_testanswer(val, original_val = None) :
     return (is_dfs_return_type(val) and move_sequence(GAME1, [0,1]) == val[0]
             and (val[1], val[2]) == (11, 16))
 
 make_test(type = 'FUNCTION_ENCODED_ARGS',
-          getargs = minimax_1_getargs,
-          testanswer = minimax_1_testanswer,
+          getargs = minimax_endgame_1_getargs,
+          testanswer = minimax_endgame_1_testanswer,
           expected_val = "List of (best_path, leaf_score, evaluation_count) corresponding to minimax score when the first player is the minimizer.",
           name = 'minimax_endgame_search')
 
+def minimax_endgame_2_getargs() :  #TEST 24 #todo renumber from here
+    GAME = AbstractGameState(NEARLY_OVER, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
+    return [GAME, True]
+
+def minimax_endgame_2_testanswer(val, original_val = None) :
+    GAME = AbstractGameState(NEARLY_OVER, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
+    return (is_dfs_return_type(val) and move_sequence(GAME, [1,0,0]) == val[0]
+            and val[1] >= 1000 and val[2] == 6) #todonext
+
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = minimax_endgame_2_getargs,
+          testanswer = minimax_endgame_2_testanswer,
+          expected_val = "List of (best_path, leaf_score, evaluation_count) " \
+              + "corresponding to minimax score when the first player is the " \
+              + "maximizer.  (Hint: make sure you're using the argument "\
+              + "'maximize' with get_endgame_score.",
+          name = 'minimax_endgame_search')
 
 
 # LIMITED DEPTH SEARCH
@@ -499,7 +517,6 @@ def progressive_1_getargs() :  #TEST 32
     return [GAME, lambda board,maximize: [-1,1][maximize] * (density(board, False) - density(board, True) + 2*valuate(board,True) - 3*valuate(board, False)), 5, True]
 
 def progressive_1_testanswer(val, original_val = None) :
-    GAME = AbstractGameState(BOARD_EMPTY, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
     if not is_class_instance(val, 'AnytimeValue'):
         return False
     h = val.history

@@ -105,7 +105,7 @@ NEARLY_OVER = ConnectFourBoard(board_array =
                                    ( 0,1,2,1,2,1,1 ),
                                    ( 0,1,1,1,2,2,2 ),
                                    ( 0,2,1,2,1,2,2 ),
-                                   ( 1,1,2,1,2,1,2 ),
+                                   ( 1,1,2,2,1,1,2 ),
                                    ),
                                  players = ['Harry', 'Ron'],
                                  whose_turn = 'Harry')
@@ -205,7 +205,7 @@ NEARLY_OVER_move0 = ConnectFourBoard(board_array =
                                    ( 0,1,2,1,2,1,1 ),
                                    ( 0,1,1,1,2,2,2 ),
                                    ( 1,2,1,2,1,2,2 ),
-                                   ( 1,1,2,1,2,1,2 ),
+                                   ( 1,1,2,2,1,1,2 ),
                                  ) )
 
 NEARLY_OVER_move5 = ConnectFourBoard(board_array =
@@ -214,7 +214,25 @@ NEARLY_OVER_move5 = ConnectFourBoard(board_array =
                                    ( 0,1,2,1,2,1,1 ),
                                    ( 0,1,1,1,2,2,2 ),
                                    ( 0,2,1,2,1,2,2 ),
-                                   ( 1,1,2,1,2,1,2 ),
+                                   ( 1,1,2,2,1,1,2 ),
+                                 ) )
+
+NEARLY_OVER_move5_0 = ConnectFourBoard(board_array =
+                                 ( ( 0,2,1,2,1,1,1 ),
+                                   ( 0,2,1,1,2,2,2 ),
+                                   ( 0,1,2,1,2,1,1 ),
+                                   ( 0,1,1,1,2,2,2 ),
+                                   ( 2,2,1,2,1,2,2 ),
+                                   ( 1,1,2,2,1,1,2 ),
+                                 ) )
+
+NEARLY_OVER_move5_0_0 = ConnectFourBoard(board_array = #game over
+                                 ( ( 0,2,1,2,1,1,1 ),
+                                   ( 0,2,1,1,2,2,2 ),
+                                   ( 0,1,2,1,2,1,1 ),
+                                   ( 1,1,1,1,2,2,2 ),
+                                   ( 2,2,1,2,1,2,2 ),
+                                   ( 1,1,2,2,1,1,2 ),
                                  ) )
 
 

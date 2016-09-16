@@ -1,4 +1,5 @@
 from game_api import *
+from copy import deepcopy
 
 class ToyTree :
     def __init__(self, label=None, score=None) :
@@ -20,8 +21,10 @@ class ToyTree :
             ret += x.__str__(tab+1)
         ret = ("-" * 3 * tab) + (" " * (tab > 0) ) +  (self.label or "node") + ("("+str(self.score)+")" if self.score is not None else "") + "\n" + ret
         return ret
+    __repr__ = __str__
 
-    # __repr__ = __str__
+    def copy(self):
+        return deepcopy(self)
 
     def describe_previous_move(self) :
                 return "Took branch "+str(self.sibling_index) if self.sibling_index is not None else "[none]"
@@ -46,7 +49,7 @@ class ToyTree :
         return self.append(ToyTree(label, value))
 
     def is_leaf(self) :
-        return not not self.children
+        return not self.children
 
 
     # moving around
@@ -77,31 +80,25 @@ class ToyTree :
 
 
 
-def create_toy_tree(score_dict, nested_list) :
-    """Creates a toy tree from a dict (nodeName -> score), and a nested
-list of node names from the dictionary. A well-formed nested list is a
-pair whose first element is a node name and whose second element is a
-(possibly empty) list containing well-formed nested lists.
+def create_toy_tree(name_to_score, nested_list) :
+    """Creates a ToyTree from two inputs:
+    1. a dict mapping node names to scores, eg {"A":3, "B":2}
+    2. a nested list of node names. A well-formed nested list is a pair whose
+    first element is a node name, and whose second element is a (possibly empty)
+    list containing well-formed nested lists, each of which represents a subtree.
+    If a node is not in the the input dict, its score is assumed to be 0.
     """
-
-    return reduce(lambda parent, child : parent.append(child),
-                   map(lambda x : create_toy_tree(score_dict, x), nested_list[1]),
-                   ToyTree(nested_list[0], score_dict.get(nested_list[0])))
-
-    # OR EQUIVALENTLY
-
     label, sublists = nested_list
-    label = nested_list[0]
-    sublists = nested_list[1]
-
-
-    root = ToyTree(label, score_dict.get(label))
-    children = [create_toy_tree(score_dict, x) for x in sublists]
-
-    for x in children :
-        root.append(x)
-
+    root = ToyTree(label, name_to_score.get(label, 0))
+    children = [create_toy_tree(name_to_score, sublist) for sublist in sublists]
+    for child in children:
+        root.append(child)
     return root
+
+    # OR EQUIVALENTLY:
+#    return reduce(lambda parent, child : parent.append(child),
+#                   map(lambda x : create_toy_tree(score_dict, x), nested_list[1]),
+#                   ToyTree(nested_list[0], score_dict.get(nested_list[0])))
 
 def wrapper_toytree(score_dict, nested_list) :
     tree = create_toy_tree(score_dict, nested_list)
