@@ -8,17 +8,20 @@ import sys
 import os
 import tarfile
 
-python_version = sys.version_info
-is_windows = sys.platform in ["win32", "cygwin"]
-if python_version < (2, 3) or python_version >= (2, 8):
-    raise Exception("Illegal version of Python for 6.034 lab. Detected Python version is: " + str(sys.version))
-elif is_windows and python_version >= (2, 6, 5) and python_version < (2, 7, 4):
-    raise Exception("Illegal version of Python for 6.034 lab. Since you are on a Windows machine, please don't use python version between 2.6.5 and 2.7.3 inclusive. Your version: " + str(sys.version))
-
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
+
+python_version = sys.version_info
+is_windows = sys.platform in ["win32", "cygwin"]
+if python_version < (2, 3) or python_version >= (2, 8):
+    raise Exception("Illegal version of Python for 6.034 lab. Detected Python "
+                    + "version is: " + str(sys.version))
+elif is_windows and python_version >= (2, 6, 5) and python_version < (2, 7, 4):
+    raise Exception("Illegal version of Python for 6.034 lab. On Windows, "
+        +"Python versions between 2.6.5 and 2.7.3 (inclusive) are incompatible "
+        +"with our server. Detected Python version is: " + str(sys.version))
 
 try:
     sys.path.append('..')
