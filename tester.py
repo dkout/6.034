@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 # MIT 6.034 Lab 3: Games
 
 import xmlrpclib
@@ -17,6 +19,16 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
+
+python_version = sys.version_info
+is_windows = sys.platform in ["win32", "cygwin"]
+if python_version < (2, 3) or python_version >= (2, 8):
+    raise Exception("Illegal version of Python for 6.034 lab. Detected Python "
+                    + "version is: " + str(sys.version))
+elif is_windows and python_version >= (2, 6, 5) and python_version < (2, 7, 4):
+    raise Exception("Illegal version of Python for 6.034 lab. On Windows, "
+        +"Python versions between 2.6.5 and 2.7.3 (inclusive) are incompatible "
+        +"with our server. Detected Python version is: " + str(sys.version))
 
 try:
     sys.path.append('..')
@@ -40,8 +52,8 @@ def show_result(testsummary, testcode, correct, got, expected, verbosity):
     else:
         print "%s: Incorrect." % testsummary
         print_testcode(testcode)
-        print "Got:     ", got
-        print "Expected:", expected
+        print "Got:     ", got, "\n"
+        print "Expected:", expected, "\n"
 
 def print_testcode(testcode):
     if isinstance(testcode, (tuple, list)) and len(testcode) >= 3:
@@ -197,8 +209,8 @@ def type_encode(arg):
                    +'accept lambda functions. To pass the online tests, use '
                    +'named functions instead. **')
         elif fn_name not in function_dict:
-            print ('Error: constraint function', fn_name, 'cannot be transmitted '
-                   +'to server.  Please use a pre-defined constraint function instead.')
+            print ('Error: function', fn_name, 'cannot be transmitted '
+                   +'to server.  Please use a pre-defined function instead.')
         return ['callable', arg.__name__]
     else:
         return arg
@@ -244,15 +256,7 @@ def test_offline(verbosity=1):
     """ Run the unit tests in 'tests.py' """
     import tests as tests_module
 
-#    tests = [ (x[:-8],
-#               getattr(tests_module, x),
-#               getattr(tests_module, "%s_testanswer" % x[:-8]),
-#               getattr(tests_module, "%s_expected" % x[:-8]),
-#               "_".join(x[:-8].split('_')[:-1]))
-#              for x in tests_module.__dict__.keys() if x[-8:] == "_getargs" ]
-
     tests = tests_module.get_tests()
-
     ntests = len(tests)
     ncorrect = 0
 
@@ -272,7 +276,18 @@ def test_offline(verbosity=1):
             show_exception(summary, testname)
             continue
 
-        correct = testanswer(answer)
+        # This prevents testanswer from throwing errors. eg, if return type is
+        # incorrect, testanswer returns False instead of raising an exception.
+        try:
+            correct = testanswer(answer)
+        except NotImplementedError:
+            print "%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname)
+            continue
+        except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
+            raise
+        except Exception:
+            correct = False
+
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
 
@@ -284,7 +299,8 @@ def get_target_upload_filedir():
     """ Get, via user prompting, the directory containing the current lab """
     cwd = os.getcwd() # Get current directory.  Play nice with Unicode pathnames, just in case.
 
-    print "Please specify the directory containing your lab."
+    print "Please specify the directory containing your lab,"
+    print "or press Enter to use the default directory."
     print "Note that all files from this directory will be uploaded!"
     print "Labs should not contain large amounts of data; very-large"
     print "files will fail to upload."
@@ -302,21 +318,46 @@ def get_target_upload_filedir():
 
 def get_tarball_data(target_dir, filename):
     """ Return a binary String containing the binary data for a tarball of the specified directory """
-    data = StringIO()
-    file = tarfile.open(filename, "w|bz2", data)
-
     print "Preparing the lab directory for transmission..."
 
-    file.add(target_dir)
+    data = StringIO()
+    tar = tarfile.open(filename, "w|bz2", data)
+
+    top_folder_name = os.path.split(target_dir)[1]
+
+    def tar_filter(filename):
+        """Returns True if we should tar the file.
+        Avoid uploading .pyc files or the .git subdirectory (if any)"""
+        if filename == ".git":
+            return False
+        if os.path.splitext(filename)[1] == ".pyc":
+            return False
+        return True
+
+    def add_dir(currentDir, t_verbose=False):
+        for currentFile in os.listdir(currentDir):
+            fullPath=os.path.join(currentDir,currentFile)
+            if t_verbose:
+                print currentFile,
+            if tar_filter(currentFile):
+                if t_verbose:
+                    print ""
+                tar.add(fullPath,arcname=fullPath.replace(target_dir, top_folder_name,1),recursive=False)
+                if os.path.isdir(fullPath):
+                    add_dir(fullPath)
+            elif t_verbose:
+                print "....skipped"
+
+    add_dir(target_dir)
 
     print "Done."
     print
     print "The following files have been added:"
 
-    for f in file.getmembers():
+    for f in tar.getmembers():
         print f.name
 
-    file.close()
+    tar.close()
 
     return data.getvalue()
 
@@ -343,6 +384,11 @@ def test_online(verbosity=1):
             print "Linux Athena computers are known to support HTTPS,"
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
+    except xmlrpclib.Fault:
+        print "\nError: Either your key.py file is out of date, or online "
+        print "tests for " + lab.__name__ + " are not currently available."
+        print "If you believe this is may be a mistake, please contact a TA.\n"
+        sys.exit(0)
 
     ntests = len(tests)
     ncorrect = 0
