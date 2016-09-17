@@ -213,23 +213,39 @@ def get_target_upload_filedir():
 
     return target_dir
 
-def filter_files(tarinfo):
-    "Avoid uploading .pyc files or the .git subdirectory (if any)"
-    name=os.path.split(tarinfo.name)[1]
-    if name==".git":
-        return None
-    if os.path.splitext(name)[1]==".pyc":
-        return None
-    return tarinfo
-
 def get_tarball_data(target_dir, filename):
     """ Return a binary String containing the binary data for a tarball of the specified directory """
+    print "Preparing the lab directory for transmission..."
+
     data = StringIO()
     tar = tarfile.open(filename, "w|bz2", data)
 
-    print "Preparing the lab directory for transmission..."
+    top_folder_name = os.path.split(target_dir)[1]
 
-    tar.add(target_dir, arcname=os.path.split(target_dir)[1], filter=filter_files)
+    def tar_filter(filename):
+        """Returns True if we should tar the file.
+        Avoid uploading .pyc files or the .git subdirectory (if any)"""
+        if filename == ".git":
+            return False
+        if os.path.splitext(filename)[1] == ".pyc":
+            return False
+        return True
+
+    def add_dir(currentDir, t_verbose=False):
+        for currentFile in os.listdir(currentDir):
+            fullPath=os.path.join(currentDir,currentFile)
+            if t_verbose:
+                print currentFile,
+            if tar_filter(currentFile):
+                if t_verbose:
+                    print ""
+                tar.add(fullPath,arcname=fullPath.replace(target_dir, top_folder_name,1),recursive=False)
+                if os.path.isdir(fullPath):
+                    add_dir(fullPath)
+            elif t_verbose:
+                print "....skipped"
+
+    add_dir(target_dir)
 
     print "Done."
     print
