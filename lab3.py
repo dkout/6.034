@@ -113,6 +113,19 @@ def progressive_deepening(state, heuristic_fn=always_zero, depth_limit=INF,
 #print progressive_deepening(state_UHOH, heuristic_fn=heuristic_connectfour, depth_limit=4)
 
 
+##### PART 3: Multiple Choice ##################################################
+
+ANSWER_1 = ''
+
+ANSWER_2 = ''
+
+ANSWER_3 = ''
+
+ANSWER_4 = ''
+
+ANSWER_5 = ''
+
+
 #### SURVEY ###################################################
 
 NAME = None

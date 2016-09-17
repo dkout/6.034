@@ -618,3 +618,119 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
                           +"that you're calling state.get_endgame_score with "
                           +"the 'maximize' argument.)"),
           name = 'minimax_search_alphabeta')
+
+#### PART 3: Multiple Choice ##################################
+
+ANSWER_1_getargs = "ANSWER_1"
+def ANSWER_1_testanswer(val, original_val = None):  #TEST 41
+    """
+    Recall that an admissible heuristic is one that is always correct 
+    or overly optimistic. It is never pessimistic. Suppose that your 
+    heuristic is admissible, and the heuristic at some node is 
+    overly optimistic for player A. Then, that value must be 
+    *pessimistic* for player B, since it's a static heuristic. So it 
+    can't be admissible.
+    In general, admissible heuristics aren't really a requirement 
+    in adversarial search, since both parties typically have 
+    differing points of view.
+    """
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '2'
+make_test(type = 'VALUE',
+          getargs = ANSWER_1_getargs,
+          testanswer = ANSWER_1_testanswer,
+          expected_val = "correct value of ANSWER_1 ('1' or '2')",
+          name = ANSWER_1_getargs)
+
+ANSWER_2_getargs = "ANSWER_2"
+def ANSWER_2_testanswer(val, original_val = None):  #TEST 42
+    """
+    Minimax without the alpha-beta optimization never prunes 
+    any nodes. All nodes are examined.
+    """
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '4'
+make_test(type = 'VALUE',
+          getargs = ANSWER_2_getargs,
+          testanswer = ANSWER_2_testanswer,
+          expected_val = "correct value of ANSWER_2 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_2_getargs)
+
+ANSWER_3_getargs = "ANSWER_3"
+def ANSWER_3_testanswer(val, original_val = None):  #TEST 43
+    """
+    By inspection you should find that option 1 is a valid circumstance 
+    under which this alpha-beta search will indeed prune some leaves.
+    """
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '1'
+make_test(type = 'VALUE',
+          getargs = ANSWER_3_getargs,
+          testanswer = ANSWER_3_testanswer,
+          expected_val = "correct value of ANSWER_3 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_3_getargs)
+
+ANSWER_4_getargs = "ANSWER_4"
+def ANSWER_4_testanswer(val, original_val = None):  #TEST 44
+    """
+    (1) If no leaves were pruneable in the tree, swapping two children 
+    could definitely help. Just consider the winning option from 
+    the previous question: what would happen if the two top-level 
+    children were swapped?
+    (2) Similarly, that idea can be applied at any level of the tree. 
+    Especially in a tree like the one in the previous question, 
+    swapping any two children will change whether or not there 
+    can be prunings in that subtree.
+    (3) Since depth_limit=INF, the heuristic_fn is never even used.
+    Hence, changing it doesn't do anything.
+    So the final answer is (4).
+    """
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '4'
+make_test(type = 'VALUE',
+          getargs = ANSWER_4_getargs,
+          testanswer = ANSWER_4_testanswer,
+          expected_val = "correct value of ANSWER_4 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_4_getargs)
+
+ANSWER_5_getargs = "ANSWER_5"
+def ANSWER_5_testanswer(val, original_val = None):  #TEST 45
+    """
+    (1) This doesn't even really make sense. You're running the same 
+    *deterministic* algorithm n times, so no matter what Eve did to 
+    the nodes, you're running the same exact steps n times. And what 
+    does it mean to average the results "each time," supposing the 
+    results were different in the first place?
+    (2) If depth_limit is finite and less than the depth of the tree 
+    (a common occurrence), the always_zero function is a terrible 
+    heuristic, since you're falsely identifying those nodes as ones 
+    that your search should *not* consider. Your algorithm will likely 
+    suffer as a result.
+    (3) Similar to above, but even worse. This time, you are possibly 
+    returning large numbers (which falsely identifies this node as a 
+    great option), smaller numbers or zero (see above), or negative 
+    numbers, which doesn't even make sense. 
+    (4) This is the least disastrous of the 'wrong' options. At best, 
+    it doesn't do much. Maybe your heuristic is decent, which may lead 
+    to making decently-informed decisions about which branch to take. 
+    However, Eve still knows everything, so she still has the opporunity 
+    to re-order nodes in such a way as to prevent you from pruning 
+    many leaves.
+    (5) This is the correct solution. Adding this stochastic step 
+    thwarts Eve's attempts, since her reordering nodes does nothing 
+    against a random branch picker. Sometimes your algorithm will 
+    do great; other times, it will do poorly. But on average, it 
+    will do moderately well.
+    """
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '5'
+make_test(type = 'VALUE',
+          getargs = ANSWER_5_getargs,
+          testanswer = ANSWER_5_testanswer,
+          expected_val = "correct value of ANSWER_5 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_5_getargs)
