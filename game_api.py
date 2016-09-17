@@ -373,21 +373,6 @@ def pretty_print_dfs_type(dfs_result):
     print 'Score:', dfs_result[1]
     print '\nEvaluations:', dfs_result[2], '\n'
 
-#board = ConnectFourBoard() #todo rm comments
-#print board.get_current_player_name()
-#board = board.add_piece(6)
-#print board.get_current_player_name()
-#board = board.add_piece(3)
-#print board.get_current_player_name()
-#board = board.add_piece(4)
-#board = board.add_piece(4)
-#board = board.add_piece(5)
-#board = board.add_piece(3)
-#
-#print board.get_current_player_name()
-#print board
-#print board.get_all_chains()
-
 def move_sequence(state, move_indexes=[]) :
     """Produces a sequence of states, starting with the input state.
     For Connect Four, note that a move index may be different from a column
