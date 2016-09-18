@@ -372,9 +372,9 @@ def pretty_format_dfs_type(dfs_result):
         raise TypeError('expected tuple (path, score, number of evaluations)')
     s = '\nPath:'
     for state in dfs_result[0]:
-        s += '\n', state.snapshot.__class__, '\n', state.snapshot
-    s += 'Score:', dfs_result[1]
-    s += '\nEvaluations:', dfs_result[2], '\n'
+        s += '\n' + str(state.snapshot.__class__) + '\n' + str(state.snapshot)
+    s += '\nScore: ' + str(dfs_result[1])
+    s += '\nEvaluations: ' + str(dfs_result[2]) + '\n'
     return s
 
 def move_sequence(state, move_indexes=[]) :
