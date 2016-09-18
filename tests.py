@@ -570,6 +570,33 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'minimax_search_alphabeta')
 
 
+# This checks that the heuristic function is actually used, rather than being
+# reset to always_zero.
+NONZERO_TREE = ToyTree()
+NONZERO_TREE.sub().sub()
+NONZERO_TREE.down().sub('C',1).right().sub('E',2)
+
+NONZERO_GAME = AbstractGameState(NONZERO_TREE,
+                          toytree_is_game_over,
+                          toytree_generate_next_states,
+                          toytree_endgame_score_fn)
+
+def alphabeta_7_getargs() :  #TEST 88
+    return [NONZERO_GAME, -INF, INF, lambda x,y: x.children[0].score if x.children else x.score, 1, True]
+
+def alphabeta_7_testanswer(val, original_val = None) :
+    val = decode_dfs_type(val)
+    return (move_sequence(NONZERO_GAME, [1]) == val[0]
+            and (val[1],val[2]) == (2,2))
+
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = alphabeta_7_getargs,
+          testanswer = alphabeta_7_testanswer,
+          expected_val = ("(correct return tuple) "
+                          +"(Hint: check how you use heuristic_fn and depth_limit)"),
+          name = 'minimax_search_alphabeta')
+
+
 ## progressive_deepening
 
 def progressive_0_getargs() :  #TEST 36
@@ -587,7 +614,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           testanswer = progressive_0_testanswer,
           expected_val = ("An AnytimeValue object storing the results of " +
                           "progressive deepening. (You can use .pretty_print " +
-                          "to see the properties of your AnytimeValue object.)",
+                          "to see the properties of your AnytimeValue object.)"),
           name = 'progressive_deepening')
 
 
@@ -617,7 +644,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = ("An AnytimeValue object storing the results of " +
                           "progressive deepening. (You can use .pretty_print " +
                           "to see the properties of your AnytimeValue object. " +
-                          "This is a Connect Four game, requiring methods you've written.)",
+                          "This is a Connect Four game, requiring methods you've written.)"),
           name = 'progressive_deepening')
 
 
