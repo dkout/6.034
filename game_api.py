@@ -341,14 +341,16 @@ class AnytimeValue :
         self.total_evaluations += val[2]
     def get_value(self) :
         return self.value
-    def __str__(self):
-        s = '*** Begin printing AnytimeValue history ***\n'
+    def pretty_print(self):
+        print '*** Begin printing AnytimeValue history ***\n'
         for val in self.history:
-            s += '\nProgressive deepening to depth ' + str(len(val[0])-1) + ':'
-            s += pretty_format_dfs_type(val)
-        s += '\n*** Done printing AnytimeValue history ***\n'
-        s += '\nTotal number of static evaluations: ' + str(self.total_evaluations) + '\n'
-        return s
+            print '\nProgressive deepening to depth ' + str(len(val[0])-1) + ':'
+            pretty_print_dfs_type(val)
+        print '*** Done printing AnytimeValue history ***\n'
+        print 'Total number of static evaluations:', self.total_evaluations, '\n'
+    def __str__(self):
+        return ("<AnytimeValue object representing %i levels of progressive deepening>"
+                % len(self.history))
     def copy(self):
         return deepcopy(self)
 
