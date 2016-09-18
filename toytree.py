@@ -23,7 +23,6 @@ class ToyTree :
             ret += x.__str__(tab+1)
         ret = ("-" * 3 * tab) + (" " * (tab > 0) ) +  (self.label or "node") + ("("+str(self.score)+")" if self.score is not None else "") + "\n" + ret
         return ret
-    __repr__ = __str__
 
     def copy(self):
         return deepcopy(self)
