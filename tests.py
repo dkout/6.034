@@ -585,7 +585,9 @@ def progressive_0_testanswer(val, original_val = None) :
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = progressive_0_getargs,
           testanswer = progressive_0_testanswer,
-          expected_val =  "An AnytimeValue object storing the results of progressive deepening.",
+          expected_val = ("An AnytimeValue object storing the results of " +
+                          "progressive deepening. (You can use .pretty_print " +
+                          "to see the properties of your AnytimeValue object.)",
           name = 'progressive_deepening')
 
 
@@ -612,7 +614,10 @@ def progressive_1_testanswer(val, original_val = None) :
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = progressive_1_getargs,
           testanswer = progressive_1_testanswer,
-          expected_val = ("An AnytimeValue object storing the results of progressive deepening. (This is a Connect Four game, requiring methods you've written.)"),
+          expected_val = ("An AnytimeValue object storing the results of " +
+                          "progressive deepening. (You can use .pretty_print " +
+                          "to see the properties of your AnytimeValue object. " +
+                          "This is a Connect Four game, requiring methods you've written.)",
           name = 'progressive_deepening')
 
 

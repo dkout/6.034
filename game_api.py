@@ -20,8 +20,7 @@ class AbstractGameState :
         self.endgame_score_fn = endgame_score_fn
 
     def __str__(self) :
-        return "\n<AbstractGameState representing:\n" + self.snapshot.__str__() + ">"
-    __repr__ = __str__
+        return "\n<AbstractGameState representing:\n" + self.snapshot.__str__() + "\n>"
 
     def __eq__(self, other):
         return (is_class_instance(other, 'AbstractGameState')
@@ -323,7 +322,6 @@ class ConnectFourBoard :
             ret += "".join(map( lambda x : {1 : "1 ", 2: "2 "}.get(x,"_ "), row))
             ret += "\n"
         return ret
-    __repr__ = __str__
 
 class AnytimeValue :
     def __init__(self, val=None) :
@@ -351,6 +349,7 @@ class AnytimeValue :
     def __str__(self):
         return ("<AnytimeValue object representing %i levels of progressive deepening>"
                 % len(self.history))
+    __repr__ = __str__
     def copy(self):
         return deepcopy(self)
 
