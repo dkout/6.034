@@ -159,8 +159,8 @@ def say_hi():
         if first is None:
             print "Oops, please type either 'yes' or 'no'."
     print "\nAnd, finally, choose the depth limit for the bot's search"
-    print "(Picking values larger than 4 or 5 could result in long wait-times,"
-    print " while picking 1 would make for a mostly-trivial game)"
+    print "(Picking values larger than 4 or 5 could result in long wait times,"
+    print " while picking 1 would make for a mostly trivial game)"
     depth_limit = None
     while depth_limit is None:
         inp = raw_input(">>> ")

@@ -342,13 +342,13 @@ class AnytimeValue :
     def get_value(self) :
         return self.value
     def __str__(self):
-        print '*** Begin printing AnytimeValue history ***\n'
+        s = '*** Begin printing AnytimeValue history ***\n'
         for val in self.history:
-            print '\nProgressive deepening to depth ' + str(len(val[0])-1) + ':'
-            pretty_print_dfs_type(val)
-        print '*** Done printing AnytimeValue history ***\n'
-        print 'Total number of static evaluations:', self.total_evaluations, '\n'
-    __repr__ = __str__
+            s += '\nProgressive deepening to depth ' + str(len(val[0])-1) + ':'
+            s += pretty_format_dfs_type(val)
+        s += '\n*** Done printing AnytimeValue history ***\n'
+        s += '\nTotal number of static evaluations: ' + str(self.total_evaluations) + '\n'
+        return s
     def copy(self):
         return deepcopy(self)
 
@@ -365,13 +365,17 @@ def is_dfs_return_type(val):
             and all(map(is_AbstractGameState_instance, val[0])))
 
 def pretty_print_dfs_type(dfs_result):
+    print pretty_format_dfs_type(dfs_result)
+
+def pretty_format_dfs_type(dfs_result):
     if not is_dfs_return_type(dfs_result):
         raise TypeError('expected tuple (path, score, number of evaluations)')
-    print '\nPath:'
+    s = '\nPath:'
     for state in dfs_result[0]:
-        print '\n', state.snapshot.__class__, '\n', state.snapshot
-    print 'Score:', dfs_result[1]
-    print '\nEvaluations:', dfs_result[2], '\n'
+        s += '\n', state.snapshot.__class__, '\n', state.snapshot
+    s += 'Score:', dfs_result[1]
+    s += '\nEvaluations:', dfs_result[2], '\n'
+    return s
 
 def move_sequence(state, move_indexes=[]) :
     """Produces a sequence of states, starting with the input state.
