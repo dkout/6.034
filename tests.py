@@ -336,7 +336,7 @@ def minimax_endgame_2_getargs() :  #TEST 25
 def minimax_endgame_2_testanswer(val, original_val = None) :
     GAME = AbstractGameState(NEARLY_OVER, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
     return (is_dfs_return_type(val) and move_sequence(GAME, [1,0,0]) == val[0]
-            and val[1] >= 1000 and val[2] == 6) #todonext
+            and val[1] >= 1000 and val[2] == 6)
 
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = minimax_endgame_2_getargs,
@@ -715,7 +715,7 @@ def ANSWER_5_testanswer(val, original_val = None):  #TEST 42
     opportunity for pruning, and you may get a misleading result if your
     heuristic isn't fantastic.
 
-    (5) This is the correct solution. Adding this stochastic step thwarts Eve's
+    (5) This is the best answer. Adding this stochastic step thwarts Eve's
     efforts, because her reordering is no match against a random branch picker.
     Sometimes your algorithm will do great; other times, it will do poorly.
     But on average, it will fare moderately well against Eve's meddling.

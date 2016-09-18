@@ -134,19 +134,3 @@ HOW_MANY_HOURS_THIS_LAB_TOOK = None
 WHAT_I_FOUND_INTERESTING = None
 WHAT_I_FOUND_BORING = None
 SUGGESTIONS = None
-
-
-###########################################################
-### Ignore everything below this line; for testing only ###
-###########################################################
-
-# The following lines are used in the tester. DO NOT CHANGE!
-
-def wrapper_connectfour(board_array, players, whose_turn = None) :
-    board = ConnectFourBoard(board_array = board_array,
-                             players = players,
-                             whose_turn = whose_turn)
-    return AbstractGameState(snapshot = board,
-                             is_game_over_fn = is_game_over_connectfour,
-                             generate_next_states_fn = next_boards_connectfour,
-                             endgame_score_fn = endgame_score_connectfour_faster)
