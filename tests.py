@@ -360,7 +360,28 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 # LIMITED DEPTH SEARCH
-def minimax_2_getargs() :  #TEST 27
+
+# This test with depth_limit=INF is just to check use of the argument 'maximize'
+def minimax_1_getargs() :  #TEST 27
+    GAME = AbstractGameState(NEARLY_OVER, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
+    return [GAME, always_zero, INF, True]
+
+def minimax_1_testanswer(val, original_val = None) :
+    GAME = AbstractGameState(NEARLY_OVER, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
+    return (is_dfs_return_type(val) and move_sequence(GAME, [1,0,0]) == val[0]
+            and val[1] >= 1000 and val[2] == 6)
+
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = minimax_1_getargs,
+          testanswer = minimax_1_testanswer,
+          expected_val = "List of (best_path, leaf_score, evaluation_count) " \
+              + "corresponding to minimax score when the first player is the " \
+              + "maximizer.  (Hint: make sure you're using the argument "\
+              + "'maximize' with get_endgame_score.",
+          name = 'minimax_search')
+
+
+def minimax_2_getargs() :  #TEST 28
     return [GAME_STATIC_ALL_LEVELS, always_zero, 2, True]
 
 def minimax_2_testanswer(val, original_val = None) :
@@ -374,9 +395,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'minimax_search')
 
 
-
-# DEPTH-LIMITED SEARCH
-def minimax_3_getargs() :  #TEST 28
+def minimax_3_getargs() :  #TEST 29
     GAME = AbstractGameState(BOARD_UHOH, is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
     valuate = lambda board, player : len(sum(board.get_all_chains(player),[]))
     return [GAME, lambda board,maximize: [-1,1][maximize] * (valuate(board,True) - valuate(board, False)), 2, True]
@@ -396,11 +415,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'minimax_search')
 
 
-
-
-
-def minimax_4_getargs() :  #TEST 29
-
+def minimax_4_getargs() :  #TEST 30
     GAME = AbstractGameState(BOARD_EMPTY.add_piece(3).add_piece(3), is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
     valuate = lambda board, player : len(sum(board.get_all_chains(player),[]))
     density = lambda board, player : sum([abs(index-3)
@@ -425,12 +440,10 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'minimax_search')
 
 
-
-
 ## minimax_search_alphabeta
 
 #  A two-move game.
-def alphabeta_0_getargs() :  #TEST 30
+def alphabeta_0_getargs() :  #TEST 31
     return [GAME1, -INF, INF, lambda x,y:0, INF, True]
 
 def alphabeta_0_testanswer(val, original_val = None) :
@@ -444,7 +457,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'minimax_search_alphabeta')
 
 
-def alphabeta_1_getargs() :  #TEST 31
+def alphabeta_1_getargs() :  #TEST 32
     return [GAME1, -INF, INF, lambda x,y:0, INF, False]
 
 def alphabeta_1_testanswer(val, original_val = None) :
@@ -461,7 +474,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 
-def alphabeta_2_getargs() :  #TEST 32
+def alphabeta_2_getargs() :  #TEST 33
     return [GAME_EQUALITY_PRUNING, -INF, INF, lambda x,y:0, INF, True]
 
 def alphabeta_2_testanswer(val, original_val = None) :
@@ -479,7 +492,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 # A test for when the correct move is not just the first available move
-def alphabeta_3_getargs() :  #TEST 33
+def alphabeta_3_getargs() :  #TEST 34
     return [GAME_EQUALITY_PRUNING, -INF, INF, lambda x,y:0, INF, False]
 
 def alphabeta_3_testanswer(val, original_val = None) :
@@ -507,7 +520,7 @@ PRUNING_GAME = AbstractGameState(PRUNING_TREE,
                           toytree_generate_next_states,
                           toytree_endgame_score_fn)
 
-def alphabeta_4_getargs() :  #TEST 34
+def alphabeta_4_getargs() :  #TEST 35
     return [PRUNING_GAME, -INF, INF, toytree_heuristic_fn, INF, True]
 
 def alphabeta_4_testanswer(val, original_val = None) :
@@ -536,7 +549,7 @@ PRUNING_GAME_NEG = AbstractGameState(PRUNING_TREE_NEG,
                           toytree_generate_next_states,
                           toytree_endgame_score_fn)
 
-def alphabeta_5_getargs() :  #TEST 35
+def alphabeta_5_getargs() :  #TEST 36
     return [PRUNING_GAME_NEG, -INF, INF, toytree_heuristic_fn, INF, False]
 
 def alphabeta_5_testanswer(val, original_val = None) :
@@ -563,7 +576,7 @@ NEGATE_GAME = AbstractGameState(NEGATE_TREE,
                           toytree_generate_next_states,
                           NEGATE_GAME_endgame_score_fn)
 
-def alphabeta_6_getargs() :  #TEST 36
+def alphabeta_6_getargs() :  #TEST 37
     return [NEGATE_GAME, -INF, INF, toytree_heuristic_fn, INF, True]
 
 def alphabeta_6_testanswer(val, original_val = None) :
@@ -592,7 +605,7 @@ NONZERO_GAME = AbstractGameState(NONZERO_TREE,
                           toytree_generate_next_states,
                           toytree_endgame_score_fn)
 
-def alphabeta_7_getargs() :  #TEST 37
+def alphabeta_7_getargs() :  #TEST 38
     return [NONZERO_GAME, -INF, INF,
             lambda x,y: x.children[0].score if x.children else x.score, 1, True]
 
@@ -611,7 +624,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## progressive_deepening
 
-def progressive_0_getargs() :  #TEST 38
+def progressive_0_getargs() :  #TEST 39
     return [GAME_STATIC_ALL_LEVELS, toytree_heuristic_fn, 3, True]
 
 def progressive_0_testanswer(val, original_val = None) :
@@ -631,7 +644,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 
-def progressive_1_getargs() :  #TEST 39
+def progressive_1_getargs() :  #TEST 40
 
     GAME = AbstractGameState(BOARD_EMPTY.add_piece(3).add_piece(3), is_game_over_connectfour, next_boards_connectfour, endgame_score_connectfour)
     valuate = lambda board, player : len(sum(board.get_all_chains(player),[]))
@@ -663,7 +676,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 #### PART 3: Multiple Choice ##################################
 
 ANSWER_1_getargs = "ANSWER_1"
-def ANSWER_1_testanswer(val, original_val = None):  #TEST 40
+def ANSWER_1_testanswer(val, original_val = None):  #TEST 41
     """Recall that an admissible heuristic is one that is always correct or
     overly optimistic. It is never pessimistic. Suppose that your heuristic is
     admissible, and the heuristic at some node (game state) is overly optimistic
@@ -684,7 +697,7 @@ make_test(type = 'VALUE',
           name = ANSWER_1_getargs)
 
 ANSWER_2_getargs = "ANSWER_2"
-def ANSWER_2_testanswer(val, original_val = None):  #TEST 41
+def ANSWER_2_testanswer(val, original_val = None):  #TEST 42
     """Minimax without the alpha-beta optimization never prunes any nodes.
     All nodes must be examined."""
     if val == '':
@@ -697,7 +710,7 @@ make_test(type = 'VALUE',
           name = ANSWER_2_getargs)
 
 ANSWER_3_getargs = "ANSWER_3"
-def ANSWER_3_testanswer(val, original_val = None):  #TEST 42
+def ANSWER_3_testanswer(val, original_val = None):  #TEST 43
     """With monotonically decreasing leaves, MAX's best possible score will be
     the left-most leaf and minimax with alpha-beta will prune the maximum number
     of leaves (3 out of 8)."""
@@ -711,7 +724,7 @@ make_test(type = 'VALUE',
           name = ANSWER_3_getargs)
 
 ANSWER_4_getargs = "ANSWER_4"
-def ANSWER_4_testanswer(val, original_val = None):  #TEST 43
+def ANSWER_4_testanswer(val, original_val = None):  #TEST 44
     """
     (1) If no leaves were pruneable in the tree, swapping two children could
     definitely help. For example, what would happen if it's MAX's turn and the
@@ -736,7 +749,7 @@ make_test(type = 'VALUE',
           name = ANSWER_4_getargs)
 
 ANSWER_5_getargs = "ANSWER_5"
-def ANSWER_5_testanswer(val, original_val = None):  #TEST 44
+def ANSWER_5_testanswer(val, original_val = None):  #TEST 45
     """
     (1) This idea won't improve anything, and in fact will actually just make
     your algorithm run n times slower. You're running the same *deterministic*
