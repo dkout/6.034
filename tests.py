@@ -617,7 +617,7 @@ def alphabeta_7_testanswer(val, original_val = None) :
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = alphabeta_7_getargs,
           testanswer = alphabeta_7_testanswer,
-          expected_val = ("(correct return tuple) "
+          expected_val = ("((list of two AbstractGameState instances), 2, 2) "
                           +"(Hint: check how you use heuristic_fn and depth_limit)"),
           name = 'minimax_search_alphabeta')
 
@@ -677,32 +677,25 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ANSWER_1_getargs = "ANSWER_1"
 def ANSWER_1_testanswer(val, original_val = None):  #TEST 41
-    """Recall that an admissible heuristic is one that is always correct or
-    overly optimistic. It is never pessimistic. Suppose that your heuristic is
-    admissible, and the heuristic at some node (game state) is overly optimistic
-    for player A. Then, that value must be *pessimistic* for player B, because
-    it's a static heuristic. Thus, the heuristic can't be admissible.
-
-    However, this isn't a problem, because admissibility is not a requirement
-    for games. In shortest-path search, admissibility is a property that emerges
-    as a requirement for guaranteeing the shortest path, but adversarial search
-    doesn't have that requirement."""
-    if val == '':
-        raise NotImplementedError
-    return str(val) == '2'
-make_test(type = 'VALUE',
-          getargs = ANSWER_1_getargs,
-          testanswer = ANSWER_1_testanswer,
-          expected_val = "correct value of ANSWER_1 ('1' or '2')",
-          name = ANSWER_1_getargs)
-
-ANSWER_2_getargs = "ANSWER_2"
-def ANSWER_2_testanswer(val, original_val = None):  #TEST 42
     """Minimax without the alpha-beta optimization never prunes any nodes.
     All nodes must be examined."""
     if val == '':
         raise NotImplementedError
     return str(val) == '4'
+make_test(type = 'VALUE',
+          getargs = ANSWER_1_getargs,
+          testanswer = ANSWER_1_testanswer,
+          expected_val = "correct value of ANSWER_1 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_1_getargs)
+
+ANSWER_2_getargs = "ANSWER_2"
+def ANSWER_2_testanswer(val, original_val = None):  #TEST 42
+    """With monotonically decreasing leaves, MAX's best possible score will be
+    the left-most leaf and minimax with alpha-beta will prune the maximum number
+    of leaves (3 out of 8)."""
+    if val == '':
+        raise NotImplementedError
+    return str(val) == '1'
 make_test(type = 'VALUE',
           getargs = ANSWER_2_getargs,
           testanswer = ANSWER_2_testanswer,
@@ -711,20 +704,6 @@ make_test(type = 'VALUE',
 
 ANSWER_3_getargs = "ANSWER_3"
 def ANSWER_3_testanswer(val, original_val = None):  #TEST 43
-    """With monotonically decreasing leaves, MAX's best possible score will be
-    the left-most leaf and minimax with alpha-beta will prune the maximum number
-    of leaves (3 out of 8)."""
-    if val == '':
-        raise NotImplementedError
-    return str(val) == '1'
-make_test(type = 'VALUE',
-          getargs = ANSWER_3_getargs,
-          testanswer = ANSWER_3_testanswer,
-          expected_val = "correct value of ANSWER_3 ('1', '2', '3', '4', or '5')",
-          name = ANSWER_3_getargs)
-
-ANSWER_4_getargs = "ANSWER_4"
-def ANSWER_4_testanswer(val, original_val = None):  #TEST 44
     """
     (1) If no leaves were pruneable in the tree, swapping two children could
     definitely help. For example, what would happen if it's MAX's turn and the
@@ -743,13 +722,13 @@ def ANSWER_4_testanswer(val, original_val = None):  #TEST 44
         raise NotImplementedError
     return str(val) == '4'
 make_test(type = 'VALUE',
-          getargs = ANSWER_4_getargs,
-          testanswer = ANSWER_4_testanswer,
-          expected_val = "correct value of ANSWER_4 ('1', '2', '3', '4', or '5')",
-          name = ANSWER_4_getargs)
+          getargs = ANSWER_3_getargs,
+          testanswer = ANSWER_3_testanswer,
+          expected_val = "correct value of ANSWER_3 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_3_getargs)
 
-ANSWER_5_getargs = "ANSWER_5"
-def ANSWER_5_testanswer(val, original_val = None):  #TEST 45
+ANSWER_4_getargs = "ANSWER_4"
+def ANSWER_4_testanswer(val, original_val = None):  #TEST 44
     """
     (1) This idea won't improve anything, and in fact will actually just make
     your algorithm run n times slower. You're running the same *deterministic*
@@ -781,7 +760,7 @@ def ANSWER_5_testanswer(val, original_val = None):  #TEST 45
         raise NotImplementedError
     return str(val) == '5'
 make_test(type = 'VALUE',
-          getargs = ANSWER_5_getargs,
-          testanswer = ANSWER_5_testanswer,
-          expected_val = "correct value of ANSWER_5 ('1', '2', '3', '4', or '5')",
-          name = ANSWER_5_getargs)
+          getargs = ANSWER_4_getargs,
+          testanswer = ANSWER_4_testanswer,
+          expected_val = "correct value of ANSWER_4 ('1', '2', '3', '4', or '5')",
+          name = ANSWER_4_getargs)
