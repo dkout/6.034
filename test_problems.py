@@ -111,11 +111,20 @@ CSP_impossible = CSP_ABC.copy().add_constraints([cons_AB_equal,
 CSP_some_vars_assigned_inconsistent = CSP_impossible.copy() \
     .set_assigned_values([('A',2), ('B',2)])
 
+CSP_propany_not_prop1 = CSP_ABC.copy().set_domain('B', [2,3]).set_domain('A', [2]) \
+    .add_constraints([cons_AC_different, cons_BC_equal])
+
+CSP_propany_and_prop1 = CSP_ABC.copy().set_domain('A', [2]) \
+    .add_constraints([cons_AC_equal, cons_BC_equal])
+
+CSP_no_prop = CSP_propany_and_prop1.copy().set_domain('C', [2])
+
 
 # More triangle problems for tests.py, with custom domains (not using CSP_ABC)
 domains_no_soln = {'A':[0,1], 'B':[0,1], 'C':[0,1,2]}
 CSP_no_soln = CSP(list('ABC')).set_all_domains(domains_no_soln) \
     .add_constraints([cons_AB_equal, cons_BC_different, cons_BC_equal])
+CSP_no_soln_after_eliminate = CSP_no_soln.copy().set_domain('C',[])
 
 domains_empty_domain = {'A':[1,2,3], 'B':[], 'C':[1,2,3,4]}
 CSP_empty_domain = CSP(list('ABC')).set_all_domains(domains_empty_domain)
@@ -139,12 +148,3 @@ domains_B_nope = {'A':[1,2,3], 'B':[1,3], 'C':[1,2,3]}
 CSP_B_nope = CSP(list('ABC')).set_all_domains(domains_B_nope) \
     .add_constraints([cons_AB_equal]).set_assigned_value('A',2)
 CSP_B_nope_after_eliminate = CSP_B_nope.copy().set_domain('B',[])
-
-
-CSP_propany_not_prop1 = CSP_ABC.copy().set_domain('B', [2,3]).set_domain('A', [2]) \
-    .add_constraints([cons_AC_different, cons_BC_equal])
-
-CSP_propany_and_prop1 = CSP_ABC.copy().set_domain('A', [2]) \
-    .add_constraints([cons_AC_equal, cons_BC_equal])
-
-CSP_no_prop = CSP_propany_and_prop1.copy().set_domain('C', [2])

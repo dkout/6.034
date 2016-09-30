@@ -261,6 +261,20 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "['B','C'] (and updated domains in original csp)",
           name = 'eliminate_from_neighbors')
 
+#multiple constraints between B,C
+# -> None, but only if you check both B-C constraints at once
+eliminate_5_input_csp = CSP_no_soln.copy()
+def eliminate_from_neighbors_5_getargs() :  #TEST 20 #todo renumber
+    return [eliminate_5_input_csp,'B']
+def eliminate_from_neighbors_5_testanswer(val, original_val = None) :
+    return val == None and eliminate_5_input_csp == CSP_no_soln_after_eliminate
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = eliminate_from_neighbors_5_getargs,
+          testanswer = eliminate_from_neighbors_5_testanswer,
+          expected_val = ("None (and C's domain reduced to [] in original csp)" +
+                          " (Hint: What if there are multiple constraints between B and C?)"),
+          name = 'eliminate_from_neighbors')
+
 
 ## domain_reduction
 #queue=[A], neighbor's domain gets reduced to 0 -> None; modify csp
@@ -361,6 +375,22 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           testanswer = domain_reduction_6_testanswer,
           expected_val = (str(domain_reduction_6_expected)
                           + " (with domains reduced in original csp)"),
+          name = 'domain_reduction')
+
+#multiple constraints between B,C
+# -> None, but only if you check both B-C constraints at once
+domain_reduction_7_input_csp = CSP_no_soln.copy()
+domain_reduction_7_expected = None
+def domain_reduction_7_getargs() :  #TEST 26 #todo
+    return [domain_reduction_7_input_csp]
+def domain_reduction_7_testanswer(val, original_val = None) :
+    return (val == domain_reduction_7_expected
+            and domain_reduction_7_input_csp == CSP_no_soln_after_eliminate)
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = domain_reduction_7_getargs,
+          testanswer = domain_reduction_7_testanswer,
+          expected_val = (str(domain_reduction_7_expected)
+                          + " (with C's domain reduced to [] in original csp and other domains unchanged)"),
           name = 'domain_reduction')
 
 

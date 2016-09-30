@@ -144,6 +144,10 @@ class ConstraintSatisfactionProblem :
              for e in self.constraints
         ])
 
+    def get_neighbors(self, var): #todo add to wiki
+        "Returns a list of variables that share constraints with var"
+        return sorted(set(map(lambda c: c.var2, self.constraints_between(var))))
+
     def set_unassigned_vars_order(self, unassigned_vars_ordered) :
         """Given an ordered list of unassigned variables, sets the list of
         unassigned vars."""
