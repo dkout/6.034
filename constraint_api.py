@@ -18,6 +18,7 @@ class Constraint :
     def __str__(self):
         return 'Constraint(%s, %s, %s)' % (str(self.var1), str(self.var2),
                                            self.constraint_fn.__name__)
+    __repr__ = __str__
 
     def __eq__(self, other):
         return (isinstance_Constraint(other)
@@ -162,11 +163,9 @@ class ConstraintSatisfactionProblem :
 
     def __str__(self):
         len_and_str = lambda x: tuple([fn(x) for fn in (len, str)])
-        len_and_strmap = lambda x: tuple([fn(x) for fn
-                                          in (len, lambda c:str(map(str,c)))])
         return ('ConstraintSatisfactionProblem with:'
                 + '\n * %i variables: %s' % len_and_str(self.variables)
-                + '\n * %i constraints: %s' % len_and_strmap(self.constraints)
+                + '\n * %i constraints: %s' % len_and_str(self.constraints)
                 + '\n * %i domains: %s' % len_and_str(self.domains)
                 + '\n * %i unassigned vars: %s' % len_and_str(self.unassigned_vars)
                 + '\n * %i assigned values: %s' % len_and_str(self.assigned_values))

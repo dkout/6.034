@@ -1,4 +1,5 @@
 # MIT 6.034 Lab 4: Constraint Satisfaction Problems
+# Written by Dylan Holmes (dxh), Jessica Noss (jmn), and 6.034 staff
 
 from constraint_api import *
 from test_problems import get_pokemon_problem
