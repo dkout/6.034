@@ -133,7 +133,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'check_all_constraints')
 
 #A assigned, B unassigned, B has empty domain -> True
-#This test checks that check_all_constraints does not special-case empty domains
+#This test tries to check that check_all_constraints does not special-case empty domains
 def check_all_constraints_7_getargs() :  #TEST 12
     return [CSP_empty_domain_with_constraint.copy()]
 def check_all_constraints_7_testanswer(val, original_val = None) :
@@ -141,6 +141,18 @@ def check_all_constraints_7_testanswer(val, original_val = None) :
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = check_all_constraints_7_getargs,
           testanswer = check_all_constraints_7_testanswer,
+          expected_val = "True",
+          name = 'check_all_constraints')
+
+#A unassigned, B unassigned, domains have no values that work -> True
+#This test checks that check_all_constraints is not comparing domains for unassigned variables
+def check_all_constraints_8_getargs() :  #TEST 12 #todo renumber
+    return [CSP_no_vars_assigned_impossible_one_constraint.copy()]
+def check_all_constraints_8_testanswer(val, original_val = None) :
+    return val == True
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = check_all_constraints_8_getargs,
+          testanswer = check_all_constraints_8_testanswer,
           expected_val = "True",
           name = 'check_all_constraints')
 
@@ -336,6 +348,21 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "[] (with original csp unchanged)",
           name = 'domain_reduction')
 
+#This test checks that the entire queue doesn't get sorted (only new variables added should be sorted)
+domain_reduction_6_input_csp = CSP_do_not_sort_queue.copy()
+domain_reduction_6_expected = list('ABCA')
+def domain_reduction_6_getargs() :  #TEST 26 #todo
+    return [domain_reduction_6_input_csp]
+def domain_reduction_6_testanswer(val, original_val = None) :
+    return (val == domain_reduction_6_expected
+            and domain_reduction_6_input_csp == CSP_do_not_sort_queue_reduced)
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = domain_reduction_6_getargs,
+          testanswer = domain_reduction_6_testanswer,
+          expected_val = (str(domain_reduction_6_expected)
+                          + " (with domains reduced in original csp)"),
+          name = 'domain_reduction')
+
 
 ## ANSWER_1
 ANSWER_1_getargs = 'ANSWER_1'  #TEST 27
@@ -516,6 +543,21 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = domain_reduction_singleton_5_getargs,
           testanswer = domain_reduction_singleton_5_testanswer,
           expected_val = "[] (with original csp unchanged)",
+          name = 'domain_reduction_singleton_domains')
+
+#This test checks that the entire queue doesn't get sorted (only new variables added should be sorted)
+domain_reduction_singleton_6_input_csp = CSP_do_not_sort_queue.copy()
+domain_reduction_singleton_6_expected = list('ABCA')
+def domain_reduction_singleton_6_getargs() :  #TEST 26 #todo
+    return [domain_reduction_singleton_6_input_csp]
+def domain_reduction_singleton_6_testanswer(val, original_val = None) :
+    return (val == domain_reduction_singleton_6_expected
+            and domain_reduction_singleton_6_input_csp == CSP_do_not_sort_queue_reduced)
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = domain_reduction_singleton_6_getargs,
+          testanswer = domain_reduction_singleton_6_testanswer,
+          expected_val = (str(domain_reduction_singleton_6_expected)
+                          + " (with domains reduced in original csp)"),
           name = 'domain_reduction_singleton_domains')
 
 

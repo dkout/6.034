@@ -77,8 +77,15 @@ CSP_singleton = CSP_ABC.copy().set_domain('C',[3])
 CSP_no_vars_assigned = CSP_ABC.copy().add_constraints([cons_AB_equal,
                                                        cons_BC_different])
 
+CSP_no_vars_assigned_impossible_one_constraint = CSP_ABC.copy() \
+    .add_constraints([cons_AB_equal]).set_domain('A',[1,2]).set_domain('B',[3])
+
 CSP_one_var_assigned = CSP_ABC.copy().add_constraints([cons_AB_different]) \
     .set_assigned_value('A',2)
+
+CSP_do_not_sort_queue = CSP_ABC.copy().add_constraints([cons_AB_different]) \
+    .set_domain('B',[2]).set_domain('A',[1,2])
+CSP_do_not_sort_queue_reduced = CSP_do_not_sort_queue.copy().set_domain('A',[1])
 
 CSP_singleton_differentiate = CSP_one_var_assigned.copy() \
     .add_constraints([cons_AC_equal])
@@ -134,7 +141,7 @@ CSP_B_nope = CSP(list('ABC')).set_all_domains(domains_B_nope) \
 CSP_B_nope_after_eliminate = CSP_B_nope.copy().set_domain('B',[])
 
 
-# triopus problem (like an octopus, but with only three legs)
+# triopus problem (like an octopus, but with only three legs) #todo lolwut?
 CSP_propany_not_prop1 = CSP_ABC.copy().set_domain('B', [2,3]).set_domain('A', [2]) \
     .add_constraints([cons_AC_different, cons_BC_equal])
 
