@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 4: Constraint Satisfaction Problems
+
 from tester import make_test, get_tests
 from test_problems import *
 from lab4 import TEST_MOOSE_PROBLEM
@@ -338,6 +340,8 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 ## ANSWER_1
 ANSWER_1_getargs = 'ANSWER_1'  #TEST 27
 def ANSWER_1_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return val == 20
 make_test(type = 'VALUE',
           getargs = ANSWER_1_getargs,
@@ -350,6 +354,8 @@ make_test(type = 'VALUE',
 ## ANSWER_2
 ANSWER_2_getargs = 'ANSWER_2'  #TEST 28
 def ANSWER_2_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return val == 6
 make_test(type = 'VALUE',
           getargs = ANSWER_2_getargs,
@@ -428,6 +434,8 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 ## ANSWER_3
 ANSWER_3_getargs = 'ANSWER_3'  #TEST 34
 def ANSWER_3_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return val == 7
 make_test(type = 'VALUE',
           getargs = ANSWER_3_getargs,
@@ -579,6 +587,8 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 ## ANSWER_4
 ANSWER_4_getargs = 'ANSWER_4'  #TEST 45
 def ANSWER_4_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return val == 8
 make_test(type = 'VALUE',
           getargs = ANSWER_4_getargs,
@@ -859,6 +869,8 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 ## ANSWER_5
 ANSWER_5_getargs = 'ANSWER_5'  #TEST 66
 def ANSWER_5_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
     return val == 9
 make_test(type = 'VALUE',
           getargs = ANSWER_5_getargs,

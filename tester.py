@@ -1,4 +1,6 @@
-# Fall 2015 6.034 Lab 4: Constraint Satisfaction Problems
+#!/usr/bin/env python2
+
+# MIT 6.034 Lab 4: Constraint Satisfaction Problems
 
 import xmlrpclib
 import traceback
@@ -14,8 +16,18 @@ try:
 except ImportError:
     from StringIO import StringIO
 
+python_version = sys.version_info
+is_windows = sys.platform in ["win32", "cygwin"]
+if python_version < (2, 3) or python_version >= (2, 8):
+    raise Exception("Illegal version of Python for 6.034 lab. Detected Python "
+                    + "version is: " + str(sys.version))
+elif is_windows and python_version >= (2, 6, 5) and python_version < (2, 7, 4):
+    raise Exception("Illegal version of Python for 6.034 lab. On Windows, "
+        +"Python versions between 2.6.5 and 2.7.3 (inclusive) are incompatible "
+        +"with our server. Detected Python version is: " + str(sys.version))
+
 try:
-    sys.path.append("..")
+    sys.path.append('..')
     from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
 except ImportError:
     print "Error: Can't find your 'key.py' file!  Please go download one from"
@@ -36,8 +48,8 @@ def show_result(testsummary, testcode, correct, got, expected, verbosity):
     else:
         print "%s: Incorrect." % testsummary
         print_testcode(testcode)
-        print "Got:     ", got
-        print "Expected:", expected
+        print "Got:     ", got, "\n"
+        print "Expected:", expected, "\n"
 
 def print_testcode(testcode):
     if isinstance(testcode, (tuple, list)) and len(testcode) >= 3:
@@ -71,6 +83,7 @@ def get_lab_module():
     for labnum in xrange(10):
         try:
             lab = __import__('lab%s' % labnum)
+            break
         except ImportError:
             pass
 
@@ -202,7 +215,8 @@ def run_test(test, lab):
         raise Exception("Test Error: 'FUNCTION_WITH_CSP' test missing CSP. "
                         + "Please contact a TA if you see this error.")
     elif mytype == 'MULTIFUNCTION':
-        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab) for FN in args ]
+        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab)
+                for FN in type_decode(args, lab) ]
     elif mytype == 'FUNCTION_ENCODED_ARGS':
         return run_test( (id, 'FUNCTION', attr_name, type_decode(args, lab)), lab )
     elif mytype == 'FUNCTION_ENCODED_ARGS_WITH_CSP':
@@ -217,15 +231,7 @@ def test_offline(verbosity=1):
     """ Run the unit tests in 'tests.py' """
     import tests as tests_module
 
-#    tests = [ (x[:-8],
-#               getattr(tests_module, x),
-#               getattr(tests_module, "%s_testanswer" % x[:-8]),
-#               getattr(tests_module, "%s_expected" % x[:-8]),
-#               "_".join(x[:-8].split('_')[:-1]))
-#              for x in tests_module.__dict__.keys() if x[-8:] == "_getargs" ]
-
     tests = tests_module.get_tests()
-
     ntests = len(tests)
     ncorrect = 0
 
@@ -245,7 +251,18 @@ def test_offline(verbosity=1):
             show_exception(summary, testname)
             continue
 
-        correct = testanswer(answer, original_val = getargs)
+        # This prevents testanswer from throwing errors. eg, if return type is
+        # incorrect, testanswer returns False instead of raising an exception.
+        try:
+            correct = testanswer(answer)
+        except NotImplementedError:
+            print "%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname)
+            continue
+        except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
+            raise
+        except Exception:
+            correct = False
+
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
 
@@ -256,7 +273,8 @@ def get_target_upload_filedir():
     """ Get, via user prompting, the directory containing the current lab """
     cwd = os.getcwd() # Get current directory.  Play nice with Unicode pathnames, just in case.
 
-    print "Please specify the directory containing your lab."
+    print "Please specify the directory containing your lab,"
+    print "or press Enter to use the default directory."
     print "Note that all files from this directory will be uploaded!"
     print "Labs should not contain large amounts of data; very-large"
     print "files will fail to upload."
@@ -274,21 +292,46 @@ def get_target_upload_filedir():
 
 def get_tarball_data(target_dir, filename):
     """ Return a binary String containing the binary data for a tarball of the specified directory """
-    data = StringIO()
-    file = tarfile.open(filename, "w|bz2", data)
-
     print "Preparing the lab directory for transmission..."
 
-    file.add(target_dir+"/lab4.py")
+    data = StringIO()
+    tar = tarfile.open(filename, "w|bz2", data)
+
+    top_folder_name = os.path.split(target_dir)[1]
+
+    def tar_filter(filename):
+        """Returns True if we should tar the file.
+        Avoid uploading .pyc files or the .git subdirectory (if any)"""
+        if filename == ".git":
+            return False
+        if os.path.splitext(filename)[1] == ".pyc":
+            return False
+        return True
+
+    def add_dir(currentDir, t_verbose=False):
+        for currentFile in os.listdir(currentDir):
+            fullPath=os.path.join(currentDir,currentFile)
+            if t_verbose:
+                print currentFile,
+            if tar_filter(currentFile):
+                if t_verbose:
+                    print ""
+                tar.add(fullPath,arcname=fullPath.replace(target_dir, top_folder_name,1),recursive=False)
+                if os.path.isdir(fullPath):
+                    add_dir(fullPath)
+            elif t_verbose:
+                print "....skipped"
+
+    add_dir(target_dir)
 
     print "Done."
     print
     print "The following files have been added:"
 
-    for f in file.getmembers():
+    for f in tar.getmembers():
         print f.name
 
-    file.close()
+    tar.close()
 
     return data.getvalue()
 
@@ -315,6 +358,11 @@ def test_online(verbosity=1):
             print "Linux Athena computers are known to support HTTPS,"
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
+    except xmlrpclib.Fault:
+        print "\nError: Either your key.py file is out of date, or online "
+        print "tests for " + lab.__name__ + " are not currently available."
+        print "If you believe this is may be a mistake, please contact a TA.\n"
+        sys.exit(0)
 
     ntests = len(tests)
     ncorrect = 0
@@ -349,6 +397,7 @@ def test_online(verbosity=1):
     response = server.status(username, password, lab.__name__)
     print response
 
+
 def make_test_counter_decorator():
     tests = []
     def make_test(getargs, testanswer, expected_val, name = None, type = 'FUNCTION'):
@@ -374,6 +423,7 @@ def make_test_counter_decorator():
 
 
 make_test, get_tests = make_test_counter_decorator()
+
 
 if __name__ == '__main__':
     if 'submit' in sys.argv:

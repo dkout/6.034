@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 4: Constraint Satisfaction Problems
+
 # ConstraintSatisfactionProblem instances
 
 # Note: Most of these problems are used in the tester, so don't change them.

@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 4: Constraint Satisfaction Problems
+
 from copy import deepcopy
 
 class Constraint :

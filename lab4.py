@@ -1,3 +1,5 @@
+# MIT 6.034 Lab 4: Constraint Satisfaction Problems
+
 from constraint_api import *
 from test_problems import get_pokemon_problem
 
