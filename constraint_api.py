@@ -144,7 +144,7 @@ class ConstraintSatisfactionProblem :
              for e in self.constraints
         ])
 
-    def get_neighbors(self, var): #todo add to wiki
+    def get_neighbors(self, var):
         "Returns a list of variables that share constraints with var"
         return sorted(set(map(lambda c: c.var2, self.constraints_between(var))))
 
