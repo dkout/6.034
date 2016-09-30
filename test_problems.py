@@ -141,7 +141,6 @@ CSP_B_nope = CSP(list('ABC')).set_all_domains(domains_B_nope) \
 CSP_B_nope_after_eliminate = CSP_B_nope.copy().set_domain('B',[])
 
 
-# triopus problem (like an octopus, but with only three legs) #todo lolwut?
 CSP_propany_not_prop1 = CSP_ABC.copy().set_domain('B', [2,3]).set_domain('A', [2]) \
     .add_constraints([cons_AC_different, cons_BC_equal])
 
