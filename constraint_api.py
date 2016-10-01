@@ -24,7 +24,7 @@ class Constraint :
         return (isinstance_Constraint(other)
                 and self.var1 == other.var1
                 and self.var2 == other.var2
-                and self.constraint_fn.__name__ == other.constraint_fn.__name__)
+                and self.constraint_fn.__code__.co_code == other.constraint_fn.__code__.co_code)
 
 
 def constraint_equal(a,b) :

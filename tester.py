@@ -106,10 +106,10 @@ def encode_constraint(constraint):
     fn_name = constraint.constraint_fn.__name__
     if fn_name == '<lambda>':
         print (' ** Note: Unfortunately, the online tester is unable to accept '
-               +'lambda functions. To pass the online tests, use named '
-               +'functions instead. **')
+               +'lambda functions. To pass the online tests, please use a '
+               +'pre-defined named function instead. **')
     elif fn_name not in constraint_dict:
-        print ('Error: constraint function', fn_name, 'cannot be transmitted '
+        print ('Error: Constraint function ' + fn_name + ' cannot be transmitted '
                +'to server.  Please use a pre-defined constraint function instead.')
     return [constraint.var1, constraint.var2, fn_name]
 def decode_constraint(var1, var2, constraint_fn_name):
