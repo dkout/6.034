@@ -32,7 +32,7 @@ def branch_disorder(data, target_classifier):
     raise NotImplementedError
 
 def average_test_disorder(data, test_classifier, target_classifier):
-    """Given a list of points and a feature-test Classifier, and a Classifier
+    """Given a list of points, a feature-test Classifier, and a Classifier
     for determining the true classification of each point, computes and returns
     the disorder of the feature-test stump."""
     raise NotImplementedError
