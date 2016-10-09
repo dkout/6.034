@@ -19,7 +19,6 @@ def compare_list_contents(list1, list2):
 ################################################################################
 
 _ft_tt = feature_test("tree_type") #lazy alias
-#todo add MC tests
 
 #id_tree_classify_point
 #leaf-node tree -> classification
@@ -610,8 +609,180 @@ make_test(type = 'VALUE',
 ############################# k-NEAREST NEIGHBORS ##############################
 ################################################################################
 
+#BOUNDARY_ANS_1
+BOUNDARY_ANS_1_getargs = 'BOUNDARY_ANS_1'  #TEST 47
+def BOUNDARY_ANS_1_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 3
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_1_getargs,
+          testanswer = BOUNDARY_ANS_1_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_1_getargs)
+
+#BOUNDARY_ANS_2
+BOUNDARY_ANS_2_getargs = 'BOUNDARY_ANS_2'  #TEST 48
+def BOUNDARY_ANS_2_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_2_getargs,
+          testanswer = BOUNDARY_ANS_2_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_2_getargs)
+
+#BOUNDARY_ANS_3
+BOUNDARY_ANS_3_getargs = 'BOUNDARY_ANS_3'  #TEST 49
+def BOUNDARY_ANS_3_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 1
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_3_getargs,
+          testanswer = BOUNDARY_ANS_3_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_3_getargs)
+
+#BOUNDARY_ANS_4
+BOUNDARY_ANS_4_getargs = 'BOUNDARY_ANS_4'  #TEST 50
+def BOUNDARY_ANS_4_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 2
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_4_getargs,
+          testanswer = BOUNDARY_ANS_4_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_4_getargs)
+
+#BOUNDARY_ANS_5
+BOUNDARY_ANS_5_getargs = 'BOUNDARY_ANS_5'  #TEST 51
+def BOUNDARY_ANS_5_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 2
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_5_getargs,
+          testanswer = BOUNDARY_ANS_5_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_5_getargs)
+
+#BOUNDARY_ANS_6: Valid ID tree boundaries, but not greedy disorder-minizing
+BOUNDARY_ANS_6_getargs = 'BOUNDARY_ANS_6'  #TEST 52
+def BOUNDARY_ANS_6_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_6_getargs,
+          testanswer = BOUNDARY_ANS_6_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_6_getargs)
+
+#BOUNDARY_ANS_7
+BOUNDARY_ANS_7_getargs = 'BOUNDARY_ANS_7'  #TEST 53
+def BOUNDARY_ANS_7_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 1
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_7_getargs,
+          testanswer = BOUNDARY_ANS_7_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_7_getargs)
+
+#BOUNDARY_ANS_8: Boundaries should never intersect training points!
+BOUNDARY_ANS_8_getargs = 'BOUNDARY_ANS_8'  #TEST 54
+def BOUNDARY_ANS_8_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_8_getargs,
+          testanswer = BOUNDARY_ANS_8_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_8_getargs)
+
+#BOUNDARY_ANS_9: Don't draw kNN boundaries between neighboring points of the
+# same class.  (If the three A's were all different classes, however, the
+# boundaries would be correct.)
+BOUNDARY_ANS_9_getargs = 'BOUNDARY_ANS_9'  #TEST 55
+def BOUNDARY_ANS_9_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_9_getargs,
+          testanswer = BOUNDARY_ANS_9_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_9_getargs)
+
+#BOUNDARY_ANS_10: The data isn't even separated -- the outer region contains
+# both A and B points!
+BOUNDARY_ANS_10_getargs = 'BOUNDARY_ANS_10'  #TEST 56
+def BOUNDARY_ANS_10_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_10_getargs,
+          testanswer = BOUNDARY_ANS_10_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_10_getargs)
+
+#BOUNDARY_ANS_11
+BOUNDARY_ANS_11_getargs = 'BOUNDARY_ANS_11'  #TEST 57
+def BOUNDARY_ANS_11_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 2
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_11_getargs,
+          testanswer = BOUNDARY_ANS_11_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_11_getargs)
+
+#BOUNDARY_ANS_12
+BOUNDARY_ANS_12_getargs = 'BOUNDARY_ANS_12'  #TEST 58
+def BOUNDARY_ANS_12_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 1
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_12_getargs,
+          testanswer = BOUNDARY_ANS_12_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_12_getargs)
+
+#BOUNDARY_ANS_13
+BOUNDARY_ANS_13_getargs = 'BOUNDARY_ANS_13'  #TEST 59
+def BOUNDARY_ANS_13_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_13_getargs,
+          testanswer = BOUNDARY_ANS_13_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_13_getargs)
+
+#BOUNDARY_ANS_14
+BOUNDARY_ANS_14_getargs = 'BOUNDARY_ANS_14'  #TEST 60
+def BOUNDARY_ANS_14_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = BOUNDARY_ANS_14_getargs,
+          testanswer = BOUNDARY_ANS_14_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = BOUNDARY_ANS_14_getargs)
+
+
 ## dot_product
-def dot_product_0_getargs() :  #TEST 47
+def dot_product_0_getargs() :  #TEST 61
     return [(3, -7), [2.5, 10]]
 def dot_product_0_testanswer(val, original_val = None) :
     return val == -62.5
@@ -621,7 +792,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "-62.5",
           name = 'dot_product')
 
-def dot_product_1_getargs() :  #TEST 48
+def dot_product_1_getargs() :  #TEST 62
     return [[4], (5,)]
 def dot_product_1_testanswer(val, original_val = None) :
     return val == 20
@@ -631,7 +802,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "20",
           name = 'dot_product')
 
-def dot_product_2_getargs() :  #TEST 49
+def dot_product_2_getargs() :  #TEST 63
     return [(1,2,3,4,2), (1, 10, 1000, 100, 10000)]
 def dot_product_2_testanswer(val, original_val = None) :
     return val == 23421
@@ -643,7 +814,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 ## norm
-def norm_0_getargs() :  #TEST 50
+def norm_0_getargs() :  #TEST 64
     return [(-3, 4)]
 def norm_0_testanswer(val, original_val = None) :
     return val == 5
@@ -653,7 +824,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "5",
           name = 'norm')
 
-def norm_1_getargs() :  #TEST 51
+def norm_1_getargs() :  #TEST 65
     return [(17.2,)]
 def norm_1_testanswer(val, original_val = None) :
     return val == 17.2
@@ -663,7 +834,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "17.2",
           name = 'norm')
 
-def norm_2_getargs() :  #TEST 52
+def norm_2_getargs() :  #TEST 66
     return [[6, 2, 11, -2, 2]]
 def norm_2_testanswer(val, original_val = None) :
     return val == 13
@@ -675,7 +846,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 ## euclidean_distance
-def euclidean_distance_0_getargs() :  #TEST 53
+def euclidean_distance_0_getargs() :  #TEST 67
     return [ Point((0,0)), Point((3,4)) ]
 def euclidean_distance_0_testanswer(val, original_val = None) :
     return approx_equal(val, 5)
@@ -685,7 +856,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "5",
           name = 'euclidean_distance')
 
-def euclidean_distance_1_getargs() :  #TEST 54
+def euclidean_distance_1_getargs() :  #TEST 68
     return [ Point([-1,2,1], "A"), Point([-4,5,-2], "B") ]
 def euclidean_distance_1_testanswer(val, original_val = None) :
     return approx_equal(val, 5.1962)
@@ -696,7 +867,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'euclidean_distance')
 
 euclidean_distance_2_random_inputs = [random_list(1), random_list(1)]
-def euclidean_distance_2_getargs() :  #TEST 55
+def euclidean_distance_2_getargs() :  #TEST 69
     return [Point(rlist) for rlist in euclidean_distance_2_random_inputs]
 def euclidean_distance_2_testanswer(val, original_val = None) :
     return approx_equal(val,sum(map(lambda(a,b):(a-b)**2,zip(*euclidean_distance_2_random_inputs)))**0.5)
@@ -707,7 +878,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'euclidean_distance')
 
 euclidean_distance_3_random_inputs = [random_list(5), random_list(5)]
-def euclidean_distance_3_getargs() :  #TEST 56
+def euclidean_distance_3_getargs() :  #TEST 70
     return [Point(rlist) for rlist in euclidean_distance_3_random_inputs]
 def euclidean_distance_3_testanswer(val, original_val = None) :
     return approx_equal(val,sum(map(lambda(a,b):(a-b)**2,zip(*euclidean_distance_3_random_inputs)))**0.5)
@@ -719,7 +890,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 ## manhattan_distance
-def manhattan_distance_0_getargs() :  #TEST 57
+def manhattan_distance_0_getargs() :  #TEST 71
     return [ Point((0,0)), Point((3,4)) ]
 def manhattan_distance_0_testanswer(val, original_val = None) :
     return val == 7
@@ -729,7 +900,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "7",
           name = 'manhattan_distance')
 
-def manhattan_distance_1_getargs() :  #TEST 58
+def manhattan_distance_1_getargs() :  #TEST 72
     return [ Point([-1,2,1], "A"), Point([-4,5,-2], "B") ]
 def manhattan_distance_1_testanswer(val, original_val = None) :
     return val == 9
@@ -740,7 +911,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'manhattan_distance')
 
 manhattan_distance_2_random_inputs = [random_list(5), random_list(5)]
-def manhattan_distance_2_getargs() :  #TEST 59
+def manhattan_distance_2_getargs() :  #TEST 73
     return [Point(rlist) for rlist in manhattan_distance_2_random_inputs]
 def manhattan_distance_2_testanswer(val, original_val = None) :
     return val==sum(map(lambda(a,b):abs(a-b),zip(*manhattan_distance_2_random_inputs)))
@@ -752,7 +923,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 ## hamming_distance
-def hamming_distance_0_getargs() :  #TEST 60
+def hamming_distance_0_getargs() :  #TEST 74
     return [ Point((0,0)), Point((3,4)) ]
 def hamming_distance_0_testanswer(val, original_val = None) :
     return val == 2
@@ -762,7 +933,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "2",
           name = 'hamming_distance')
 
-def hamming_distance_1_getargs() :  #TEST 61
+def hamming_distance_1_getargs() :  #TEST 75
     return [ Point([-4,2,1], "A"), Point([-4,5,1], "B") ]
 def hamming_distance_1_testanswer(val, original_val = None) :
     return val == 1
@@ -773,7 +944,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'hamming_distance')
 
 hamming_distance_2_random_inputs = [random_list(30,-1,1), random_list(30,-1,2)]
-def hamming_distance_2_getargs() :  #TEST 62
+def hamming_distance_2_getargs() :  #TEST 76
     return [Point(rlist) for rlist in hamming_distance_2_random_inputs]
 def hamming_distance_2_testanswer(val, original_val = None) :
     return val==sum(map(lambda(a,b):a!=b,zip(*hamming_distance_2_random_inputs)))
@@ -785,7 +956,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 ## cosine_distance
-def cosine_distance_0_getargs() :  #TEST 63
+def cosine_distance_0_getargs() :  #TEST 77
     return [ Point((0,2)), Point((3,4)) ]
 def cosine_distance_0_testanswer(val, original_val = None) :
     return approx_equal(val, 0.2)
@@ -795,7 +966,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "0.2",
           name = 'cosine_distance')
 
-def cosine_distance_1_getargs() :  #TEST 64
+def cosine_distance_1_getargs() :  #TEST 78
     return [ Point([-1,2,1], "A"), Point([-4,5,-2], "B") ]
 def cosine_distance_1_testanswer(val, original_val = None) :
     return approx_equal(val, 0.2697)
@@ -806,7 +977,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cosine_distance')
 
 cosine_distance_2_random_inputs = [random_list(4), random_list(4)]
-def cosine_distance_2_getargs() :  #TEST 65
+def cosine_distance_2_getargs() :  #TEST 79
     return [Point(rlist) for rlist in cosine_distance_2_random_inputs]
 def cosine_distance_2_testanswer(val, original_val = None) :
     p=cosine_distance_2_random_inputs
@@ -822,7 +993,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## get_k_closest_points
 #euclidean_distance 1
-def get_k_closest_points_00_getargs() :  #TEST 66
+def get_k_closest_points_00_getargs() :  #TEST 80
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 1, euclidean_distance]
 get_k_closest_points_00_expected = [Point((20, 30), "Maple")]
 def get_k_closest_points_00_testanswer(val, original_val = None) :
@@ -834,7 +1005,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #euclidean_distance 3
-def get_k_closest_points_0_getargs() :  #TEST 67
+def get_k_closest_points_0_getargs() :  #TEST 81
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 3, euclidean_distance]
 get_k_closest_points_0_expected = [Point((20, 30), "Maple"), Point((25, 40), "Maple"), Point((20, 40), "Oak")]
 def get_k_closest_points_0_testanswer(val, original_val = None) :
@@ -846,7 +1017,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #euclidean_distance 5
-def get_k_closest_points_1_getargs() :  #TEST 68
+def get_k_closest_points_1_getargs() :  #TEST 82
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 5, euclidean_distance]
 get_k_closest_points_1_expected = [Point((20, 30), "Maple"), Point((25, 40), "Maple"), Point((20, 40), "Oak"), Point((30, 20), "Oak"), Point((40, 30), "Oak")]
 def get_k_closest_points_1_testanswer(val, original_val = None) :
@@ -858,7 +1029,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #manhattan_distance 3
-def get_k_closest_points_2_getargs() :  #TEST 69
+def get_k_closest_points_2_getargs() :  #TEST 83
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 3, manhattan_distance]
 get_k_closest_points_2_expected = [Point((20, 30), "Maple"), Point((25, 40), "Maple"), Point((20, 40), "Oak")]
 def get_k_closest_points_2_testanswer(val, original_val = None) :
@@ -870,7 +1041,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #manhattan_distance 5
-def get_k_closest_points_3_getargs() :  #TEST 70
+def get_k_closest_points_3_getargs() :  #TEST 84
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 5, manhattan_distance]
 get_k_closest_points_3_expected = [Point((20, 30), "Maple"), Point((25, 40), "Maple"), Point((20, 40), "Oak"), Point((30, 20), "Oak"), Point((40, 30), "Oak")]
 def get_k_closest_points_3_testanswer(val, original_val = None) :
@@ -882,7 +1053,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #hamming_distance 1
-def get_k_closest_points_4_getargs() :  #TEST 71
+def get_k_closest_points_4_getargs() :  #TEST 85
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 1, hamming_distance]
 get_k_closest_points_4_expected = [Point((25, 40), "Maple")]
 def get_k_closest_points_4_testanswer(val, original_val = None) :
@@ -894,7 +1065,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #hamming_distance 9
-def get_k_closest_points_5_getargs() :  #TEST 72
+def get_k_closest_points_5_getargs() :  #TEST 86
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 9, hamming_distance]
 get_k_closest_points_5_expected = [Point((10, 5), "Oak"), Point((20, 15), "Oak"), Point((20, 40), "Oak"), Point((30, 20), "Oak"), Point((40, 30), "Oak"), Point((5, 10), "Maple"), Point((10, 15), "Maple"), Point((20, 30), "Maple"), Point((25, 40), "Maple")]
 def get_k_closest_points_5_testanswer(val, original_val = None) :
@@ -906,7 +1077,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #cosine_distance 7
-def get_k_closest_points_6_getargs() :  #TEST 73
+def get_k_closest_points_6_getargs() :  #TEST 87
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 7, cosine_distance]
 get_k_closest_points_6_expected = [Point((10, 15), "Maple"), Point((20, 30), "Maple"), Point((25, 40), "Maple"), Point((5, 10), "Maple"), Point((20, 40), "Oak"), Point((20, 15), "Oak"), Point((40, 30), "Oak")]
 def get_k_closest_points_6_testanswer(val, original_val = None) :
@@ -918,7 +1089,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #cosine_distance 9
-def get_k_closest_points_7_getargs() :  #TEST 74
+def get_k_closest_points_7_getargs() :  #TEST 88
     return [Point((25,32), "Maple"), deepcopy(knn_tree_data), 9, cosine_distance]
 get_k_closest_points_7_expected = [Point((10, 5), "Oak"), Point((20, 15), "Oak"), Point((20, 40), "Oak"), Point((30, 20), "Oak"), Point((40, 30), "Oak"), Point((5, 10), "Maple"), Point((10, 15), "Maple"), Point((20, 30), "Maple"), Point((25, 40), "Maple")]
 def get_k_closest_points_7_testanswer(val, original_val = None) :
@@ -930,7 +1101,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #test with >2 classes, k = # points
-def get_k_closest_points_8_getargs() :  #TEST 75
+def get_k_closest_points_8_getargs() :  #TEST 89
     return [Point([3], "D"), knn_toy_data, 5, euclidean_distance]
 get_k_closest_points_8_expected = [Point([3], 'A'), Point([3], 'B'), Point([3], 'B'), Point([3], 'C'), Point([3], 'D')]
 def get_k_closest_points_8_testanswer(val, original_val = None) :
@@ -942,7 +1113,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #check lexicographic tie-breaking (all points equidistant from test point)
-def get_k_closest_points_9_getargs() :  #TEST 76
+def get_k_closest_points_9_getargs() :  #TEST 90
     data = [Point([3,1,2],'a'), Point([2,3,1], 'b'), Point([2,1,3], 'c'), Point([1,3,2], 'd'), Point([3,2,1], 'e')]
     return [Point([2,2,2]), data, 2, euclidean_distance]
 get_k_closest_points_9_expected = [Point([1,3,2], 'd'), Point([2,1,3], 'c')]
@@ -957,7 +1128,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## knn_classify_point
 #euclidean_distance 3 Maple
-def knn_classify_point_0_getargs() :  #TEST 77
+def knn_classify_point_0_getargs() :  #TEST 91
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 3, euclidean_distance]
 def knn_classify_point_0_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -968,7 +1139,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #euclidean_distance 5 Oak
-def knn_classify_point_1_getargs() :  #TEST 78
+def knn_classify_point_1_getargs() :  #TEST 92
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 5, euclidean_distance]
 def knn_classify_point_1_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -979,7 +1150,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #manhattan_distance 3 Maple
-def knn_classify_point_2_getargs() :  #TEST 79
+def knn_classify_point_2_getargs() :  #TEST 93
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 3, manhattan_distance]
 def knn_classify_point_2_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -990,7 +1161,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #manhattan_distance 5 Oak
-def knn_classify_point_3_getargs() :  #TEST 80
+def knn_classify_point_3_getargs() :  #TEST 94
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 5, manhattan_distance]
 def knn_classify_point_3_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1001,7 +1172,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #hamming_distance 1 Maple
-def knn_classify_point_4_getargs() :  #TEST 81
+def knn_classify_point_4_getargs() :  #TEST 95
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 1, hamming_distance]
 def knn_classify_point_4_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -1012,7 +1183,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #hamming_distance 9 Oak
-def knn_classify_point_5_getargs() :  #TEST 82
+def knn_classify_point_5_getargs() :  #TEST 96
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 9, hamming_distance]
 def knn_classify_point_5_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1023,7 +1194,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #cosine_distance 7 Maple
-def knn_classify_point_6_getargs() :  #TEST 83
+def knn_classify_point_6_getargs() :  #TEST 97
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 7, cosine_distance]
 def knn_classify_point_6_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -1034,7 +1205,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #cosine_distance 9 Oak
-def knn_classify_point_7_getargs() :  #TEST 84
+def knn_classify_point_7_getargs() :  #TEST 98
     return [Point((25,32), "Maple"), deepcopy(knn_tree_data), 9, cosine_distance]
 def knn_classify_point_7_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1045,7 +1216,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #test with >2 classes
-def knn_classify_point_8_getargs() :  #TEST 85
+def knn_classify_point_8_getargs() :  #TEST 99
     return [Point([3], "D"), knn_toy_data, 5, euclidean_distance]
 def knn_classify_point_8_testanswer(val, original_val = None) :
     return val == "B"
@@ -1058,7 +1229,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## cross_validate
 #euclidean_distance 7 0.333333333333
-def cross_validate_0_getargs() :  #TEST 86
+def cross_validate_0_getargs() :  #TEST 100
     return [deepcopy(knn_tree_data), 7, euclidean_distance]
 def cross_validate_0_testanswer(val, original_val = None) :
     return approx_equal(val, 0.3333)
@@ -1069,7 +1240,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #manhattan_distance 3 0.111111111111
-def cross_validate_1_getargs() :  #TEST 87
+def cross_validate_1_getargs() :  #TEST 101
     return [deepcopy(knn_tree_data), 3, manhattan_distance]
 def cross_validate_1_testanswer(val, original_val = None) :
     return approx_equal(val, 0.1111)
@@ -1080,7 +1251,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #hamming_distance 5 0.0
-def cross_validate_2_getargs() :  #TEST 88
+def cross_validate_2_getargs() :  #TEST 102
     return [deepcopy(knn_tree_data), 5, hamming_distance]
 def cross_validate_2_testanswer(val, original_val = None) :
     return val == 0
@@ -1091,7 +1262,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #cosine_distance 1 0.777777777778
-def cross_validate_3_getargs() :  #TEST 89
+def cross_validate_3_getargs() :  #TEST 103
     return [deepcopy(knn_tree_data), 1, cosine_distance]
 def cross_validate_3_testanswer(val, original_val = None) :
     return approx_equal(val, 0.77778)
@@ -1102,7 +1273,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #cosine_distance 4 0.888888888889
-def cross_validate_4_getargs() :  #TEST 90
+def cross_validate_4_getargs() :  #TEST 104
     return [deepcopy(knn_tree_data), 4, cosine_distance]
 def cross_validate_4_testanswer(val, original_val = None) :
     return approx_equal(val, 0.88889)
@@ -1115,7 +1286,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## find_best_k_and_metric
 #knn_tree_data -> k in [2,3,4,5,6], metric=cosine_distance (k=2 and k=6 depend on tie-breaking)
-def find_best_k_and_metric_5_getargs() :  #TEST 91
+def find_best_k_and_metric_5_getargs() :  #TEST 105
     return [deepcopy(knn_tree_data)]
 def find_best_k_and_metric_5_testanswer(val, original_val = None) :
     return len(val)==2 and (val[0] in [2,3,4,5,6]) and val[1]==cosine_distance

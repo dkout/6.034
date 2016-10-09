@@ -97,9 +97,24 @@ ANSWER_9 = None
 ############################# k-NEAREST NEIGHBORS ##############################
 ################################################################################
 
-#### MULTIPLE CHOICE
-#todo
+#### MULTIPLE CHOICE: DRAWING BOUNDARIES
+BOUNDARY_ANS_1 = None
+BOUNDARY_ANS_2 = None
 
+BOUNDARY_ANS_3 = None
+BOUNDARY_ANS_4 = None
+
+BOUNDARY_ANS_5 = None
+BOUNDARY_ANS_6 = None
+BOUNDARY_ANS_7 = None
+BOUNDARY_ANS_8 = None
+BOUNDARY_ANS_9 = None
+
+BOUNDARY_ANS_10 = None
+BOUNDARY_ANS_11 = None
+BOUNDARY_ANS_12 = None
+BOUNDARY_ANS_13 = None
+BOUNDARY_ANS_14 = None
 
 #### WARM-UP: DISTANCE METRICS
 
