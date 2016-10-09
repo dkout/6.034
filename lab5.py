@@ -98,6 +98,7 @@ ANSWER_9 = None
 ################################################################################
 
 #### MULTIPLE CHOICE: DRAWING BOUNDARIES
+
 BOUNDARY_ANS_1 = None
 BOUNDARY_ANS_2 = None
 
@@ -115,6 +116,7 @@ BOUNDARY_ANS_11 = None
 BOUNDARY_ANS_12 = None
 BOUNDARY_ANS_13 = None
 BOUNDARY_ANS_14 = None
+
 
 #### WARM-UP: DISTANCE METRICS
 
@@ -184,6 +186,17 @@ def find_best_k_and_metric(data):
 ## To find the best k and distance metric for 2014 Q2, part B, uncomment:
 #print find_best_k_and_metric(knn_tree_data)
 
+
+#### MORE MULTIPLE CHOICE
+
+kNN_ANSWER_1 = None
+kNN_ANSWER_2 = None
+kNN_ANSWER_3 = None
+
+kNN_ANSWER_4 = None
+kNN_ANSWER_5 = None
+kNN_ANSWER_6 = None
+kNN_ANSWER_7 = None
 
 #### SURVEY ###################################################
 

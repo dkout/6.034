@@ -1296,3 +1296,101 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "tuple (k, cosine_distance), where 2 <= k <= 6",
           name = 'find_best_k_and_metric')
 
+
+#kNN_ANSWER_1
+kNN_ANSWER_1_getargs = 'kNN_ANSWER_1'  #TEST todo
+def kNN_ANSWER_1_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == "Overfitting" or val == "overfitting"
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_1_getargs,
+          testanswer = kNN_ANSWER_1_testanswer,
+          expected_val = "correct answer as a string ('Overfitting' or 'Underfitting')",
+          name = kNN_ANSWER_1_getargs)
+
+#kNN_ANSWER_2
+kNN_ANSWER_2_getargs = 'kNN_ANSWER_2'  #TEST todo
+def kNN_ANSWER_2_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == "Underfitting" or val == "underfitting"
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_2_getargs,
+          testanswer = kNN_ANSWER_2_testanswer,
+          expected_val = "correct answer as a string ('Overfitting' or 'Underfitting')",
+          name = kNN_ANSWER_2_getargs)
+
+#kNN_ANSWER_3
+kNN_ANSWER_3_getargs = 'kNN_ANSWER_3'  #TEST todo
+def kNN_ANSWER_3_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_3_getargs,
+          testanswer = kNN_ANSWER_3_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = kNN_ANSWER_3_getargs)
+
+#kNN_ANSWER_4: Euclidean or cosine distance would probably work, but ratio seems
+# more important in this case. The Manhattan distance answer is nonsense. Using
+# Hamming distance with boolean values might work, but it would be easily fooled
+# by coffee containing a small amount of sugar, or a type of soda that contains
+# a small amount of caffeine.
+kNN_ANSWER_4_getargs = 'kNN_ANSWER_4'  #TEST todo
+def kNN_ANSWER_4_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 4
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_4_getargs,
+          testanswer = kNN_ANSWER_4_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = kNN_ANSWER_4_getargs)
+
+#kNN_ANSWER_5: Cosine distance is useless for a point at the origin (water), so
+# Euclidean distance is now the better answer.
+kNN_ANSWER_5_getargs = 'kNN_ANSWER_5'  #TEST todo
+def kNN_ANSWER_5_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 1
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_5_getargs,
+          testanswer = kNN_ANSWER_5_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = kNN_ANSWER_5_getargs)
+
+#kNN_ANSWER_6: Hamming distance, because the features are non-numeric.  All the
+# other answers are nonsense.
+kNN_ANSWER_6_getargs = 'kNN_ANSWER_6'  #TEST todo
+def kNN_ANSWER_6_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 3
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_6_getargs,
+          testanswer = kNN_ANSWER_6_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = kNN_ANSWER_6_getargs)
+
+#kNN_ANSWER_7: One of the main advantages of ID trees is that they CAN ignore
+# irrelevant features, because only the features with the least disorder are
+# used in the tree.  In this case, the tree would consist of a single test,
+# logo, which would fully determine the classification.
+#
+# 1: kNN does not require data to be graphed; Hamming distance would work
+# 2: kNN has no problem with identical training points. They are difficult to
+#      display visually, but the algorithm doesn't care.
+# 4: This answer is completely garbage.
+kNN_ANSWER_7_getargs = 'kNN_ANSWER_7'  #TEST todo
+def kNN_ANSWER_7_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 3
+make_test(type = 'VALUE',
+          getargs = kNN_ANSWER_7_getargs,
+          testanswer = kNN_ANSWER_7_testanswer,
+          expected_val = "correct answer as an int (1, 2, 3, or 4)",
+          name = kNN_ANSWER_7_getargs)
