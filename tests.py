@@ -1298,7 +1298,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 #kNN_ANSWER_1
-kNN_ANSWER_1_getargs = 'kNN_ANSWER_1'  #TEST todo
+kNN_ANSWER_1_getargs = 'kNN_ANSWER_1'  #TEST 106
 def kNN_ANSWER_1_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1310,7 +1310,7 @@ make_test(type = 'VALUE',
           name = kNN_ANSWER_1_getargs)
 
 #kNN_ANSWER_2
-kNN_ANSWER_2_getargs = 'kNN_ANSWER_2'  #TEST todo
+kNN_ANSWER_2_getargs = 'kNN_ANSWER_2'  #TEST 107
 def kNN_ANSWER_2_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1322,7 +1322,7 @@ make_test(type = 'VALUE',
           name = kNN_ANSWER_2_getargs)
 
 #kNN_ANSWER_3
-kNN_ANSWER_3_getargs = 'kNN_ANSWER_3'  #TEST todo
+kNN_ANSWER_3_getargs = 'kNN_ANSWER_3'  #TEST 108
 def kNN_ANSWER_3_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1338,7 +1338,7 @@ make_test(type = 'VALUE',
 # Hamming distance with boolean values might work, but it would be easily fooled
 # by coffee containing a small amount of sugar, or a type of soda that contains
 # a small amount of caffeine.
-kNN_ANSWER_4_getargs = 'kNN_ANSWER_4'  #TEST todo
+kNN_ANSWER_4_getargs = 'kNN_ANSWER_4'  #TEST 109
 def kNN_ANSWER_4_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1351,7 +1351,7 @@ make_test(type = 'VALUE',
 
 #kNN_ANSWER_5: Cosine distance is useless for a point at the origin (water), so
 # Euclidean distance is now the better answer.
-kNN_ANSWER_5_getargs = 'kNN_ANSWER_5'  #TEST todo
+kNN_ANSWER_5_getargs = 'kNN_ANSWER_5'  #TEST 110
 def kNN_ANSWER_5_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1364,7 +1364,7 @@ make_test(type = 'VALUE',
 
 #kNN_ANSWER_6: Hamming distance, because the features are non-numeric.  All the
 # other answers are nonsense.
-kNN_ANSWER_6_getargs = 'kNN_ANSWER_6'  #TEST todo
+kNN_ANSWER_6_getargs = 'kNN_ANSWER_6'  #TEST 111
 def kNN_ANSWER_6_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1384,7 +1384,7 @@ make_test(type = 'VALUE',
 # 2: kNN has no problem with identical training points. They are difficult to
 #      display visually, but the algorithm doesn't care.
 # 4: This answer is completely garbage.
-kNN_ANSWER_7_getargs = 'kNN_ANSWER_7'  #TEST todo
+kNN_ANSWER_7_getargs = 'kNN_ANSWER_7'  #TEST 112
 def kNN_ANSWER_7_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
