@@ -54,7 +54,7 @@ def find_best_classifier(data, possible_classifiers, target_classifier):
     raise NotImplementedError
 
 ## To find the best classifier from 2014 Q2, Part A, uncomment:
-#print find_best_classifier(tree_data, tree_classifiers, "tree_type")
+#print find_best_classifier(tree_data, tree_classifiers, feature_test("tree_type"))
 
 
 def construct_greedy_id_tree(data, possible_classifiers, target_classifier, id_tree_node=None):
@@ -67,15 +67,15 @@ def construct_greedy_id_tree(data, possible_classifiers, target_classifier, id_t
 
 
 ## To construct an ID tree for 2014 Q2, Part A:
-#print construct_greedy_id_tree(tree_data, tree_classifiers, "tree_type")
+#print construct_greedy_id_tree(tree_data, tree_classifiers, feature_test("tree_type"))
 
 ## To use your ID tree to identify a mystery tree (2014 Q2, Part A4):
-#tree_tree = construct_greedy_id_tree(tree_data, tree_classifiers, "tree_type")
+#tree_tree = construct_greedy_id_tree(tree_data, tree_classifiers, feature_test("tree_type"))
 #print id_tree_classify_point(tree_test_point, tree_tree)
 
 ## To construct an ID tree for 2012 Q2 (Angels) or 2013 Q3 (numeric ID trees):
-#print construct_greedy_id_tree(angel_data, angel_classifiers, "Classification")
-#print construct_greedy_id_tree(numeric_data, numeric_classifiers, "class")
+#print construct_greedy_id_tree(angel_data, angel_classifiers, feature_test("Classification"))
+#print construct_greedy_id_tree(numeric_data, numeric_classifiers, feature_test("class"))
 
 
 #### MULTIPLE CHOICE
