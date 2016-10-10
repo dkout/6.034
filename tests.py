@@ -1064,8 +1064,22 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(get_k_closest_points_4_expected),
           name = 'get_k_closest_points')
 
+#hamming_distance 5
+#This test checks that you prioritize shortest distance over tie-breaking
+def get_k_closest_points_4a_getargs() :  #TEST 86
+    data = [Point((1,3),"A"), Point((1,3),"A"), Point((2,3),"B")]
+    return [Point((3,3)), data, 2, euclidean_distance]
+get_k_closest_points_4a_expected = [Point((2,3),"B"), Point((1,3),"A")]
+def get_k_closest_points_4a_testanswer(val, original_val = None) :
+    return val == get_k_closest_points_4a_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = get_k_closest_points_4a_getargs,
+          testanswer = get_k_closest_points_4a_testanswer,
+          expected_val = str(get_k_closest_points_4a_expected),
+          name = 'get_k_closest_points')
+
 #hamming_distance 9
-def get_k_closest_points_5_getargs() :  #TEST 86
+def get_k_closest_points_5_getargs() :  #TEST 87
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 9, hamming_distance]
 get_k_closest_points_5_expected = [Point((10, 5), "Oak"), Point((20, 15), "Oak"), Point((20, 40), "Oak"), Point((30, 20), "Oak"), Point((40, 30), "Oak"), Point((5, 10), "Maple"), Point((10, 15), "Maple"), Point((20, 30), "Maple"), Point((25, 40), "Maple")]
 def get_k_closest_points_5_testanswer(val, original_val = None) :
@@ -1077,7 +1091,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #cosine_distance 7
-def get_k_closest_points_6_getargs() :  #TEST 87
+def get_k_closest_points_6_getargs() :  #TEST 88
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 7, cosine_distance]
 get_k_closest_points_6_expected = [Point((10, 15), "Maple"), Point((20, 30), "Maple"), Point((25, 40), "Maple"), Point((5, 10), "Maple"), Point((20, 40), "Oak"), Point((20, 15), "Oak"), Point((40, 30), "Oak")]
 def get_k_closest_points_6_testanswer(val, original_val = None) :
@@ -1089,7 +1103,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #cosine_distance 9
-def get_k_closest_points_7_getargs() :  #TEST 88
+def get_k_closest_points_7_getargs() :  #TEST 89
     return [Point((25,32), "Maple"), deepcopy(knn_tree_data), 9, cosine_distance]
 get_k_closest_points_7_expected = [Point((10, 5), "Oak"), Point((20, 15), "Oak"), Point((20, 40), "Oak"), Point((30, 20), "Oak"), Point((40, 30), "Oak"), Point((5, 10), "Maple"), Point((10, 15), "Maple"), Point((20, 30), "Maple"), Point((25, 40), "Maple")]
 def get_k_closest_points_7_testanswer(val, original_val = None) :
@@ -1101,7 +1115,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #test with >2 classes, k = # points
-def get_k_closest_points_8_getargs() :  #TEST 89
+def get_k_closest_points_8_getargs() :  #TEST 90
     return [Point([3], "D"), knn_toy_data, 5, euclidean_distance]
 get_k_closest_points_8_expected = [Point([3], 'A'), Point([3], 'B'), Point([3], 'B'), Point([3], 'C'), Point([3], 'D')]
 def get_k_closest_points_8_testanswer(val, original_val = None) :
@@ -1113,7 +1127,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_k_closest_points')
 
 #check lexicographic tie-breaking (all points equidistant from test point)
-def get_k_closest_points_9_getargs() :  #TEST 90
+def get_k_closest_points_9_getargs() :  #TEST 91
     data = [Point([3,1,2],'a'), Point([2,3,1], 'b'), Point([2,1,3], 'c'), Point([1,3,2], 'd'), Point([3,2,1], 'e')]
     return [Point([2,2,2]), data, 2, euclidean_distance]
 get_k_closest_points_9_expected = [Point([1,3,2], 'd'), Point([2,1,3], 'c')]
@@ -1128,7 +1142,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## knn_classify_point
 #euclidean_distance 3 Maple
-def knn_classify_point_0_getargs() :  #TEST 91
+def knn_classify_point_0_getargs() :  #TEST 92
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 3, euclidean_distance]
 def knn_classify_point_0_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -1139,7 +1153,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #euclidean_distance 5 Oak
-def knn_classify_point_1_getargs() :  #TEST 92
+def knn_classify_point_1_getargs() :  #TEST 93
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 5, euclidean_distance]
 def knn_classify_point_1_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1150,7 +1164,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #manhattan_distance 3 Maple
-def knn_classify_point_2_getargs() :  #TEST 93
+def knn_classify_point_2_getargs() :  #TEST 94
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 3, manhattan_distance]
 def knn_classify_point_2_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -1161,7 +1175,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #manhattan_distance 5 Oak
-def knn_classify_point_3_getargs() :  #TEST 94
+def knn_classify_point_3_getargs() :  #TEST 95
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 5, manhattan_distance]
 def knn_classify_point_3_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1172,7 +1186,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #hamming_distance 1 Maple
-def knn_classify_point_4_getargs() :  #TEST 95
+def knn_classify_point_4_getargs() :  #TEST 96
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 1, hamming_distance]
 def knn_classify_point_4_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -1183,7 +1197,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #hamming_distance 9 Oak
-def knn_classify_point_5_getargs() :  #TEST 96
+def knn_classify_point_5_getargs() :  #TEST 97
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 9, hamming_distance]
 def knn_classify_point_5_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1194,7 +1208,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #cosine_distance 7 Maple
-def knn_classify_point_6_getargs() :  #TEST 97
+def knn_classify_point_6_getargs() :  #TEST 98
     return [deepcopy(knn_tree_test_point), deepcopy(knn_tree_data), 7, cosine_distance]
 def knn_classify_point_6_testanswer(val, original_val = None) :
     return val == "Maple"
@@ -1205,7 +1219,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #cosine_distance 9 Oak
-def knn_classify_point_7_getargs() :  #TEST 98
+def knn_classify_point_7_getargs() :  #TEST 99
     return [Point((25,32), "Maple"), deepcopy(knn_tree_data), 9, cosine_distance]
 def knn_classify_point_7_testanswer(val, original_val = None) :
     return val == "Oak"
@@ -1216,7 +1230,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'knn_classify_point')
 
 #test with >2 classes
-def knn_classify_point_8_getargs() :  #TEST 99
+def knn_classify_point_8_getargs() :  #TEST 100
     return [Point([3], "D"), knn_toy_data, 5, euclidean_distance]
 def knn_classify_point_8_testanswer(val, original_val = None) :
     return val == "B"
@@ -1229,7 +1243,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## cross_validate
 #euclidean_distance 7 0.333333333333
-def cross_validate_0_getargs() :  #TEST 100
+def cross_validate_0_getargs() :  #TEST 101
     return [deepcopy(knn_tree_data), 7, euclidean_distance]
 def cross_validate_0_testanswer(val, original_val = None) :
     return approx_equal(val, 0.3333)
@@ -1240,7 +1254,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #manhattan_distance 3 0.111111111111
-def cross_validate_1_getargs() :  #TEST 101
+def cross_validate_1_getargs() :  #TEST 102
     return [deepcopy(knn_tree_data), 3, manhattan_distance]
 def cross_validate_1_testanswer(val, original_val = None) :
     return approx_equal(val, 0.1111)
@@ -1251,7 +1265,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #hamming_distance 5 0.0
-def cross_validate_2_getargs() :  #TEST 102
+def cross_validate_2_getargs() :  #TEST 103
     return [deepcopy(knn_tree_data), 5, hamming_distance]
 def cross_validate_2_testanswer(val, original_val = None) :
     return val == 0
@@ -1262,7 +1276,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #cosine_distance 1 0.777777777778
-def cross_validate_3_getargs() :  #TEST 103
+def cross_validate_3_getargs() :  #TEST 104
     return [deepcopy(knn_tree_data), 1, cosine_distance]
 def cross_validate_3_testanswer(val, original_val = None) :
     return approx_equal(val, 0.77778)
@@ -1273,7 +1287,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'cross_validate')
 
 #cosine_distance 4 0.888888888889
-def cross_validate_4_getargs() :  #TEST 104
+def cross_validate_4_getargs() :  #TEST 105
     return [deepcopy(knn_tree_data), 4, cosine_distance]
 def cross_validate_4_testanswer(val, original_val = None) :
     return approx_equal(val, 0.88889)
@@ -1286,7 +1300,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## find_best_k_and_metric
 #knn_tree_data -> k in [2,3,4,5,6], metric=cosine_distance (k=2 and k=6 depend on tie-breaking)
-def find_best_k_and_metric_5_getargs() :  #TEST 105
+def find_best_k_and_metric_5_getargs() :  #TEST 106
     return [deepcopy(knn_tree_data)]
 def find_best_k_and_metric_5_testanswer(val, original_val = None) :
     return len(val)==2 and (val[0] in [2,3,4,5,6]) and val[1]==cosine_distance
@@ -1298,7 +1312,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 
 #kNN_ANSWER_1
-kNN_ANSWER_1_getargs = 'kNN_ANSWER_1'  #TEST 106
+kNN_ANSWER_1_getargs = 'kNN_ANSWER_1'  #TEST 107
 def kNN_ANSWER_1_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1310,7 +1324,7 @@ make_test(type = 'VALUE',
           name = kNN_ANSWER_1_getargs)
 
 #kNN_ANSWER_2
-kNN_ANSWER_2_getargs = 'kNN_ANSWER_2'  #TEST 107
+kNN_ANSWER_2_getargs = 'kNN_ANSWER_2'  #TEST 108
 def kNN_ANSWER_2_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1322,7 +1336,7 @@ make_test(type = 'VALUE',
           name = kNN_ANSWER_2_getargs)
 
 #kNN_ANSWER_3
-kNN_ANSWER_3_getargs = 'kNN_ANSWER_3'  #TEST 108
+kNN_ANSWER_3_getargs = 'kNN_ANSWER_3'  #TEST 109
 def kNN_ANSWER_3_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1338,7 +1352,7 @@ make_test(type = 'VALUE',
 # Hamming distance with boolean values might work, but it would be easily fooled
 # by coffee containing a small amount of sugar, or a type of soda that contains
 # a small amount of caffeine.
-kNN_ANSWER_4_getargs = 'kNN_ANSWER_4'  #TEST 109
+kNN_ANSWER_4_getargs = 'kNN_ANSWER_4'  #TEST 110
 def kNN_ANSWER_4_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1351,7 +1365,7 @@ make_test(type = 'VALUE',
 
 #kNN_ANSWER_5: Cosine distance is useless for a point at the origin (water), so
 # Euclidean distance is now the better answer.
-kNN_ANSWER_5_getargs = 'kNN_ANSWER_5'  #TEST 110
+kNN_ANSWER_5_getargs = 'kNN_ANSWER_5'  #TEST 111
 def kNN_ANSWER_5_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1364,7 +1378,7 @@ make_test(type = 'VALUE',
 
 #kNN_ANSWER_6: Hamming distance, because the features are non-numeric.  All the
 # other answers are nonsense.
-kNN_ANSWER_6_getargs = 'kNN_ANSWER_6'  #TEST 111
+kNN_ANSWER_6_getargs = 'kNN_ANSWER_6'  #TEST 112
 def kNN_ANSWER_6_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
@@ -1384,7 +1398,7 @@ make_test(type = 'VALUE',
 # 2: kNN has no problem with identical training points. They are difficult to
 #      display visually, but the algorithm doesn't care.
 # 4: This answer is completely garbage.
-kNN_ANSWER_7_getargs = 'kNN_ANSWER_7'  #TEST 112
+kNN_ANSWER_7_getargs = 'kNN_ANSWER_7'  #TEST 113
 def kNN_ANSWER_7_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
