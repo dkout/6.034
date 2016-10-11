@@ -1064,7 +1064,6 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(get_k_closest_points_4_expected),
           name = 'get_k_closest_points')
 
-#hamming_distance 5
 #This test checks that you prioritize shortest distance over tie-breaking
 def get_k_closest_points_4a_getargs() :  #TEST 86
     data = [Point((1,3),"A"), Point((1,3),"A"), Point((2,3),"B")]
@@ -1116,7 +1115,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 #test with >2 classes, k = # points
 def get_k_closest_points_8_getargs() :  #TEST 90
-    return [Point([3], "D"), knn_toy_data, 5, euclidean_distance]
+    return [Point([3], "D"), deepcopy(knn_toy_data), 5, euclidean_distance]
 get_k_closest_points_8_expected = [Point([3], 'A'), Point([3], 'B'), Point([3], 'B'), Point([3], 'C'), Point([3], 'D')]
 def get_k_closest_points_8_testanswer(val, original_val = None) :
     return compare_list_contents(val, get_k_closest_points_8_expected)
@@ -1231,7 +1230,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 #test with >2 classes
 def knn_classify_point_8_getargs() :  #TEST 100
-    return [Point([3], "D"), knn_toy_data, 5, euclidean_distance]
+    return [Point([3], "D"), deepcopy(knn_toy_data), 5, euclidean_distance]
 def knn_classify_point_8_testanswer(val, original_val = None) :
     return val == "B"
 make_test(type = 'FUNCTION_ENCODED_ARGS',
