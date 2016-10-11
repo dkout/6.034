@@ -9,6 +9,7 @@ import os
 import tarfile
 
 from api import *
+from lab5 import euclidean_distance, manhattan_distance, hamming_distance, cosine_distance
 
 try:
     from cStringIO import StringIO
@@ -96,37 +97,29 @@ def get_lab_module():
 
 # encode/decode objects
 def encode_Point(point):
-    return [point.name, point.coords, point.classification, point.alpha]
-def decode_Point(args):
-    return Point(*args)
+    return [list(point.coords), point.classification, point.name]
+def decode_Point(coords, classification, name):
+    return Point(coords, classification, name)
 
-def encode_Classifier(classifier):
-    fn_name = classifier._classify_fn.__name__
-    if fn_name == '<lambda>':
-        print (' ** Note: Unfortunately, the online tester is unable to accept '
-               +'lambda functions. To pass the online tests, please use a '
-               +'pre-defined named function instead. **')
-    elif fn_name not in function_dict:
-        print ('Error: Classify function ' + fn_name + ' cannot be transmitted '
-               +'to server.  Please use a pre-defined classify function instead.')
-    return [classifier.name, fn_name]
 def decode_Classifier(name, classify_fn_name):
     return Classifier(name, function_dict[classify_fn_name])
-function_dict = {}
+function_dict = {"euclidean_distance": euclidean_distance,
+                 "manhattan_distance": manhattan_distance,
+                 "hamming_distance": hamming_distance,
+                 "cosine_distance": cosine_distance}
 
 def encode_IDTNode(node):
-    return [encode_Classifier(node.target_classifier),
+    return [node.target_classifier,
             node._parent_branch_name,
             node._classification,
-            encode_Classifier(node._classifier) if node._classifier else None,
-            node._children]
-def decode_IDTNode(encoded_target_classifier, _parent_branch_name, _classification,
-                   encoded_classifier, _children):
-    target_classifier = decode_Classifier(encoded_target_classifier)
+            node._classifier,
+            map(list, node._children.items())]
+def decode_IDTNode(target_classifier, _parent_branch_name, _classification,
+                   _classifier, _children):
     node = IdentificationTreeNode(target_classifier, _parent_branch_name)
     node._classification = _classification
-    node._classifier = decode_Classifier(encoded_classifier) if encoded_classifier else None
-    node._children = _children
+    node._classifier = _classifier
+    node._children = dict(_children)
     return node
 
 def type_decode(arg, lab):
@@ -140,12 +133,14 @@ def type_decode(arg, lab):
     original data type.
     """
     if isinstance(arg, list) and len(arg) >= 1: # There is no future magic for tuples.
-        if arg[0] == 'Classifier':
-            return decode_Classifier(*type_decode(arg[1], lab))
-        elif arg[0] == 'IDTNode':
+        if arg[0] == 'IDTNode':
             return decode_IDTNode(*type_decode(arg[1], lab))
         elif arg[0] == 'Point':
             return decode_Point(*type_decode(arg[1], lab))
+        elif arg[0] == 'feature_test':
+            return feature_test(arg[1])
+        elif arg[0] == 'threshold_test':
+            return threshold_test(arg[1], arg[2])
         elif arg[0] == 'callable':
             return function_dict[arg[1]]
         else:
@@ -161,13 +156,17 @@ def type_decode(arg, lab):
         return arg
 
 def type_encode(arg):
-    "Encode objects as lists in a way that can be decoded by 'type_decode'"
+    "Encode objects as lists in a way that the server expects"
+    if isinstance(arg, (tuple,list)): #note that tuples become lists
+        return [type_encode(x) for x in arg]
     if isinstance_Classifier(arg):
-        return [ 'Classifier', type_encode(encode_classifier(arg)) ]
+        return ['Classifier', arg.name]
     elif isinstance_IdentificationTreeNode(arg):
-        return [type_encode(arg[0]), type_encode(encode_IDTNode(arg[1]))]
+        return ['IDTNode', type_encode(encode_IDTNode(arg))]
     elif isinstance_Point(arg):
-        return [ 'Point', type_encode(encode_classifier(arg)) ]
+        return ['Point', encode_Point(arg)]
+    elif callable(arg):
+        return ['callable', arg.__name__]
     else:
         return arg
     return arg
