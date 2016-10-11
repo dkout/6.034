@@ -1070,7 +1070,7 @@ def get_k_closest_points_4a_getargs() :  #TEST 86
     return [Point((3,3)), data, 2, euclidean_distance]
 get_k_closest_points_4a_expected = [Point((2,3),"B"), Point((1,3),"A")]
 def get_k_closest_points_4a_testanswer(val, original_val = None) :
-    return val == get_k_closest_points_4a_expected
+    return compare_list_contents(val, get_k_closest_points_4a_expected)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = get_k_closest_points_4a_getargs,
           testanswer = get_k_closest_points_4a_testanswer,
