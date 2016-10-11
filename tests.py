@@ -24,7 +24,7 @@ _ft_tt = feature_test("tree_type") #lazy alias
 #leaf-node tree -> classification
 def id_tree_classify_point_0_getargs() :  #TEST 1
     return [{"name":"Saphira", "color":"sapphire-blue"},
-            IDTNode([{"name":"Glaedr", "color":"golden", "species":"dragon"}], "species").set_node_classification("dragon")]
+            IDTNode(feature_test("species")).set_node_classification("dragon")]
 def id_tree_classify_point_0_testanswer(val, original_val = None) :
     return val == "dragon"
 make_test(type = 'FUNCTION_ENCODED_ARGS',
@@ -36,7 +36,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 #leaf-node tree with no data (degenerate case) -> classification
 def id_tree_classify_point_1_getargs() :  #TEST 2
     return [{"name":"Saphira", "color":"sapphire-blue"},
-            IDTNode([], "gender").set_node_classification("female")]
+            IDTNode(feature_test("gender")).set_node_classification("female")]
 def id_tree_classify_point_1_testanswer(val, original_val = None) :
     return val == "female"
 make_test(type = 'FUNCTION_ENCODED_ARGS',
