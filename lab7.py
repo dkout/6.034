@@ -19,8 +19,8 @@ def positiveness(svm, point):
     raise NotImplementedError
 
 def classify(svm, point):
-    """Uses given SVM to classify a Point.  Assumes that point's classification
-    is unknown.  Returns +1 or -1, or 0 if point is on boundary"""
+    """Uses given SVM to classify a Point.  Assumes that point's true
+    classification is unknown.  Returns +1 or -1, or 0 if point is on boundary"""
     raise NotImplementedError
 
 # Equation 2

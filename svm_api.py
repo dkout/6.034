@@ -14,17 +14,23 @@ class Point(object):
     def copy(self):
         return deepcopy(self)
 
+    def __getitem__(self, i): # make Point iterable
+        return self.coords[i]
+
+    def __len__(self):
+        return len(self.coords)
+
     def __eq__(self, other):
         try:
             return (self.coords == other.coords
                     and self.classification == other.classification
                     and self.alpha == other.alpha)
-        except:
+        except Exception:
             return False
 
     def __str__(self):
         if self.classification is None and self.alpha is None:
-            return "Point(%s)" % (str(self.name), str(self.coords)) #todo does this work?? -jmn 10/4/2016
+            return "Point(%s, %s)" % (str(self.name), str(self.coords))
         return "Point(%s, %s, class=%s, alpha=%s)" % (str(self.name), \
             str(self.coords), str(self.classification), str(self.alpha))
 
@@ -44,7 +50,7 @@ class DecisionBoundary(object):
     def __eq__(self, other):
         try:
             return self.w == other.w and self.b == other.b
-        except:
+        except Exception:
             return False
 
     def __str__(self):
@@ -72,12 +78,10 @@ class SupportVectorMachine(object):
     def __eq__(self, other):
         try:
             assert self.boundary == other.boundary
-            assert equality_by_string(self.training_points,
-                                      other.training_points)
-            assert equality_by_string(self.support_vectors,
-                                      other.support_vectors)
+            assert equality_by_string(self.training_points, other.training_points)
+            assert equality_by_string(self.support_vectors, other.support_vectors)
             return True
-        except:
+        except Exception:
             return False
 
     def __str__(self):
@@ -90,30 +94,22 @@ class SupportVectorMachine(object):
     __repr__ = __str__
 
 
-def convert_point_to_coords(v):
-    """Given either a Point object or a tuple of coordinates, returns a tuple of
-    coordinates."""
-    return v.coords if is_class_instance(v, 'Point') else v
-
 def vector_add(v1, v2):
-    """Given two vectors represented as lists or tuples of coordinates, returns
-    their sum as a list of coordinates."""
+    """Given two iterable vectors or Points, returns their vector sum as a list
+    list of coordinates."""
     if len(v1) != len(v2):
         raise IndexError("vector_add: Input vectors must be same length")
     return [x1 + x2 for (x1,x2) in zip(v1,v2)]
 
 def scalar_mult(scalar, vector):
-    """Given a constant scalar and a vector (as a tuple or list of coordinates),
-    returns a scaled list of coordinates"""
-    return [scalar*coord for coord in convert_point_to_coords(vector)]
+    """Given a constant scalar and an iterable vector or Point, returns a scaled
+    list of coordinates"""
+    return [scalar*coord for coord in vector]
 
 def equality_by_string(set1, set2):
     """This is a hack to get around reference equality.
     Returns True if two sets (or lists) contain equivalent elements"""
     return sorted(map(str, set1)) == sorted(map(str, set2))
 
-def is_class_instance(obj, class_name):
-    return hasattr(obj, '__class__') and obj.__class__.__name__ == class_name
-
 __all__ = ['Point', 'DecisionBoundary', 'SupportVectorMachine', 'vector_add',
-           'scalar_mult', 'equality_by_string', 'is_class_instance']
+           'scalar_mult', 'equality_by_string']

@@ -154,6 +154,9 @@ def type_decode(arg, lab):
         return arg
 
 
+def is_class_instance(obj, class_name):
+    return hasattr(obj, '__class__') and obj.__class__.__name__ == class_name
+
 def type_encode(arg):
     "Encode objects as lists in a way that the server expects"
     if isinstance(arg, (list, tuple, set)): #note that tuples and sets become lists
