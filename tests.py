@@ -438,3 +438,244 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           testanswer = update_svm_from_alphas_3_testanswer,
           expected_val = str(svm_update_recit_1),
           name = 'update_svm_from_alphas')
+
+
+#ANSWER_1
+ANSWER_1_getargs = 'ANSWER_1'  #TEST 38
+def ANSWER_1_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 18
+make_test(type = 'VALUE',
+          getargs = ANSWER_1_getargs,
+          testanswer = ANSWER_1_testanswer,
+          expected_val = "correct number of iterations (int)",
+          name = ANSWER_1_getargs)
+
+#ANSWER_2
+ANSWER_2_getargs = 'ANSWER_2'  #TEST 39
+def ANSWER_2_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 6
+make_test(type = 'VALUE',
+          getargs = ANSWER_2_getargs,
+          testanswer = ANSWER_2_testanswer,
+          expected_val = "maximum number of SVs at once (int)",
+          name = ANSWER_2_getargs)
+
+#ANSWER_3
+ANSWER_3_getargs = 'ANSWER_3'  #TEST 40
+def ANSWER_3_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 3
+make_test(type = 'VALUE',
+          getargs = ANSWER_3_getargs,
+          testanswer = ANSWER_3_testanswer,
+          expected_val = "final number of SVs (int)",
+          name = ANSWER_3_getargs)
+
+#ANSWER_4
+ANSWER_4_getargs = 'ANSWER_4'  #TEST 41
+def ANSWER_4_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 2
+make_test(type = 'VALUE',
+          getargs = ANSWER_4_getargs,
+          testanswer = ANSWER_4_testanswer,
+          expected_val = "correct number of iterations (int)",
+          name = ANSWER_4_getargs)
+
+#ANSWER_5
+ANSWER_5_getargs = 'ANSWER_5'  #TEST 42
+def ANSWER_5_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set('AD')
+make_test(type = 'VALUE',
+          getargs = ANSWER_5_getargs,
+          testanswer = ANSWER_5_testanswer,
+          expected_val = "list of point names",
+          name = ANSWER_5_getargs)
+
+#ANSWER_6
+ANSWER_6_getargs = 'ANSWER_6'  #TEST 43
+def ANSWER_6_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set('ABD')
+make_test(type = 'VALUE',
+          getargs = ANSWER_6_getargs,
+          testanswer = ANSWER_6_testanswer,
+          expected_val = "list of point names",
+          name = ANSWER_6_getargs)
+
+#ANSWER_7
+ANSWER_7_getargs = 'ANSWER_7'  #TEST 44
+def ANSWER_7_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set('ABD')
+make_test(type = 'VALUE',
+          getargs = ANSWER_7_getargs,
+          testanswer = ANSWER_7_testanswer,
+          expected_val = "list of point names",
+          name = ANSWER_7_getargs)
+
+#ANSWER_8
+ANSWER_8_getargs = 'ANSWER_8'  #TEST 45
+def ANSWER_8_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set('AD')
+make_test(type = 'VALUE',
+          getargs = ANSWER_8_getargs,
+          testanswer = ANSWER_8_testanswer,
+          expected_val = "list of point names",
+          name = ANSWER_8_getargs)
+
+#ANSWER_9
+ANSWER_9_getargs = 'ANSWER_9'  #TEST 46
+def ANSWER_9_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set('ABD')
+make_test(type = 'VALUE',
+          getargs = ANSWER_9_getargs,
+          testanswer = ANSWER_9_testanswer,
+          expected_val = "list of point names",
+          name = ANSWER_9_getargs)
+
+#ANSWER_10
+ANSWER_10_getargs = 'ANSWER_10'  #TEST 47
+def ANSWER_10_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set('ABD')
+make_test(type = 'VALUE',
+          getargs = ANSWER_10_getargs,
+          testanswer = ANSWER_10_testanswer,
+          expected_val = "list of point names",
+          name = ANSWER_10_getargs)
+
+#ANSWER_11
+ANSWER_11_getargs = 'ANSWER_11'  #TEST 48
+def ANSWER_11_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == False
+make_test(type = 'VALUE',
+          getargs = ANSWER_11_getargs,
+          testanswer = ANSWER_11_testanswer,
+          expected_val = "True or False",
+          name = ANSWER_11_getargs)
+
+#ANSWER_12
+ANSWER_12_getargs = 'ANSWER_12'  #TEST 49
+def ANSWER_12_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == True
+make_test(type = 'VALUE',
+          getargs = ANSWER_12_getargs,
+          testanswer = ANSWER_12_testanswer,
+          expected_val = "True or False",
+          name = ANSWER_12_getargs)
+
+#ANSWER_13
+ANSWER_13_getargs = 'ANSWER_13'  #TEST 50
+def ANSWER_13_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == False
+make_test(type = 'VALUE',
+          getargs = ANSWER_13_getargs,
+          testanswer = ANSWER_13_testanswer,
+          expected_val = "True or False",
+          name = ANSWER_13_getargs)
+
+#ANSWER_14
+ANSWER_14_getargs = 'ANSWER_14'  #TEST 51
+def ANSWER_14_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == False
+make_test(type = 'VALUE',
+          getargs = ANSWER_14_getargs,
+          testanswer = ANSWER_14_testanswer,
+          expected_val = "True or False",
+          name = ANSWER_14_getargs)
+
+#ANSWER_15
+ANSWER_15_getargs = 'ANSWER_15'  #TEST 52
+def ANSWER_15_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == False
+make_test(type = 'VALUE',
+          getargs = ANSWER_15_getargs,
+          testanswer = ANSWER_15_testanswer,
+          expected_val = "True or False",
+          name = ANSWER_15_getargs)
+
+#ANSWER_16
+ANSWER_16_getargs = 'ANSWER_16'  #TEST 53
+def ANSWER_16_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == True
+make_test(type = 'VALUE',
+          getargs = ANSWER_16_getargs,
+          testanswer = ANSWER_16_testanswer,
+          expected_val = "True or False",
+          name = ANSWER_16_getargs)
+
+#ANSWER_17
+ANSWER_17_getargs = 'ANSWER_17'  #TEST 54
+def ANSWER_17_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set([1,3,8])
+make_test(type = 'VALUE',
+          getargs = ANSWER_17_getargs,
+          testanswer = ANSWER_17_testanswer,
+          expected_val = "list of ints between 1-8",
+          name = ANSWER_17_getargs)
+
+#ANSWER_18
+ANSWER_18_getargs = 'ANSWER_18'  #TEST 55
+def ANSWER_18_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set([1,2,4,5,6,7,8])
+make_test(type = 'VALUE',
+          getargs = ANSWER_18_getargs,
+          testanswer = ANSWER_18_testanswer,
+          expected_val = "list of ints between 1-8",
+          name = ANSWER_18_getargs)
+
+#ANSWER_19
+ANSWER_19_getargs = 'ANSWER_19'  #TEST 56
+def ANSWER_19_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return set(val) == set([1,2,4,5,6,7,8])
+make_test(type = 'VALUE',
+          getargs = ANSWER_19_getargs,
+          testanswer = ANSWER_19_testanswer,
+          expected_val = "list of ints between 1-8",
+          name = ANSWER_19_getargs)
+
+#ANSWER_20
+ANSWER_20_getargs = 'ANSWER_20'  #TEST 57
+def ANSWER_20_testanswer(val, original_val = None):
+    if val == None:
+        raise NotImplementedError
+    return val == 6
+make_test(type = 'VALUE',
+          getargs = ANSWER_20_getargs,
+          testanswer = ANSWER_20_testanswer,
+          expected_val = "int between 1-6",
+          name = ANSWER_20_getargs)
