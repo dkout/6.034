@@ -57,6 +57,38 @@ def misclassified_training_points(svm):
     using the current decision boundary."""
     raise NotImplementedError
 
+# Training
+def update_svm_from_alphas(svm):
+    """Given an SVM with training data and alpha values, use alpha values to
+    update the SVM's support vectors, w, and b.  Return the updated SVM."""
+    raise NotImplementedError
+
+# Multiple choice
+ANSWER_1 = None
+ANSWER_2 = None
+ANSWER_3 = None
+ANSWER_4 = None
+
+ANSWER_5 = None
+ANSWER_6 = None
+ANSWER_7 = None
+ANSWER_8 = None
+ANSWER_9 = None
+ANSWER_10 = None
+
+ANSWER_11 = None
+ANSWER_12 = None
+ANSWER_13 = None
+ANSWER_14 = None
+ANSWER_15 = None
+ANSWER_16 = None
+
+ANSWER_17 = None
+ANSWER_18 = None
+ANSWER_19 = None
+
+ANSWER_20 = None
+
 
 #### SURVEY ####################################################################
 
