@@ -1,7 +1,7 @@
 # MIT 6.034 Lab 7: Support Vector Machines
 # Written by Jessica Noss (jmn) and 6.034 staff
 
-from svm_problems import *
+from svm_data import *
 
 # Vector math
 def dot_product(u, v):
