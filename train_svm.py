@@ -35,7 +35,7 @@ sample_data_2:
 def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
               show_graph=True, animate=True, animation_delay=0.5):
     """Performs SMO using all of the training points until there are no changed
-    alphas or until the max iteration depth is reached""" #todo wiki NO changed alphas
+    alphas or until the max iteration depth is reached"""
     # Define alias for kernel function, converting Points to coordinates just in case
     K = lambda p1, p2: kernel_fn(p1.coords, p2.coords)
 

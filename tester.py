@@ -98,22 +98,14 @@ def encode_Point(point):
 def decode_Point(args):
     return Point(*args)
 
-def encode_DecisionBoundary(boundary):
-    return [boundary.w, boundary.b]
-def decode_DecisionBoundary(args):
-    return DecisionBoundary(*args)
-
 def encode_SVM(svm):
-    return [encode_DecisionBoundary(svm.boundary),
-            map(encode_Point, svm.training_points),
+    return [svm.w, svm.b, map(encode_Point, svm.training_points),
             map(encode_Point, svm.support_vectors)]
-def decode_SVM(boundary_encoded, training_points_encoded,
-               support_vectors_encoded):
-    boundary = decode_DecisionBoundary(boundary_encoded)
+def decode_SVM(w, b, training_points_encoded, support_vectors_encoded):
     training_points = map(decode_Point, training_points_encoded)
     support_vectors = decode_support_vectors(support_vectors_encoded,
                                              training_points)
-    return SupportVectorMachine(boundary, training_points, support_vectors)
+    return SupportVectorMachine(w, b, training_points, support_vectors)
 
 def decode_support_vectors(support_vectors_encoded, training_points):
     sv_names = [sv_args[0] for sv_args in support_vectors_encoded]

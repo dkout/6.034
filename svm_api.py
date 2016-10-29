@@ -2,6 +2,12 @@
 
 from copy import deepcopy
 
+def approx_equal(a, b, epsilon=0.00000001):
+    return abs(a-b) <= epsilon
+
+def list_approx_equal(list1, list2, epsilon=0.00000001):
+    return len(list1) == len(list2) and all([approx_equal(a,b,epsilon) for (a,b) in zip(list1,list2)])
+
 class Point(object):
     """A Point has a name and a list or tuple of coordinates, and optionally a
     classification, and/or alpha value."""
@@ -37,47 +43,30 @@ class Point(object):
     __repr__ = __str__
 
 
-class DecisionBoundary(object):
-    """A DecisionBoundary is defined by two parameters: a normal vector w, and
-    an offset b.  w is represented as a list or tuple of coordinates."""
-    def __init__(self, w, b):
-        self.w = w
-        self.b = b
-
-    def copy(self):
-        return deepcopy(self)
-
-    def __eq__(self, other):
-        try:
-            return self.w == other.w and self.b == other.b
-        except Exception:
-            return False
-
-    def __str__(self):
-        return "DecisionBoundary(w=%s, b=%s)" % (str(self.w), str(self.b))
-
-    __repr__ = __str__
-
-
 class SupportVectorMachine(object):
-    """A SupportVectorMachine is a classifier that uses a DecisionBoundary to
-    classify points.  It has a list of training points and optionally a list of
+    """A SupportVectorMachine is a classifier that uses a decision boundary to
+    classify points.  The decision boundary is defined by two parameters: a
+    normal vector w (represented as a list or tuple of coordinates), and an
+    offset b.  The SVM has a list of training points and optionally a list of
     support vectors."""
-    def __init__(self, boundary, training_points=[], support_vectors=[]):
-        self.boundary = boundary
+    def __init__(self, w=[], b=0, training_points=[], support_vectors=[]):
+        self.w = w[:]
+        self.b = b
         self.training_points = training_points[:]
         self.support_vectors = support_vectors[:]
 
-    def set_boundary(self, new_boundary):
-        self.boundary = new_boundary
+    def set_boundary(self, new_w, new_b):
+        self.w = new_w[:]
+        self.b = new_b
         return self
 
     def copy(self):
         return deepcopy(self)
 
-    def __eq__(self, other):
+    def __eq__(self, other, epsilon=0.00000001):
         try:
-            assert self.boundary == other.boundary
+            assert list_approx_equal(self.w, other.w, epsilon)
+            assert approx_equal(self.b, other.b, epsilon)
             assert equality_by_string(self.training_points, other.training_points)
             assert equality_by_string(self.support_vectors, other.support_vectors)
             return True
@@ -87,7 +76,7 @@ class SupportVectorMachine(object):
     def __str__(self):
         len_and_str = lambda x: tuple([fn(x) for fn in (len, str)])
         return ('SupportVectorMachine with:'
-            + '\n * boundary: %s' % str(self.boundary)
+            + '\n * boundary with w=%s, b=%s' % (str(self.w), str(self.b))
             + '\n * %i training points: %s' % len_and_str(self.training_points)
             + '\n * %i support vectors: %s' % len_and_str(self.support_vectors))
 
@@ -110,6 +99,3 @@ def equality_by_string(set1, set2):
     """This is a hack to get around reference equality.
     Returns True if two sets (or lists) contain equivalent elements"""
     return sorted(map(str, set1)) == sorted(map(str, set2))
-
-__all__ = ['Point', 'DecisionBoundary', 'SupportVectorMachine', 'vector_add',
-           'scalar_mult', 'equality_by_string']

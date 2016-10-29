@@ -1,7 +1,7 @@
 # MIT 6.034 Lab 7: Support Vector Machines
 
 from tester import make_test, get_tests
-from svm_problems import *
+from svm_data import *
 from random import random, randint
 
 lab_number = 7 #for tester.py
@@ -15,7 +15,7 @@ def randnum(max_val=100):
 def dot_product_0_getargs() :  #TEST 1
     return [(3, -7), [2.5, 10]]
 def dot_product_0_testanswer(val, original_val = None) :
-    return val == -62.5
+    return approx_equal(val, -62.5)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = dot_product_0_getargs,
           testanswer = dot_product_0_testanswer,
@@ -57,7 +57,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 def norm_1_getargs() :  #TEST 5
     return [(17.2,)]
 def norm_1_testanswer(val, original_val = None) :
-    return val == 17.2
+    return approx_equal(val, 17.2)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = norm_1_getargs,
           testanswer = norm_1_testanswer,
@@ -87,10 +87,10 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'positiveness')
 
 def positiveness_1_getargs() :  #TEST 8
-    return [SVM(Boundary([2, 5, -1, 1, 0, -0.1], 0.01)),
+    return [SVM([2, 5, -1, 1, 0, -0.1], 0.01),
             Point('v', [3, -2, -7, -10, 99, 8])]
 def positiveness_1_testanswer(val, original_val = None) :
-    return val == -7.79
+    return approx_equal(val, -7.79)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = positiveness_1_getargs,
           testanswer = positiveness_1_testanswer,
@@ -168,9 +168,9 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 ## margin_width
 # w=[-3,4], so norm=5 -> 0.4
 def margin_width_0_getargs() :  #TEST 15
-    return [SVM(Boundary((-3, 4), -13.78))]
+    return [SVM((-3, 4), -13.78)]
 def margin_width_0_testanswer(val, original_val = None) :
-    return val == 0.4
+    return approx_equal(val, 0.4)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = margin_width_0_getargs,
           testanswer = margin_width_0_testanswer,
@@ -190,7 +190,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 # 1D
 def margin_width_2_getargs() :  #TEST 17
-    return [SVM(Boundary([0.25], 0))]
+    return [SVM([0.25], 0)]
 def margin_width_2_testanswer(val, original_val = None) :
     return val == 8
 make_test(type = 'FUNCTION_ENCODED_ARGS',
@@ -201,13 +201,13 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 # higher number of dimensions
 def margin_width_3_getargs() :  #TEST 18
-    return [SVM(Boundary([0, -5, 0, 12], 1))]
+    return [SVM([0, -5, 0, 12], 1)]
 def margin_width_3_testanswer(val, original_val = None) :
-    return approx_equal(val, 2./13, 0.000001)
+    return approx_equal(val, 0.15384615, 0.000001)
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = margin_width_3_getargs,
           testanswer = margin_width_3_testanswer,
-          expected_val = "~" + str(2./13),
+          expected_val = "~0.15384615",
           name = 'margin_width')
 
 
@@ -225,7 +225,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 # fail gutter constraint equation
 def check_gutter_constraint_1_getargs() :  #TEST 20
-    return [svm_basic.copy().set_boundary(Boundary([1, 0], -1.5))]
+    return [svm_basic.copy().set_boundary([2, 0], 3)]
 check_gutter_constraint_1_expected = set([ptA, ptB, ptD])
 def check_gutter_constraint_1_testanswer(val, original_val = None) :
     return equality_by_string(val, check_gutter_constraint_1_expected)
@@ -249,11 +249,25 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = check_gutter_constraint_2_expected,
           name = 'check_gutter_constraint')
 
+# fail both ways
+def check_gutter_constraint_3_getargs() :  #TEST 22
+    svm = svm_basic.copy().set_boundary([2, 0], -3)
+    svm.training_points.append(ptLx)
+    return [svm]
+check_gutter_constraint_3_expected = set([ptA, ptB, ptD, ptLx])
+def check_gutter_constraint_3_testanswer(val, original_val = None) :
+    return equality_by_string(val, check_gutter_constraint_3_expected)
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = check_gutter_constraint_3_getargs,
+          testanswer = check_gutter_constraint_3_testanswer,
+          expected_val = check_gutter_constraint_3_expected,
+          name = 'check_gutter_constraint')
+
 
 ## check_alpha_signs
 # set should include: sv w alpha=0, sv w alpha<0, pt w alpha < 0, pt w alpha > 0
 # set should not include: sv w alpha > 0, pt w alpha = 0
-def check_alpha_signs_0_getargs() :  #TEST 22
+def check_alpha_signs_0_getargs() :  #TEST 23
     return [svm_alphas.copy()]
 check_alpha_signs_0_expected = set([ptF, ptG, ptJ, ptH, ptD])
 def check_alpha_signs_0_testanswer(val, original_val = None) :
@@ -265,7 +279,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'check_alpha_signs')
 
 # return empty set
-def check_alpha_signs_1_getargs() :  #TEST 23
+def check_alpha_signs_1_getargs() :  #TEST 24
     return [svm_basic.copy()]
 def check_alpha_signs_1_testanswer(val, original_val = None) :
     return val == set()
@@ -278,7 +292,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 ## check_alpha_equations
 # both equations hold -> True
-def check_alpha_equations_0_getargs() :  #TEST 24
+def check_alpha_equations_0_getargs() :  #TEST 25
     return [svm_basic.copy()]
 def check_alpha_equations_0_testanswer(val, original_val = None) :
     return val == True
@@ -289,7 +303,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'check_alpha_equations')
 
 # Eq 4 fails
-def check_alpha_equations_1_getargs() :  #TEST 25
+def check_alpha_equations_1_getargs() :  #TEST 26
     return [svm_fail_eq4.copy()]
 def check_alpha_equations_1_testanswer(val, original_val = None) :
     return val == False
@@ -300,7 +314,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'check_alpha_equations')
 
 # Eq 5 fails
-def check_alpha_equations_2_getargs() :  #TEST 26
+def check_alpha_equations_2_getargs() :  #TEST 27
     return [svm_fail_eq5.copy()]
 def check_alpha_equations_2_testanswer(val, original_val = None) :
     return val == False
@@ -310,9 +324,53 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = "False",
           name = 'check_alpha_equations')
 
+# Eq 4 fails, but NOT gutter constraint
+def check_alpha_equations_3_getargs() :  #TEST 28
+    return [svm_fail_eq4_but_not_eq3.copy()]
+def check_alpha_equations_3_testanswer(val, original_val = None) :
+    return val == False
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = check_alpha_equations_3_getargs,
+          testanswer = check_alpha_equations_3_testanswer,
+          expected_val = "False",
+          name = 'check_alpha_equations')
+
+# Eq 5 fails, but NOT any other equations
+def check_alpha_equations_4_getargs() :  #TEST 29
+    return [svm_fail_eq4_only.copy()]
+def check_alpha_equations_4_testanswer(val, original_val = None) :
+    return val == False
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = check_alpha_equations_4_getargs,
+          testanswer = check_alpha_equations_4_testanswer,
+          expected_val = "False",
+          name = 'check_alpha_equations')
+
+# Fail gutter constraint, but pass equations 4-5
+def check_alpha_equations_5_getargs() :  #TEST 30
+    return [svm_fail_gutter_only.copy()]
+def check_alpha_equations_5_testanswer(val, original_val = None) :
+    return val == True
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = check_alpha_equations_5_getargs,
+          testanswer = check_alpha_equations_5_testanswer,
+          expected_val = "True",
+          name = 'check_alpha_equations')
+
+# Fail check_alphas, but pass equations 4-5
+def check_alpha_equations_6_getargs() :  #TEST 31
+    return [svm_fail_alphas_only.copy()]
+def check_alpha_equations_6_testanswer(val, original_val = None) :
+    return val == True
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = check_alpha_equations_6_getargs,
+          testanswer = check_alpha_equations_6_testanswer,
+          expected_val = "True",
+          name = 'check_alpha_equations')
+
 
 ## misclassified_training_points
-def misclassified_training_points_0_getargs() :  #TEST 27
+def misclassified_training_points_0_getargs() :  #TEST 32
     return [svm_basic.copy()]
 def misclassified_training_points_0_testanswer(val, original_val = None) :
     return val == set()
@@ -322,7 +380,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = set(),
           name = 'misclassified_training_points')
 
-def misclassified_training_points_1_getargs() :  #TEST 28
+def misclassified_training_points_1_getargs() :  #TEST 33
     return [svm_untrained.copy()]
 misclassified_training_points_1_expected = set([ptD, ptF])
 def misclassified_training_points_1_testanswer(val, original_val = None) :
@@ -332,3 +390,51 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           testanswer = misclassified_training_points_1_testanswer,
           expected_val = str(misclassified_training_points_1_expected),
           name = 'misclassified_training_points')
+
+
+## update_svm_from_alphas
+def update_svm_from_alphas_0_getargs() :  #TEST 34
+    svm = svm_update_recit_0.copy().set_boundary([], 0)
+    svm.support_vectors = []
+    return [svm]
+def update_svm_from_alphas_0_testanswer(val, original_val = None) :
+    return val == svm_update_recit_0
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = update_svm_from_alphas_0_getargs,
+          testanswer = update_svm_from_alphas_0_testanswer,
+          expected_val = str(svm_update_recit_0),
+          name = 'update_svm_from_alphas')
+
+def update_svm_from_alphas_1_getargs() :  #TEST 35
+    svm = svm_update_recit_1.copy().set_boundary([52, 19], 6)
+    svm.support_vectors = [Point('E', [3, 2], -1, 0)]
+    return [svm]
+def update_svm_from_alphas_1_testanswer(val, original_val = None) :
+    return val == svm_update_recit_1
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = update_svm_from_alphas_1_getargs,
+          testanswer = update_svm_from_alphas_1_testanswer,
+          expected_val = str(svm_update_recit_1),
+          name = 'update_svm_from_alphas')
+
+def update_svm_from_alphas_2_getargs() :  #TEST 36
+    svm = svm_update_recit_2.copy().set_boundary([1.0, 0.0], -1.5)
+    svm.support_vectors = [Point('B', [1, 1], 1, 1.0)]
+    return [svm]
+def update_svm_from_alphas_2_testanswer(val, original_val = None) :
+    return val == svm_update_recit_2
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = update_svm_from_alphas_2_getargs,
+          testanswer = update_svm_from_alphas_2_testanswer,
+          expected_val = str(svm_update_recit_2),
+          name = 'update_svm_from_alphas')
+
+def update_svm_from_alphas_3_getargs() :  #TEST 37
+    return [svm_update_recit_1.copy()]
+def update_svm_from_alphas_3_testanswer(val, original_val = None) :
+    return val == svm_update_recit_1
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = update_svm_from_alphas_3_getargs,
+          testanswer = update_svm_from_alphas_3_testanswer,
+          expected_val = str(svm_update_recit_1),
+          name = 'update_svm_from_alphas')
