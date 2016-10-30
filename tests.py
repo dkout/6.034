@@ -529,7 +529,7 @@ ANSWER_8_getargs = 'ANSWER_8'  #TEST 45
 def ANSWER_8_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
-    return set(val) == set('AD')
+    return set(val) == set('A')
 make_test(type = 'VALUE',
           getargs = ANSWER_8_getargs,
           testanswer = ANSWER_8_testanswer,
