@@ -33,7 +33,7 @@ sample_data_2:
 
 
 def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
-              show_graph=True, animate=True, animation_delay=0.5):
+              show_graph=True, animate=True, animation_delay=0.5, manual_animation=False):
     """Performs SMO using all of the training points until there are no changed
     alphas or until the max iteration depth is reached"""
     # Define alias for kernel function, converting Points to coordinates just in case
@@ -43,18 +43,20 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
     svm = SupportVectorMachine([0,0], 0, training_points, [])
 
     if show_graph:
-        update_svm_plot = create_svm_graph(training_points)
+        if not manual_animation:
+            update_svm_plot = create_svm_graph(training_points)
 
-        if animate and animation_delay > 0:
+        if (animate and animation_delay > 0) or manual_animation:
             # Keep track of last update time
             last_update_time = time()
 
     b = 0
-    changed_alphas = True
     iteration = 0
 
-    while changed_alphas and iteration < max_iter:
-        changed_alphas = False
+    while iteration < max_iter:
+
+        # Keep track of current alpha values
+        old_alphas = map(lambda pt: pt.alpha, training_points)
 
         # Two nested summations, as in lecture
         for i in training_points:
@@ -96,56 +98,68 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
                 if j.alpha == old_alpha_j:
                     continue
 
-                # Else, note that alphas have changed
-                changed_alphas = True
-
                 # Update i.alpha, but ensure it stays non-negative
                 i.alpha = max(0, old_alpha_i + (i.classification * j.classification) * (old_alpha_j - j.alpha))
 
-                if show_graph and animate and animation_delay > 0:
+                if show_graph and ((animate and animation_delay > 0) or manual_animation):
                     # Store old values
                     old_w = svm.w[:]
                     old_support_vectors = svm.support_vectors[:]
                     old_b = svm.b
 
-                # Update w, b, and SVs based on alphas
-                svm = update_svm_from_alphas(svm) # Note: kernel_fn is hardcoded as dot_product
+                # Update SVM based on alphas
+                update_svm_from_alphas(svm) # Note: kernel_fn is hardcoded as dot_product
 
-                # Update b
+                # Update b from SVM
                 b = svm.b
 
-            if show_graph and animate and changed_alphas:
-                skip_delay = False
-                if animation_delay > 0:
-                    # If values have not changed perceptibly, don't delay for this update
-                    if (map(lambda sv: sv.name, svm.support_vectors) == map(lambda sv: sv.name, old_support_vectors)
-                        and list_approx_equal(scalar_mult(1./b, svm.w), scalar_mult(1./old_b, old_w), 0.001)):
-                        skip_delay=True
-                    else:
-                        while time() - last_update_time < animation_delay:
-                            pass
-                        last_update_time = time()
+            if show_graph and (animate or manual_animation):
+                skip_update = False
+                if animation_delay > 0 or manual_animation:
+                    # If values have not changed perceptibly, skip this update
+                    if 0 in [b, old_b] and b != old_b:
+                        pass
+                    elif (map(lambda sv: sv.name, svm.support_vectors) == map(lambda sv: sv.name, old_support_vectors)
+                          and ((b==0 and old_b==0 and list_approx_equal(svm.w, old_w, 0.001))
+                               or list_approx_equal(scalar_mult(1./b, svm.w), scalar_mult(1./old_b, old_w), 0.001))):
+                        skip_update=True
 
-                if skip_delay:
-                    # Set values back to old values as a baseline for whether to delay next animation
+                if skip_update:
+                    # Set values back to old values as a baseline for whether to skip next update
                     svm.w = old_w[:]
                     svm.b = old_b
                     svm.support_vectors = old_support_vectors[:]
                 else:
-                    update_svm_plot(svm)
+                    if manual_animation:
+                        # Recreate graph and block further execution
+                        create_svm_graph(training_points)(svm, True)
+                        # When user closes graph window, update timer to current time
+                        last_update_time = time()
+                    else:
+                        while time() - last_update_time < animation_delay:
+                            pass
+                        last_update_time = time()
+                        update_svm_plot(svm)
 
         iteration += 1
+
+        # If alpha values have not changed *at all*, cease training
+        if old_alphas == map(lambda pt: pt.alpha, training_points):
+            break
 
     print '# iterations:', iteration
 
     # Compute final w, b, and SVs based on alphas
-    svm = update_svm_from_alphas(svm) # Note: kernel_fn is hardcoded as dot_product
+    update_svm_from_alphas(svm) # Note: kernel_fn is hardcoded as dot_product
 
     # Check training
     misclassified = misclassified_training_points(svm)
     print "SVM with decision boundary %.3f*x + %.3f*y + %.3f >= 0 misclassified %i points." % (svm.w[0], svm.w[1], svm.b, len(misclassified))
 
     if show_graph:
+        if manual_animation:
+            print 'Displaying final graph for trained SVM'
+            update_svm_plot = create_svm_graph(training_points)
         # Update graph with final values
         update_svm_plot(svm, final_update=True)
 
