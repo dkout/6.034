@@ -34,6 +34,9 @@ class Point(object):
         except Exception:
             return False
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __str__(self):
         if self.classification is None and self.alpha is None:
             return "Point(%s, %s)" % (str(self.name), str(self.coords))
@@ -72,6 +75,9 @@ class SupportVectorMachine(object):
             return True
         except Exception:
             return False
+
+    def __ne__(self, other, epsilon=0.00000001):
+        return not self.__eq__(other, epsilon)
 
     def __str__(self):
         len_and_str = lambda x: tuple([fn(x) for fn in (len, str)])
