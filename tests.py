@@ -637,7 +637,7 @@ ANSWER_17_getargs = 'ANSWER_17'  #TEST 54
 def ANSWER_17_testanswer(val, original_val = None):
     if val == None:
         raise NotImplementedError
-    return set(val) == set([1,3,8])
+    return set(val) == set([1,3,6,8])
 make_test(type = 'VALUE',
           getargs = ANSWER_17_getargs,
           testanswer = ANSWER_17_testanswer,
