@@ -39,6 +39,9 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
     # Define alias for kernel function, converting Points to coordinates just in case
     K = lambda p1, p2: kernel_fn(p1.coords, p2.coords)
 
+    # Copy training data to avoid modifying input data
+    training_points = deepcopy(training_points)
+
     # Initialize SVM
     svm = SupportVectorMachine([0,0], 0, training_points, [])
 
@@ -47,8 +50,11 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
             update_svm_plot = create_svm_graph(training_points)
 
         if (animate and animation_delay > 0) or manual_animation:
-            # Keep track of last update time
+            # Keep track of last update time and old SVM values
             last_update_time = time()
+            old_w = [0,0]
+            old_b = 0
+            old_support_vectors = []
 
     b = 0
     iteration = 0
@@ -101,12 +107,6 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
                 # Update i.alpha, but ensure it stays non-negative
                 i.alpha = max(0, old_alpha_i + (i.classification * j.classification) * (old_alpha_j - j.alpha))
 
-                if show_graph and ((animate and animation_delay > 0) or manual_animation):
-                    # Store old values
-                    old_w = svm.w[:]
-                    old_support_vectors = svm.support_vectors[:]
-                    old_b = svm.b
-
                 # Update SVM based on alphas
                 update_svm_from_alphas(svm) # Note: kernel_fn is hardcoded as dot_product
 
@@ -114,31 +114,31 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
                 b = svm.b
 
             if show_graph and (animate or manual_animation):
-                skip_update = False
+                show_update = True
                 if animation_delay > 0 or manual_animation:
                     # If values have not changed perceptibly, skip this update
-                    if 0 in [b, old_b] and b != old_b:
-                        pass
-                    elif (map(lambda sv: sv.name, svm.support_vectors) == map(lambda sv: sv.name, old_support_vectors)
+                    if (map(lambda sv: sv.name, svm.support_vectors) == map(lambda sv: sv.name, old_support_vectors)
                           and ((b==0 and old_b==0 and list_approx_equal(svm.w, old_w, 0.001))
-                               or list_approx_equal(scalar_mult(1./b, svm.w), scalar_mult(1./old_b, old_w), 0.001))):
-                        skip_update=True
+                               or (b!=0 and old_b !=0 and list_approx_equal(scalar_mult(1./b, svm.w), scalar_mult(1./old_b, old_w), 0.001)))):
+                        show_update = False
+                    else:
+                        # Update old stored values
+                        old_w = svm.w[:]
+                        old_b = svm.b
+                        old_support_vectors = svm.support_vectors[:]
 
-                if skip_update:
-                    # Set values back to old values as a baseline for whether to skip next update
-                    svm.w = old_w[:]
-                    svm.b = old_b
-                    svm.support_vectors = old_support_vectors[:]
-                else:
+                if show_update:
                     if manual_animation:
                         # Recreate graph and block further execution
                         create_svm_graph(training_points)(svm, True)
                         # When user closes graph window, update timer to current time
                         last_update_time = time()
                     else:
-                        while time() - last_update_time < animation_delay:
-                            pass
-                        last_update_time = time()
+                        if animation_delay > 0:
+                            while time() - last_update_time < animation_delay:
+                                pass
+                            # Update time before updating plot, in case rendering is slow
+                            last_update_time = time()
                         update_svm_plot(svm)
 
         iteration += 1
@@ -154,11 +154,11 @@ def train_svm(training_points, kernel_fn=dot_product, max_iter=500,
 
     # Check training
     misclassified = misclassified_training_points(svm)
-    print "SVM with decision boundary %.3f*x + %.3f*y + %.3f >= 0 misclassified %i points." % (svm.w[0], svm.w[1], svm.b, len(misclassified))
+    print "Training complete! SVM with decision boundary %.3f*x + %.3f*y + %.3f >= 0 misclassified %i points." \
+        % (svm.w[0], svm.w[1], svm.b, len(misclassified))
 
     if show_graph:
         if manual_animation:
-            print 'Displaying final graph for trained SVM'
             update_svm_plot = create_svm_graph(training_points)
         # Update graph with final values
         update_svm_plot(svm, final_update=True)
