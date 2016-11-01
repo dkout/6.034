@@ -2,7 +2,7 @@
 
 from svm_api import *
 
-# Aliases for convenience
+# Alias for convenience
 SVM = SupportVectorMachine
 
 # Points
