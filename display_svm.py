@@ -58,7 +58,7 @@ def create_svm_graph(training_points):
     positive_gutter_line, = pl.plot([], [], "k--")
     negative_gutter_line, = pl.plot([], [], "k--")
 
-    pl.draw()
+    pl.pause(0.0001)
 
 
     # Create update function for this SVM
@@ -100,7 +100,7 @@ def create_svm_graph(training_points):
         update_line(negative_gutter_line, -1)
 
         # Redraw graph
-        pl.draw()
+        pl.pause(0.0001)
 
         if final_update:
             # Turn off interactive mode so that pl.show() will block
