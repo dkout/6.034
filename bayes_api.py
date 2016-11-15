@@ -94,7 +94,50 @@ class BayesNet:
         self.adjacency[var2].discard(var1)
         return self
 
-    def probability(self, hypothesis, parents_vals=None, infer_missing=True) :
+    def make_bidirectional(self):
+        "Adds links to make all edges bidirectional"
+        for var1 in self.variables:
+            for var2 in self.get_children(var1):
+                self.link(var2, var1)
+        return self
+
+    def remove_variable(self, var):
+        """Removes var from net and deletes all links to var.
+        If var is not in net, does nothing."""
+        self.unlink(var)
+        self.variables.remove(var)
+        return self
+
+    def find_path(self, start, goal):
+        """Performs BFS to find a path from start to goal.  Returns path as a
+        list of nodes (variables), or None if no path was found."""
+        if start not in self.variables or goal not in self.variables:
+            return None
+        if start == goal:
+            return [start]
+        agenda = [[start]]
+        while agenda:
+            path = agenda.pop(0)
+            next_nodes = self.get_children(path[-1])
+            if goal in next_nodes:
+                return path + [goal]
+            agenda.extend([path+[node] for node in next_nodes])
+        return None
+
+
+    def subnet(self, subnet_variables):
+        """Returns a new BayesNet that is a subnet of this one.  The new net
+        includes the specified variables and any links that exist between them
+        in this Bayes net.  Ignores any specified variables that aren't in the
+        current Bayes net."""
+        new_net = self.copy()
+        for var in self.variables:
+            if var not in subnet_variables:
+                new_net.remove_variable(var)
+        return new_net
+
+
+    def get_probability(self, hypothesis, parents_vals=None, infer_missing=True) :
         """Look up and return the conditional probability of var given its
         parents. If infer_missing is true, the function will infer missing CPT
         entries using the fact that certain probabilities sum to 1. Note that
@@ -119,11 +162,14 @@ class BayesNet:
 
         # infer probability if all other values are specified
         if explicit_probability is None and infer_missing :
-            other_probabilities = [self.probability(d, parents_vals, False)
+            other_probabilities = [self.get_probability(d, parents_vals, False)
                                    for d in self.combinations([var])
                                    if d[var] != hypothesis[var]]
             if(all(other_probabilities)) :
                 return reduce(lambda a,b : a - b, other_probabilities, 1)
+
+        if explicit_probability is None:
+            raise LookupError, "Unable to compute probability of " + str(hypothesis) + " given " + str(parents_vals)
 
         return explicit_probability
 
@@ -263,4 +309,3 @@ class BayesNet:
                    if num_params else ''))
 
     __repr__ = __str__
-
