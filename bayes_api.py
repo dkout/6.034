@@ -47,6 +47,19 @@ class BayesNet:
         self.conditional_probability_table = []
         self.domain = {}
 
+    def __eq__(self, other):
+        try:
+            assert self.variables == other.variables
+            assert self.adjacency == other.adjacency
+            assert self.conditional_probability_table == other.conditional_probability_table
+            assert self.domain == other.domain
+            return True
+        except Exception:
+            return False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def get_variables(self):
         return list(self.variables)
 
@@ -102,25 +115,25 @@ class BayesNet:
         return self
 
     def remove_variable(self, var):
-        """Removes var from net and deletes all links to var.
+        """Removes var from net and deletes all links to/from var.
         If var is not in net, does nothing."""
         self.unlink(var)
         self.variables.remove(var)
         return self
 
-    def find_path(self, start, goal):
-        """Performs BFS to find a path from start to goal.  Returns path as a
-        list of nodes (variables), or None if no path was found."""
-        if start not in self.variables or goal not in self.variables:
+    def find_path(self, start_var, goal_var):
+        """Performs BFS to find a path from start_var to goal_var.  Returns path
+        as a list of nodes (variables), or None if no path was found."""
+        if start_var not in self.variables or goal_var not in self.variables:
             return None
-        if start == goal:
-            return [start]
-        agenda = [[start]]
+        if start_var == goal_var:
+            return [start_var]
+        agenda = [[start_var]]
         while agenda:
             path = agenda.pop(0)
             next_nodes = self.get_children(path[-1])
-            if goal in next_nodes:
-                return path + [goal]
+            if goal_var in next_nodes:
+                return path + [goal_var]
             agenda.extend([path+[node] for node in next_nodes])
         return None
 
@@ -128,8 +141,8 @@ class BayesNet:
     def subnet(self, subnet_variables):
         """Returns a new BayesNet that is a subnet of this one.  The new net
         includes the specified variables and any links that exist between them
-        in this Bayes net.  Ignores any specified variables that aren't in the
-        current Bayes net."""
+        in the original Bayes net.  Ignores any specified variables that aren't
+        in the original Bayes net."""
         new_net = self.copy()
         for var in self.variables:
             if var not in subnet_variables:

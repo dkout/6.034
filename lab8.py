@@ -4,6 +4,8 @@
 from nets import *
 
 
+#### ANCESTORS, DESCENDANTS, AND NON-DESCENDANTS ###############################
+
 def get_ancestors(net, var):
     "Return a set containing the ancestors of var"
     raise NotImplementedError
@@ -17,14 +19,14 @@ def get_nondescendants(net, var):
     raise NotImplementedError
 
 def simplify_givens(net, var, givens):
-    """If givens include every parent of var and no descendants, removes any
-    non-descendants of var (except parents) from list of givens, then returns
-    simplified givens.  Can modify original givens (or not).
-
-    Otherwise, if not all parents are given, or if a descendant is given,
-    returns original givens."""
+    """If givens include every parent of var and no descendants, returns a
+    simplified list of givens, keeping only parents.  Does not modify original
+    givens.  Otherwise, if not all parents are given, or if a descendant is
+    given, returns original givens."""
     raise NotImplementedError
 
+
+#### PROBABILITY ###############################################################
 
 def probability_lookup(net, hypothesis, givens=None):
     "Looks up a probability in the Bayes net, or raises LookupError"
@@ -47,6 +49,8 @@ def probability(net, hypothesis, givens=None):
     raise NotImplementedError
 
 
+#### PARAMETER-COUNTING AND INDEPENDENCE #######################################
+
 def number_of_parameters(net):
     "Computes minimum number of parameters required for net"
     raise NotImplementedError
@@ -62,3 +66,13 @@ def is_structurally_independent(net, var1, var2, givens=None):
     based on the structure of the Bayes net, otherwise False.
     Uses structural independence only (not numerical independence)."""
     raise NotImplementedError
+
+
+#### SURVEY ####################################################################
+
+NAME = None
+COLLABORATORS = None
+HOW_MANY_HOURS_THIS_LAB_TOOK = None
+WHAT_I_FOUND_INTERESTING = None
+WHAT_I_FOUND_BORING = None
+SUGGESTIONS = None
