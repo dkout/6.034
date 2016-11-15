@@ -43,6 +43,19 @@ net_racoon_no_probs.conditional_probability_table = []
 net_basic_nonboolean = net_basic.copy()
 net_basic_nonboolean.set_domain('A', [1,2,3]).set_domain('C', range(5))
 
+net_basic_nonboolean2_probs = net_basic.copy()
+net_basic_nonboolean2_probs.set_domain('C', [1,2,3])
+net_basic_nonboolean2_probs.set_probability({'A':True}, {}, 0.1)
+net_basic_nonboolean2_probs.set_probability({'B':True}, {}, 0.55)
+net_basic_nonboolean2_probs.set_probability({'C':1}, {'A':True, 'B':True}, 0.4)
+net_basic_nonboolean2_probs.set_probability({'C':1}, {'A':True, 'B':False}, 0.2)
+net_basic_nonboolean2_probs.set_probability({'C':1}, {'A':False, 'B':True}, 0.3)
+net_basic_nonboolean2_probs.set_probability({'C':1}, {'A':False, 'B':False}, 0.3)
+net_basic_nonboolean2_probs.set_probability({'C':2}, {'A':True, 'B':True}, 0.4)
+net_basic_nonboolean2_probs.set_probability({'C':2}, {'A':True, 'B':False}, 0.2)
+net_basic_nonboolean2_probs.set_probability({'C':2}, {'A':False, 'B':True}, 0.3)
+net_basic_nonboolean2_probs.set_probability({'C':2}, {'A':False, 'B':False}, 0.5)
+
 # A and B are structurally independent.
 # B and C are numerically independent given A=False.
 # B and C are NOT structurally independent.

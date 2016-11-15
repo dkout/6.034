@@ -173,15 +173,19 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'get_nondescendants')
 
 
+
+simplify_givens_0_input_givens = dict(D=True, E=False, C=True, A=False)
 def simplify_givens_0_getargs() :  #TEST 16
-    return [net_dsep.copy(), 'F', dict(D=True, E=False, C=True, A=False)]
+    return [net_dsep.copy(), 'F', simplify_givens_0_input_givens]
 simplify_givens_0_expected = dict(D=True)
 def simplify_givens_0_testanswer(val, original_val = None) :
-    return val == simplify_givens_0_expected
+    return (val == simplify_givens_0_expected
+            and simplify_givens_0_input_givens == dict(D=True, E=False, C=True, A=False))
 make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = simplify_givens_0_getargs,
           testanswer = simplify_givens_0_testanswer,
-          expected_val = str(simplify_givens_0_expected),
+          expected_val = (str(simplify_givens_0_expected)
+                          + "  (with input givens unchanged)"),
           name = 'simplify_givens')
 
 def simplify_givens_0g_getargs() :  #TEST 17
@@ -228,66 +232,89 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(simplify_givens_3_expected),
           name = 'simplify_givens')
 
+def simplify_givens_4_getargs() :  #TEST 21
+    return [net_racoon.copy(), 'D', dict(B=True, T=True)]
+simplify_givens_4_expected = dict(B=True, T=True)
+def simplify_givens_4_testanswer(val, original_val = None) :
+    return val == simplify_givens_4_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = simplify_givens_4_getargs,
+          testanswer = simplify_givens_4_testanswer,
+          expected_val = str(simplify_givens_4_expected),
+          name = 'simplify_givens')
 
-def probability_lookup_0_getargs() :  #TEST 21
+
+def probability_lookup_0_getargs() :  #TEST 22
     return [net_racoon.copy(), {'B':True}]
 probability_lookup_0_expected = 0.1
 def probability_lookup_0_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_0_expected)
-make_test(type = 'FUNCTION_ENCODED_ARGS',
+make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
           getargs = probability_lookup_0_getargs,
           testanswer = probability_lookup_0_testanswer,
           expected_val = str(probability_lookup_0_expected),
           name = 'probability_lookup')
 
-def probability_lookup_1_getargs() :  #TEST 22
+def probability_lookup_1_getargs() :  #TEST 23
     return [net_racoon.copy(), {'D':True}, {'B':True, 'R':False}]
 probability_lookup_1_expected = 0.8
 def probability_lookup_1_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_1_expected)
-make_test(type = 'FUNCTION_ENCODED_ARGS',
+make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
           getargs = probability_lookup_1_getargs,
           testanswer = probability_lookup_1_testanswer,
           expected_val = str(probability_lookup_1_expected),
           name = 'probability_lookup')
 
 #implicitly uses infer_missing
-def probability_lookup_2_getargs() :  #TEST 23
+def probability_lookup_2_getargs() :  #TEST 24
     return [net_racoon.copy(), {'D':False}, {'B':True, 'R':False}]
 probability_lookup_2_expected = 0.2
 def probability_lookup_2_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_2_expected)
-make_test(type = 'FUNCTION_ENCODED_ARGS',
+make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
           getargs = probability_lookup_2_getargs,
           testanswer = probability_lookup_2_testanswer,
           expected_val = str(probability_lookup_2_expected),
           name = 'probability_lookup')
 
-def probability_lookup_3_getargs() :  #TEST 24
+def probability_lookup_3_getargs() :  #TEST 25
     return [net_racoon.copy(), {'D':True}, {'B':True}]
-probability_lookup_3_expected = None
+probability_lookup_3_expected = LookupError
 def probability_lookup_3_testanswer(val, original_val = None) :
     return val == probability_lookup_3_expected
-make_test(type = 'FUNCTION_ENCODED_ARGS',
+make_test(type = 'FUNCTION_EXPECTING_EXCEPTION',
           getargs = probability_lookup_3_getargs,
           testanswer = probability_lookup_3_testanswer,
           expected_val = str(probability_lookup_3_expected),
           name = 'probability_lookup')
 
-#requires remove_nondescendants
-def probability_lookup_4_getargs() :  #TEST 25
+#requires removing non-descendants
+def probability_lookup_4_getargs() :  #TEST 26
     return [net_racoon.copy(), {'D':False}, {'B':True, 'R':False, 'T':True}]
 probability_lookup_4_expected = 0.2
 def probability_lookup_4_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_4_expected)
-make_test(type = 'FUNCTION_ENCODED_ARGS',
+make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
           getargs = probability_lookup_4_getargs,
           testanswer = probability_lookup_4_testanswer,
-          expected_val = str(probability_lookup_4_expected),
+          expected_val = (str(probability_lookup_4_expected)
+                          + '  (Hint: Did you simplify the givens?)'),
+          name = 'probability_lookup')
+
+def probability_lookup_5_getargs() :  #TEST 27
+    return [net_basic_probs.copy(), {'A':True}, {'B':True, 'C':False}]
+probability_lookup_5_expected = LookupError
+def probability_lookup_5_testanswer(val, original_val = None) :
+    return val == probability_lookup_5_expected
+make_test(type = 'FUNCTION_EXPECTING_EXCEPTION',
+          getargs = probability_lookup_5_getargs,
+          testanswer = probability_lookup_5_testanswer,
+          expected_val = str(probability_lookup_5_expected),
           name = 'probability_lookup')
 
 
-def probability_joint_0_getargs() :  #TEST 26
+def probability_joint_0_getargs() :  #TEST 28
     return [net_racoon.copy(), {v:True for v in 'BRDTC'}]
 probability_joint_0_expected = 0.0288
 def probability_joint_0_testanswer(val, original_val = None) :
@@ -298,7 +325,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_joint_0_expected),
           name = 'probability_joint')
 
-def probability_joint_1_getargs() :  #TEST 27
+def probability_joint_1_getargs() :  #TEST 29
     return [net_racoon.copy(), {v:False for v in 'BRDTC'}]
 probability_joint_1_expected = 0.43663455
 def probability_joint_1_testanswer(val, original_val = None) :
@@ -309,7 +336,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_joint_1_expected),
           name = 'probability_joint')
 
-def probability_joint_2_getargs() :  #TEST 28
+def probability_joint_2_getargs() :  #TEST 30
     return [net_racoon.copy(), dict(B=False, R=False, D=True, T=False, C=True)]
 probability_joint_2_expected = 0.003564
 def probability_joint_2_testanswer(val, original_val = None) :
@@ -321,7 +348,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'probability_joint')
 
 
-def probability_marginal_0_getargs() :  #TEST 29
+def probability_marginal_0_getargs() :  #TEST 31
     return [net_racoon.copy(), {'B':False}]
 probability_marginal_0_expected = 0.9
 def probability_marginal_0_testanswer(val, original_val = None) :
@@ -332,7 +359,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_marginal_0_expected),
           name = 'probability_marginal')
 
-def probability_marginal_1_getargs() :  #TEST 30
+def probability_marginal_1_getargs() :  #TEST 32
     return [net_racoon.copy(), {'D':False}]
 probability_marginal_1_expected = 0.6405
 def probability_marginal_1_testanswer(val, original_val = None) :
@@ -343,7 +370,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_marginal_1_expected),
           name = 'probability_marginal')
 
-def probability_marginal_2_getargs() :  #TEST 31
+def probability_marginal_2_getargs() :  #TEST 33
     return [net_racoon.copy(), {'T':True, 'C':False}]
 probability_marginal_2_expected = 0.20151845
 def probability_marginal_2_testanswer(val, original_val = None) :
@@ -354,7 +381,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_marginal_2_expected),
           name = 'probability_marginal')
 
-def probability_marginal_3_getargs() :  #TEST 32
+def probability_marginal_3_getargs() :  #TEST 34
     return [net_racoon.copy(), dict(B=False, R=False, D=True, T=False, C=True)]
 probability_marginal_3_expected = 0.003564
 def probability_marginal_3_testanswer(val, original_val = None) :
@@ -365,8 +392,20 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_marginal_3_expected),
           name = 'probability_marginal')
 
+#non-boolean
+def probability_marginal_4_getargs() :  #TEST 35
+    return [net_basic_nonboolean2_probs.copy(), {'C':2}]
+probability_marginal_4_expected = 0.382
+def probability_marginal_4_testanswer(val, original_val = None) :
+    return approx_equal(val, probability_marginal_4_expected)
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = probability_marginal_4_getargs,
+          testanswer = probability_marginal_4_testanswer,
+          expected_val = str(probability_marginal_4_expected),
+          name = 'probability_marginal')
 
-def probability_conditional_0_getargs() :  #TEST 33
+
+def probability_conditional_0_getargs() :  #TEST 36
     return [net_racoon.copy(), {'D':True}, dict(B=True, R=False, T=False)]
 probability_conditional_0_expected = 0.8
 def probability_conditional_0_testanswer(val, original_val = None) :
@@ -377,7 +416,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_conditional_0_expected),
           name = 'probability_conditional')
 
-def probability_conditional_1_getargs() :  #TEST 34
+def probability_conditional_1_getargs() :  #TEST 37
     return [net_racoon.copy(), {'B':True, 'R':True}, {'D':False, 'T':False}]
 probability_conditional_1_expected = 0.001/0.487945
 def probability_conditional_1_testanswer(val, original_val = None) :
@@ -389,7 +428,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'probability_conditional')
 
 #just calls probability_lookup
-def probability_conditional_2_getargs() :  #TEST 35
+def probability_conditional_2_getargs() :  #TEST 38
     return [net_racoon.copy(), {'D':False}, {'B':True, 'R':False}]
 probability_conditional_2_expected = 0.2
 def probability_conditional_2_testanswer(val, original_val = None) :
@@ -401,7 +440,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'probability_conditional')
 
 #no givens; just calls probability_marginal
-def probability_conditional_3_getargs() :  #TEST 36
+def probability_conditional_3_getargs() :  #TEST 39
     return [net_racoon.copy(), dict(B=False, R=False, D=True, T=False, C=True)]
 probability_conditional_3_expected = 0.003564
 def probability_conditional_3_testanswer(val, original_val = None) :
@@ -413,7 +452,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'probability_conditional')
 
 #empty givens; can just call probability_marginal
-def probability_conditional_4_getargs() :  #TEST 37
+def probability_conditional_4_getargs() :  #TEST 40
     return [net_racoon.copy(), dict(B=False, R=False, D=True, T=False, C=True), {}]
 probability_conditional_4_expected = 0.003564
 def probability_conditional_4_testanswer(val, original_val = None) :
@@ -425,7 +464,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'probability_conditional')
 
 #P(A|A) = 1, always
-def probability_conditional_5_getargs() :  #TEST 38
+def probability_conditional_5_getargs() :  #TEST 41
     return [net_basic_probs.copy(), {'A':True}, {'A':True}]
 probability_conditional_5_expected = 1.0
 def probability_conditional_5_testanswer(val, original_val = None) :
@@ -434,11 +473,11 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_conditional_5_getargs,
           testanswer = probability_conditional_5_testanswer,
           expected_val = (str(probability_conditional_5_expected)
-                          +  '  (Hint: What is P(A|A)? )'),
+                          +  '  (Hint: What is P(A|A), in general?)'),
           name = 'probability_conditional')
 
 #P(A=True|A=False) = 0, always
-def probability_conditional_6_getargs() :  #TEST 39
+def probability_conditional_6_getargs() :  #TEST 42
     return [net_basic_probs.copy(), {'A':True}, {'A':False}]
 probability_conditional_6_expected = 0.0
 def probability_conditional_6_testanswer(val, original_val = None) :
@@ -447,11 +486,24 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_conditional_6_getargs,
           testanswer = probability_conditional_6_testanswer,
           expected_val = (str(probability_conditional_6_expected)
-                          +  '  (Hint: What is P(A=True|A=False)? )'),
+                          +  '  (Hint: What is P(A=True|A=False), in general?)'),
+          name = 'probability_conditional')
+
+#P(A=a1|A=a2) = 0, always
+def probability_conditional_6a_getargs() :  #TEST 43
+    return [net_basic_nonboolean2_probs.copy(), {'C':2}, {'C':3}]
+probability_conditional_6a_expected = 0.0
+def probability_conditional_6a_testanswer(val, original_val = None) :
+    return approx_equal(val, probability_conditional_6a_expected)
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = probability_conditional_6a_getargs,
+          testanswer = probability_conditional_6a_testanswer,
+          expected_val = (str(probability_conditional_6a_expected)
+                          +  '  (Hint: What is P(A=a1|A=a2), in general?)'),
           name = 'probability_conditional')
 
 #P(AB|A=False) = 0, always
-def probability_conditional_7_getargs() :  #TEST 40
+def probability_conditional_7_getargs() :  #TEST 44
     return [net_basic_probs.copy(), {'A':True, 'B':True}, {'A':False}]
 probability_conditional_7_expected = 0.0
 def probability_conditional_7_testanswer(val, original_val = None) :
@@ -460,11 +512,11 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_conditional_7_getargs,
           testanswer = probability_conditional_7_testanswer,
           expected_val = (str(probability_conditional_7_expected)
-                          +  '  (Hint: What is P(A=True,B=True|A=False)? )'),
+                          +  '  (Hint: What is P(A=True,B=True|A=False), in general?)'),
           name = 'probability_conditional')
 
 
-def probability_0_getargs() :  #TEST 41
+def probability_0_getargs() :  #TEST 45
     return [net_racoon.copy(), {'B':False}]
 probability_0_expected = 0.9
 def probability_0_testanswer(val, original_val = None) :
@@ -475,7 +527,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_0_expected),
           name = 'probability')
 
-def probability_1_getargs() :  #TEST 42
+def probability_1_getargs() :  #TEST 46
     return [net_racoon.copy(), {'D':True}, dict(B=True, R=False, T=False)]
 probability_1_expected = 0.8
 def probability_1_testanswer(val, original_val = None) :
@@ -486,7 +538,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_1_expected),
           name = 'probability')
 
-def probability_2_getargs() :  #TEST 43
+def probability_2_getargs() :  #TEST 47
     return [net_racoon.copy(), {'D':False}]
 probability_2_expected = 0.6405
 def probability_2_testanswer(val, original_val = None) :
@@ -497,7 +549,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_2_expected),
           name = 'probability')
 
-def probability_3_getargs() :  #TEST 44
+def probability_3_getargs() :  #TEST 48
     return [net_racoon.copy(), {'T':True, 'C':False}]
 probability_3_expected = 0.20151845
 def probability_3_testanswer(val, original_val = None) :
@@ -508,7 +560,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_3_expected),
           name = 'probability')
 
-def probability_4_getargs() :  #TEST 45
+def probability_4_getargs() :  #TEST 49
     return [net_racoon.copy(), {'B':True, 'R':True}, {'D':False, 'T':False}]
 probability_4_expected = 0.001/0.487945
 def probability_4_testanswer(val, original_val = None) :
@@ -519,7 +571,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_4_expected),
           name = 'probability')
 
-def probability_5_getargs() :  #TEST 46
+def probability_5_getargs() :  #TEST 50
     return [net_racoon.copy(), {v:False for v in 'BRDTC'}]
 probability_5_expected = 0.43663455
 def probability_5_testanswer(val, original_val = None) :
@@ -530,7 +582,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(probability_5_expected),
           name = 'probability')
 
-def probability_6_getargs() :  #TEST 47
+def probability_6_getargs() :  #TEST 51
     return [net_racoon.copy(), dict(B=False, R=False, D=True, T=False, C=True)]
 probability_6_expected = 0.003564
 def probability_6_testanswer(val, original_val = None) :
@@ -542,7 +594,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'probability')
 
 
-def number_of_parameters_0_getargs() :  #TEST 48
+def number_of_parameters_0_getargs() :  #TEST 52
     return [net_basic.copy()]
 number_of_parameters_0_expected = 6
 def number_of_parameters_0_testanswer(val, original_val = None) :
@@ -553,7 +605,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(number_of_parameters_0_expected),
           name = 'number_of_parameters')
 
-def number_of_parameters_1_getargs() :  #TEST 49
+def number_of_parameters_1_getargs() :  #TEST 53
     return [net_racoon_no_probs.copy()]
 number_of_parameters_1_expected = 10
 def number_of_parameters_1_testanswer(val, original_val = None) :
@@ -564,7 +616,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(number_of_parameters_1_expected),
           name = 'number_of_parameters')
 
-def number_of_parameters_2_getargs() :  #TEST 50
+def number_of_parameters_2_getargs() :  #TEST 54
     return [net_dsep.copy()]
 number_of_parameters_2_expected = 14
 def number_of_parameters_2_testanswer(val, original_val = None) :
@@ -576,7 +628,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'number_of_parameters')
 
 # 2 params for A, 1 for B, 3*2*(5-1)=24 for C
-def number_of_parameters_3_getargs() :  #TEST 51
+def number_of_parameters_3_getargs() :  #TEST 55
     return [net_basic_nonboolean.copy()]
 number_of_parameters_3_expected = 27
 def number_of_parameters_3_testanswer(val, original_val = None) :
@@ -589,7 +641,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'number_of_parameters')
 
 
-def independent_0_getargs() :  #TEST 52
+def independent_0_getargs() :  #TEST 56
     return [net_racoon.copy(), 'B', 'R']
 independent_0_expected = True
 def independent_0_testanswer(val, original_val = None) :
@@ -600,7 +652,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_0_expected),
           name = 'is_independent')
 
-def independent_1_getargs() :  #TEST 53
+def independent_1_getargs() :  #TEST 57
     return [net_racoon.copy(), 'B', 'R', {'D':True}]
 independent_1_expected = False
 def independent_1_testanswer(val, original_val = None) :
@@ -611,7 +663,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_1_expected),
           name = 'is_independent')
 
-def independent_2_getargs() :  #TEST 54
+def independent_2_getargs() :  #TEST 58
     return [net_racoon.copy(), 'D', 'T', {'B':True, 'R':False}]
 independent_2_expected = True
 def independent_2_testanswer(val, original_val = None) :
@@ -622,7 +674,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_2_expected),
           name = 'is_independent')
 
-def independent_3_getargs() :  #TEST 55
+def independent_3_getargs() :  #TEST 59
     return [net_basic_probs.copy(), 'A', 'B', {}]
 independent_3_expected = True
 def independent_3_testanswer(val, original_val = None) :
@@ -633,7 +685,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_3_expected),
           name = 'is_independent')
 
-def independent_4_getargs() :  #TEST 56
+def independent_4_getargs() :  #TEST 60
     return [net_basic_probs.copy(), 'B', 'C', {'A':False}]
 independent_4_expected = True
 def independent_4_testanswer(val, original_val = None) :
@@ -644,7 +696,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_4_expected),
           name = 'is_independent')
 
-def independent_5_getargs() :  #TEST 57
+def independent_5_getargs() :  #TEST 61
     return [net_basic_probs.copy(), 'C', 'B', {'A':False}]
 independent_5_expected = True
 def independent_5_testanswer(val, original_val = None) :
@@ -655,7 +707,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_5_expected),
           name = 'is_independent')
 
-def independent_6_getargs() :  #TEST 58
+def independent_6_getargs() :  #TEST 62
     return [net_basic_probs.copy(), 'B', 'C', {'A':True}]
 independent_6_expected = False
 def independent_6_testanswer(val, original_val = None) :
@@ -666,7 +718,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_6_expected),
           name = 'is_independent')
 
-def independent_7_getargs() :  #TEST 59
+def independent_7_getargs() :  #TEST 63
     return [net_basic_probs.copy(), 'B', 'C']
 independent_7_expected = False
 def independent_7_testanswer(val, original_val = None) :
@@ -677,11 +729,35 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = str(independent_7_expected),
           name = 'is_independent')
 
+def independent_8_getargs() :  #TEST 64
+    return [net_basic_nonboolean2_probs.copy(), 'B', 'C', {'A':False}]
+independent_8_expected = False
+def independent_8_testanswer(val, original_val = None) :
+    return val == independent_8_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = independent_8_getargs,
+          testanswer = independent_8_testanswer,
+          expected_val = (str(independent_8_expected)
+                          + '  (Hint: What if variables are non-boolean?)'),
+          name = 'is_independent')
+
+def independent_9_getargs() :  #TEST 65
+    return [net_basic_nonboolean2_probs.copy(), 'C', 'B', {'A':False}]
+independent_9_expected = False
+def independent_9_testanswer(val, original_val = None) :
+    return val == independent_9_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = independent_9_getargs,
+          testanswer = independent_9_testanswer,
+          expected_val = (str(independent_9_expected)
+                          + '  (Hint: What if variables are non-boolean?)'),
+          name = 'is_independent')
+
 
 # is_structurally_independent
 
 #print is_structurally_independent(net_dsep, 'A', 'B', {'D':True, 'F':True}) #False
-def is_structurally_independent_0_getargs() :  #TEST 60
+def is_structurally_independent_0_getargs() :  #TEST 66
     return [net_dsep.copy(), 'A', 'B', {'D':True, 'F':True}]
 is_structurally_independent_0_expected = False
 def is_structurally_independent_0_testanswer(val, original_val = None) :
@@ -693,7 +769,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'A', 'B') #True
-def is_structurally_independent_1_getargs() :  #TEST 61
+def is_structurally_independent_1_getargs() :  #TEST 67
     return [net_dsep.copy(), 'A', 'B']
 is_structurally_independent_1_expected = True
 def is_structurally_independent_1_testanswer(val, original_val = None) :
@@ -705,7 +781,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'A', 'B', {'C':True}) #False
-def is_structurally_independent_2_getargs() :  #TEST 62
+def is_structurally_independent_2_getargs() :  #TEST 68
     return [net_dsep.copy(), 'A', 'B', {'C':True}]
 is_structurally_independent_2_expected = False
 def is_structurally_independent_2_testanswer(val, original_val = None) :
@@ -717,7 +793,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'A', 'B', {'C':False}) #False
-def is_structurally_independent_3_getargs() :  #TEST 63
+def is_structurally_independent_3_getargs() :  #TEST 69
     return [net_dsep.copy(), 'A', 'B', {'C':False}]
 is_structurally_independent_3_expected = False
 def is_structurally_independent_3_testanswer(val, original_val = None) :
@@ -729,7 +805,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'D', 'E', {'C':True}) #True
-def is_structurally_independent_4_getargs() :  #TEST 64
+def is_structurally_independent_4_getargs() :  #TEST 70
     return [net_dsep.copy(), 'D', 'E', {'C':True}]
 is_structurally_independent_4_expected = True
 def is_structurally_independent_4_testanswer(val, original_val = None) :
@@ -741,7 +817,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'D', 'E', {'C':False}) #True
-def is_structurally_independent_5_getargs() :  #TEST 65
+def is_structurally_independent_5_getargs() :  #TEST 71
     return [net_dsep.copy(), 'D', 'E', {'C':False}]
 is_structurally_independent_5_expected = True
 def is_structurally_independent_5_testanswer(val, original_val = None) :
@@ -753,7 +829,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'D', 'E', {}) #False
-def is_structurally_independent_6_getargs() :  #TEST 66
+def is_structurally_independent_6_getargs() :  #TEST 72
     return [net_dsep.copy(), 'D', 'E', {}]
 is_structurally_independent_6_expected = False
 def is_structurally_independent_6_testanswer(val, original_val = None) :
@@ -765,7 +841,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'D', 'E', {'A':False, 'B':True}) #False
-def is_structurally_independent_7_getargs() :  #TEST 67
+def is_structurally_independent_7_getargs() :  #TEST 73
     return [net_dsep.copy(), 'D', 'E', {'A':False, 'B':True}]
 is_structurally_independent_7_expected = False
 def is_structurally_independent_7_testanswer(val, original_val = None) :
@@ -777,7 +853,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'D', 'G', {'C':True}) #False
-def is_structurally_independent_8_getargs() :  #TEST 68
+def is_structurally_independent_8_getargs() :  #TEST 74
     return [net_dsep.copy(), 'D', 'G', {'C':True}]
 is_structurally_independent_8_expected = False
 def is_structurally_independent_8_testanswer(val, original_val = None) :
@@ -789,7 +865,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           name = 'is_structurally_independent')
 
 #print is_structurally_independent(net_dsep, 'A', 'B', {'C':True}) #False
-def is_structurally_independent_9_getargs() :  #TEST 69
+def is_structurally_independent_9_getargs() :  #TEST 75
     return [net_dsep.copy(), 'A', 'B', {'C':True}]
 is_structurally_independent_9_expected = False
 def is_structurally_independent_9_testanswer(val, original_val = None) :
@@ -802,7 +878,7 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
 
 # What happens if var1 == var2?
 #print is_structurally_independent(net_dsep, 'A', 'A') #False
-def is_structurally_independent_10_getargs() :  #TEST 70
+def is_structurally_independent_10_getargs() :  #TEST 76
     return [net_dsep.copy(), 'A', 'A']
 is_structurally_independent_10_expected = False
 def is_structurally_independent_10_testanswer(val, original_val = None) :
@@ -814,10 +890,10 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
                           + "  (Hint: What happens if var1 == var2?)"),
           name = 'is_structurally_independent')
 
-# What happens if var1 or var2 is in the givens?
-#print is_structurally_independent(net_dsep, 'A', 'A', {'A':False}) #True
-def is_structurally_independent_11_getargs() :  #TEST 71
-    return [net_dsep.copy(), 'A', 'A', {'A':False}]
+# Don't marry grandparents
+#print is_structurally_independent(net_grandparents, 'GP1', 'GP2', {'C':True, 'P1':True, 'P2':True}) #True
+def is_structurally_independent_11_getargs() :  #TEST 77
+    return [net_grandparents.copy(), 'GP1', 'GP2', {'C':True, 'P1':True, 'P2':True}]
 is_structurally_independent_11_expected = True
 def is_structurally_independent_11_testanswer(val, original_val = None) :
     return val == is_structurally_independent_11_expected
@@ -825,62 +901,20 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = is_structurally_independent_11_getargs,
           testanswer = is_structurally_independent_11_testanswer,
           expected_val = (str(is_structurally_independent_11_expected)
-                          + "  (Hint: What happens if var1 == var2 AND var1 is in the givens?)"),
-          name = 'is_structurally_independent')
-
-# What happens if var1 or var2 is in the givens?
-#print is_structurally_independent(net_dsep, 'A', 'B', {'B':True}) #True
-def is_structurally_independent_12_getargs() :  #TEST 72
-    return [net_dsep.copy(), 'A', 'B', {'B':True}]
-is_structurally_independent_12_expected = True
-def is_structurally_independent_12_testanswer(val, original_val = None) :
-    return val == is_structurally_independent_12_expected
-make_test(type = 'FUNCTION_ENCODED_ARGS',
-          getargs = is_structurally_independent_12_getargs,
-          testanswer = is_structurally_independent_12_testanswer,
-          expected_val = (str(is_structurally_independent_12_expected)
-                          + "  (Hint: What happens if var1 or var2 is in the givens?)"),
-          name = 'is_structurally_independent')
-
-# What happens if var1 or var2 is in the givens?
-#print is_structurally_independent(net_dsep, 'A', 'B', {'A':True, 'C':True}) #True
-def is_structurally_independent_13_getargs() :  #TEST 73
-    return [net_dsep.copy(), 'A', 'B', {'A':True, 'C':True}]
-is_structurally_independent_13_expected = True
-def is_structurally_independent_13_testanswer(val, original_val = None) :
-    return val == is_structurally_independent_13_expected
-make_test(type = 'FUNCTION_ENCODED_ARGS',
-          getargs = is_structurally_independent_13_getargs,
-          testanswer = is_structurally_independent_13_testanswer,
-          expected_val = (str(is_structurally_independent_13_expected)
-                          + "  (Hint: What happens if var1 or var2 is in the givens?)"),
-          name = 'is_structurally_independent')
-
-# Don't marry grandparents
-#print is_structurally_independent(net_grandparents, 'GP1', 'GP2', {'C':True, 'P1':True, 'P2':True}) #True
-def is_structurally_independent_14_getargs() :  #TEST 74
-    return [net_grandparents.copy(), 'GP1', 'GP2', {'C':True, 'P1':True, 'P2':True}]
-is_structurally_independent_14_expected = True
-def is_structurally_independent_14_testanswer(val, original_val = None) :
-    return val == is_structurally_independent_14_expected
-make_test(type = 'FUNCTION_ENCODED_ARGS',
-          getargs = is_structurally_independent_14_getargs,
-          testanswer = is_structurally_independent_14_testanswer,
-          expected_val = (str(is_structurally_independent_14_expected)
                           + "  (Hint: Don't marry grandparents, unless they're also parents)"),
           name = 'is_structurally_independent')
 
 # Ignore numerical independence
 #print is_independent(net_basic_probs, 'C', 'B', {'A':False}) #True (numerical indepencence)
 #print is_structurally_independent(net_basic_probs, 'C', 'B', {'A':False}) #False
-def is_structurally_independent_15_getargs() :  #TEST 75
+def is_structurally_independent_12_getargs() :  #TEST 78
     return [net_basic_probs.copy(), 'C', 'B', {'A':False}]
-is_structurally_independent_15_expected = False
-def is_structurally_independent_15_testanswer(val, original_val = None) :
-    return val == is_structurally_independent_15_expected
+is_structurally_independent_12_expected = False
+def is_structurally_independent_12_testanswer(val, original_val = None) :
+    return val == is_structurally_independent_12_expected
 make_test(type = 'FUNCTION_ENCODED_ARGS',
-          getargs = is_structurally_independent_15_getargs,
-          testanswer = is_structurally_independent_15_testanswer,
-          expected_val = (str(is_structurally_independent_15_expected)
+          getargs = is_structurally_independent_12_getargs,
+          testanswer = is_structurally_independent_12_testanswer,
+          expected_val = (str(is_structurally_independent_12_expected)
                           + "  (Hint: Only consider structural independence)"),
           name = 'is_structurally_independent')

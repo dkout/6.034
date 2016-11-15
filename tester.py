@@ -146,6 +146,21 @@ def run_test(test, lab):
         return attr
     elif mytype == 'FUNCTION':
         return apply(attr, args)
+    elif mytype == 'FUNCTION_EXPECTING_EXCEPTION':
+        try:
+            result = apply(attr, args)
+            return "Error: expected raised exception, but got returned answer: " + str(result)
+        except NotImplementedError, e:
+            raise e
+        except Exception, e:
+            return type(e)
+    elif mytype == 'FUNCTION_WITH_POSSIBLE_EXCEPTION':
+        try:
+            return apply(attr, args)
+        except NotImplementedError, e:
+            raise e
+        except Exception, e:
+            return type(e)
     elif mytype == 'FUNCTION_ENCODED_ARGS':
         return run_test( (id, 'FUNCTION', attr_name, type_decode(args, lab)), lab )
     else:
