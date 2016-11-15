@@ -245,11 +245,13 @@ class BayesNet:
         return self.domain.get(var, (False, True))
 
 
-    def combinations(self, variables, initial_bindings=None) :
-        """Return the set of all possible bindings of variables to
-        values. Assumes variables are boolean except when otherwise
-        specified using set_domain."""
-        initial_bindings = initial_bindings or {}
+    def combinations(self, variables, constant_bindings=None) :
+        """Given a list of variables, returns a list of every possible binding
+        of those variables.  Each variable included in constant_bindings will
+        only appear with its specified binding.  Variables are assumed to be
+        boolean except when specified otherwise using set_domain."""
+        constant_bindings = constant_bindings or {}
+        unbound_variables = filter(lambda v: v not in constant_bindings, variables)
 
         def asc(m,k,v):
             m2 = copy.deepcopy(m)
@@ -272,7 +274,7 @@ class BayesNet:
                      for d in partial_bindings
                      for val in self.get_domain(agenda[0])])
 
-        return [merge_dicts(d,initial_bindings) for d in loop(variables)]
+        return [merge_dicts(d,constant_bindings) for d in loop(unbound_variables)]
 
 
     def is_ordered(self, variables=None) :
