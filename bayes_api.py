@@ -134,7 +134,7 @@ class BayesNet:
             next_nodes = self.get_children(path[-1])
             if goal_var in next_nodes:
                 return path + [goal_var]
-            agenda.extend([path+[node] for node in next_nodes])
+            agenda.extend([path+[node] for node in next_nodes if node not in path])
         return None
 
 

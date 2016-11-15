@@ -249,7 +249,7 @@ def probability_lookup_0_getargs() :  #TEST 22
 probability_lookup_0_expected = 0.1
 def probability_lookup_0_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_0_expected)
-make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
+make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_lookup_0_getargs,
           testanswer = probability_lookup_0_testanswer,
           expected_val = str(probability_lookup_0_expected),
@@ -260,7 +260,7 @@ def probability_lookup_1_getargs() :  #TEST 23
 probability_lookup_1_expected = 0.8
 def probability_lookup_1_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_1_expected)
-make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
+make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_lookup_1_getargs,
           testanswer = probability_lookup_1_testanswer,
           expected_val = str(probability_lookup_1_expected),
@@ -272,7 +272,7 @@ def probability_lookup_2_getargs() :  #TEST 24
 probability_lookup_2_expected = 0.2
 def probability_lookup_2_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_2_expected)
-make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
+make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_lookup_2_getargs,
           testanswer = probability_lookup_2_testanswer,
           expected_val = str(probability_lookup_2_expected),
@@ -295,7 +295,7 @@ def probability_lookup_4_getargs() :  #TEST 26
 probability_lookup_4_expected = 0.2
 def probability_lookup_4_testanswer(val, original_val = None) :
     return approx_equal(val, probability_lookup_4_expected)
-make_test(type = 'FUNCTION_WITH_POSSIBLE_EXCEPTION',
+make_test(type = 'FUNCTION_ENCODED_ARGS',
           getargs = probability_lookup_4_getargs,
           testanswer = probability_lookup_4_testanswer,
           expected_val = (str(probability_lookup_4_expected)
