@@ -99,12 +99,18 @@ class BayesNet:
             return self
 
         if var1 not in self.adjacency:
-            self.adjacency[var1] = set([])
+            self.adjacency[var1] = set()
         if var2 not in self.adjacency :
-            self.adjacency[var2] = set([])
+            self.adjacency[var2] = set()
 
         self.adjacency[var1].discard(var2)
         self.adjacency[var2].discard(var1)
+
+        if self.adjacency[var1] == set():
+            del self.adjacency[var1]
+        if var1 != var2 and self.adjacency[var2] == set():
+            del self.adjacency[var2]
+
         return self
 
     def make_bidirectional(self):
