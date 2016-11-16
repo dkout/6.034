@@ -918,3 +918,59 @@ make_test(type = 'FUNCTION_ENCODED_ARGS',
           expected_val = (str(is_structurally_independent_12_expected)
                           + "  (Hint: Only consider structural independence)"),
           name = 'is_structurally_independent')
+
+# Only marry parents
+#print is_structurally_independent(net_W, 'E', 'B', {'D':True, 'C':True, 'F':True}) #True
+def is_structurally_independent_13_getargs() :  #TEST 79
+    return [net_W, 'E', 'B', {'D':True, 'C':True, 'F':True}]
+is_structurally_independent_13_expected = True
+def is_structurally_independent_13_testanswer(val, original_val = None) :
+    return val == is_structurally_independent_13_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = is_structurally_independent_13_getargs,
+          testanswer = is_structurally_independent_13_testanswer,
+          expected_val = (str(is_structurally_independent_13_expected)
+                          + "  (Hint: Only marry parents. Beware of creating new parents!)"),
+          name = 'is_structurally_independent')
+
+# Only marry parents
+#print is_structurally_independent(net_W, 'E', 'G', {'D':True, 'C':True, 'F':True}) #True
+def is_structurally_independent_14_getargs() :  #TEST 80
+    return [net_W, 'E', 'G', {'D':True, 'C':True, 'F':True}]
+is_structurally_independent_14_expected = True
+def is_structurally_independent_14_testanswer(val, original_val = None) :
+    return val == is_structurally_independent_14_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = is_structurally_independent_14_getargs,
+          testanswer = is_structurally_independent_14_testanswer,
+          expected_val = (str(is_structurally_independent_14_expected)
+                          + "  (Hint: Only marry parents. Beware of creating new parents!)"),
+          name = 'is_structurally_independent')
+
+# Only marry parents
+#print is_structurally_independent(net_W, 'H', 'D', {'B':True, 'C':True, 'F':True, 'G':True}) #True
+def is_structurally_independent_15_getargs() :  #TEST 81
+    return [net_W, 'H', 'D', {'B':True, 'C':True, 'F':True, 'G':True}]
+is_structurally_independent_15_expected = True
+def is_structurally_independent_15_testanswer(val, original_val = None) :
+    return val == is_structurally_independent_15_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = is_structurally_independent_15_getargs,
+          testanswer = is_structurally_independent_15_testanswer,
+          expected_val = (str(is_structurally_independent_15_expected)
+                          + "  (Hint: Only marry parents. Beware of creating new parents!)"),
+          name = 'is_structurally_independent')
+
+# Only marry parents
+#print is_structurally_independent(net_W, 'A', 'D', {'B':True, 'C':True, 'F':True, 'G':True}) #True
+def is_structurally_independent_16_getargs() :  #TEST 82
+    return [net_W, 'A', 'D', {'B':True, 'C':True, 'F':True, 'G':True}]
+is_structurally_independent_16_expected = True
+def is_structurally_independent_16_testanswer(val, original_val = None) :
+    return val == is_structurally_independent_16_expected
+make_test(type = 'FUNCTION_ENCODED_ARGS',
+          getargs = is_structurally_independent_16_getargs,
+          testanswer = is_structurally_independent_16_testanswer,
+          expected_val = (str(is_structurally_independent_16_expected)
+                          + "  (Hint: Only marry parents. Beware of creating new parents!)"),
+          name = 'is_structurally_independent')

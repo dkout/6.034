@@ -8,6 +8,8 @@ import sys
 import os
 import tarfile
 
+from bayes_api import BayesNet
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -90,6 +92,19 @@ def get_lab_module():
 
     return lab
 
+# decode objects
+def decode_BayesCPT(cpt_encoded):
+    """ CPT is a list of rows.  The server encodes each row as a list of valid
+    types (numbers, strings, bools, and dicts with str-only keys).  For example:
+    encoded row: [{'D': True}, {'B': True, 'R': False}, 0.8]
+    real row: (({'D': True}, {'B': True, 'R': False}), 0.8)  """
+    return [((row[0], row[1]), row[2]) for row in cpt_encoded]
+def decode_BayesNet(variables, adjacency_encoded, cpt_encoded, domain):
+    net = BayesNet(variables)
+    net.adjacency = {k:set(v) for (k,v) in adjacency_encoded.items()}
+    net.conditional_probability_table = decode_BayesCPT(cpt_encoded)
+    net.domain = domain
+    return net
 
 def type_decode(arg, lab):
     """
@@ -103,7 +118,7 @@ def type_decode(arg, lab):
     """
     if isinstance(arg, list) and len(arg) >= 1: # There is no future magic for tuples.
         if arg[0] == 'BayesNet' and isinstance(arg[1], list):
-            return decode_BayesNet(*arg[1]) #todo
+            return decode_BayesNet(*arg[1])
         else:
             try:
                 mytype = arg[0]
@@ -204,7 +219,7 @@ def test_offline(verbosity=1):
         except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
             raise
         except Exception:
-            #raise   # To debug tests by allowing them to raise exceptions, uncomment this
+            #raise   # To debug local tests by allowing them to raise exceptions, uncomment this
             correct = False
 
         show_result(summary, testname, correct, answer, expected, verbosity)
@@ -303,6 +318,7 @@ def test_online(verbosity=1):
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
     except xmlrpclib.Fault:
+        #raise   # To debug online tests by allowing them to raise cryptic exceptions, uncomment this
         print "\nError: Either your key.py file is out of date, or online "
         print "tests for " + lab.__name__ + " are not currently available."
         print "If you believe this is may be a mistake, please contact a TA.\n"

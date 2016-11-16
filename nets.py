@@ -15,10 +15,20 @@ net_dsep.adjacency = dict(A=set('C'), B=set('C'), C=set('DE'), D=set('F'),
 
 # A net with three generations:
 #    - Child C has three parents P1, P2, P3
-#    - Each variable PX has a parent GPX (GP for grandparent)
-net_grandparents = BayesNet(['GP1', 'GP2', 'GP2', 'P1', 'P2', 'P3', 'C'])
+#    - Each variable PX has one parent GPX (GP for grandparent)
+net_grandparents = BayesNet(['GP1', 'GP2', 'GP3', 'P1', 'P2', 'P3', 'C'])
 net_grandparents.adjacency = dict(GP1=set(['P1']), GP2=set(['P2']), GP3=set(['P3']),
                                   P1=set('C'), P2=set('C'), P3=set('C'))
+
+# A W-shaped net with three generations, all edges pointing downward:
+#      A     E     H
+#       \    |    /
+#        B   D   G
+#         \ / \ /
+#          C   F
+net_W = BayesNet(list('ABCDEFGH'))
+net_W.adjacency = dict(A=set(['B']), E=set(['D']), H=set(['G']),
+                       B=set(['C']), D=set(['C','F']), G=set(['F']))
 
 # The burglar/racoon example from lecture
 # see http://courses.csail.mit.edu/6.034f/ai3/bayes.pdf
