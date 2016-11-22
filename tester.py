@@ -8,6 +8,8 @@ import sys
 import os
 import tarfile
 
+from fractions import Fraction
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -102,15 +104,23 @@ def type_decode(arg, lab):
     original data type.
     """
     if isinstance(arg, list) and len(arg) >= 1: # There is no future magic for tuples.
+        if arg[0] == 'Fraction':
+            return Fraction(arg[1], arg[2])
         return [ type_decode(x, lab) for x in arg ]
+    elif isinstance(arg, dict):
+        return {key:type_decode(val,lab) for (key,val) in arg.items()}
     else:
         return arg
 
 
 def type_encode(arg):
     "Encode objects as lists in a way that the server expects"
-    if isinstance(arg, (list, tuple)): #note that tuples become lists
+    if isinstance(arg, (list, tuple, set)): #note that tuples and sets become lists
         return [type_encode(a) for a in arg]
+    if isinstance(arg, dict):
+        return {key:type_encode(val) for (key,val) in arg.items()}
+    if isinstance(arg, Fraction):
+        return ['Fraction', arg.numerator, arg.denominator]
     else:
         return arg
 
