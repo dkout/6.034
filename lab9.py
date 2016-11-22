@@ -33,7 +33,7 @@ def calculate_voting_power(error_rate):
 def get_overall_misclassifications(H, training_points, classifier_to_misclassified):
     """Given an overall classifier H, a list of all training points, and a
     dictionary mapping classifiers to the training points they misclassify,
-    returns a list of the training points that H misclassifies.
+    returns a set containing the training points that H misclassifies.
     H is represented as a list of (classifier, voting_power) tuples."""
     raise NotImplementedError
 
@@ -55,8 +55,8 @@ def update_weights(point_to_weight, misclassified_points, error_rate):
     raise NotImplementedError
 
 def adaboost(training_points, classifier_to_misclassified,
-             use_smallest_error=True, mistake_tolerance=0, max_num_rounds=INF):
-    """Performs the Adaboost algorithm for up to max_num_rounds rounds.
+             use_smallest_error=True, mistake_tolerance=0, max_rounds=INF):
+    """Performs the Adaboost algorithm for up to max_rounds rounds.
     Returns the resulting overall classifier H, represented as a list of
     (classifier, voting_power) tuples."""
     raise NotImplementedError
