@@ -2,21 +2,7 @@
 # Written by Jessica Noss (jmn), Dylan Holmes (dxh), and 6.034 staff
 
 from math import log as ln
-INF = float('inf')
-
-# Helper function for pick_best_classifier and adaboost
-def fix_roundoff_error(inp, n=15):
-    """inp can be a number, a list of numbers, or a dict whose values are numbers.
-    * If inp is a number: Rounds the number to the nth decimal digit to reduce
-        previous Python roundoff error.  Returns a float.
-    * If inp is a list of numbers: Rounds each number as above.  Does not modify
-        the original list.
-    * If inp is a dictionary whose values are numbers: Rounds each value as
-        above.  Does not modify the original dictionary."""
-    fix_val = lambda val: round(abs(val),n)*[-1,1][val>=0]
-    if isinstance(inp, list): return map(fix_val, inp)
-    if isinstance(inp, dict): return {key: fix_val(inp[key]) for key in inp}
-    return fix_val(inp)
+from utils import *
 
 
 #### BOOSTING (ADABOOST) #######################################################
@@ -34,7 +20,8 @@ def calculate_error_rates(point_to_weight, classifier_to_misclassified):
 
 def pick_best_classifier(classifier_to_error_rate, use_smallest_error=True):
     """Given a dictionary mapping classifiers to their error rates, returns the
-    best* classifier.  Best* means 'smallest error rate' if use_smallest_error
+    best* classifier, or raises NoGoodClassifiersError if best* classifier has
+    error rate 1/2.  best* means 'smallest error rate' if use_smallest_error
     is True, otherwise 'error rate furthest from 1/2'."""
     raise NotImplementedError
 
@@ -43,8 +30,14 @@ def calculate_voting_power(error_rate):
     (aka alpha, or coefficient) for that classifier."""
     raise NotImplementedError
 
-def is_good_enough(H, training_points, classifier_to_misclassified,
-                   mistake_tolerance=0):
+def get_overall_misclassifications(H, training_points, classifier_to_misclassified):
+    """Given an overall classifier H, a list of all training points, and a
+    dictionary mapping classifiers to the training points they misclassify,
+    returns a list of the training points that H misclassifies.
+    H is represented as a list of (classifier, voting_power) tuples."""
+    raise NotImplementedError
+
+def is_good_enough(H, training_points, classifier_to_misclassified, mistake_tolerance=0):
     """Given an overall classifier H, a list of all training points, a
     dictionary mapping classifiers to the training points they misclassify, and
     a mistake tolerance (the maximum number of allowed misclassifications),

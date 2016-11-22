@@ -126,7 +126,7 @@ def run_test(test, lab):
 
     'test' tuples are in the following format:
       'id': A unique integer identifying the test
-      'type': One of 'VALUE', 'FUNCTION', 'MULTIFUNCTION', or 'FUNCTION_ENCODED_ARGS'
+      'type': One of 'VALUE', 'FUNCTION', 'FUNCTION_ENCODED_ARGS', or 'FUNCTION_EXPECTING_EXCEPTION'
       'attr_name': The name of the attribute in the 'lab' module
       'args': a list of the arguments to be passed to the function; [] if no args.
       For 'MULTIFUNCTION's, a list of lists of arguments to be passed in
@@ -139,11 +139,16 @@ def run_test(test, lab):
         return attr
     elif mytype == 'FUNCTION':
         return apply(attr, args)
-    elif mytype == 'MULTIFUNCTION':
-        return [ run_test( (id, 'FUNCTION', attr_name, FN), lab)
-                for FN in type_decode(args, lab) ]
     elif mytype == 'FUNCTION_ENCODED_ARGS':
         return run_test( (id, 'FUNCTION', attr_name, type_decode(args, lab)), lab )
+    elif mytype == 'FUNCTION_EXPECTING_EXCEPTION':
+        try:
+            result = apply(attr, args)
+            return "Error: expected raised exception, but got returned answer: " + str(result)
+        except NotImplementedError, e:
+            raise e
+        except Exception, e:
+            return type(e)
     else:
         raise Exception("Test Error: Unknown TYPE: " + str(mytype)
                         + ".  Please make sure you have downloaded the latest"
