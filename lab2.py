@@ -1,5 +1,5 @@
 # MIT 6.034 Lab 2: Search
-# Written by Dylan Holmes (dxh), Jessica Noss (jmn), and 6.034 staff
+# Written by 6.034 staff
 
 from search import Edge, UndirectedGraph, do_nothing_fn, make_generic_search
 import read_graphs
@@ -66,7 +66,6 @@ generic_search = make_generic_search(extensions, has_loops)  # DO NOT CHANGE
 
 
 
-
 generic_dfs = [None, None, None, None]
 
 generic_bfs = [None, None, None, None]
@@ -84,13 +83,13 @@ generic_branch_and_bound_with_extended_set = [None, None, None, None]
 generic_a_star = [None, None, None, None]
 
 # Here is an example of how to call generic_search (uncomment to run):
-#my_dfs_fn = generic_search(*generic_dfs)
-#my_dfs_path = my_dfs_fn(GRAPH_2, 'S', 'G')
-#print my_dfs_path
+# my_dfs_fn = generic_search(*generic_dfs)
+# my_dfs_path = my_dfs_fn(GRAPH_2, 'S', 'G')
+# print(my_dfs_path)
 
 # Or, combining the first two steps:
-#my_dfs_path = generic_search(*generic_dfs)(GRAPH_2, 'S', 'G')
-#print my_dfs_path
+# my_dfs_path = generic_search(*generic_dfs)(GRAPH_2, 'S', 'G')
+# print(my_dfs_path)
 
 
 ### OPTIONAL: Generic Beam Search
@@ -105,7 +104,7 @@ TEST_GENERIC_BEAM = False
 generic_beam = [None, None, None, None]
 
 # Uncomment this to test your generic_beam search:
-#print generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2)
+# print(generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2))
 
 
 #### PART 3: Search Algorithms #################################################
@@ -129,7 +128,6 @@ def hill_climbing(graph, startNode, goalNode):
 
 def best_first(graph, startNode, goalNode):
     raise NotImplementedError
-
 
 def beam(graph, startNode, goalNode, beam_width):
     raise NotImplementedError

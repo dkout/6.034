@@ -56,10 +56,10 @@ def get_graphs(file_name="graphs.txt", verbose=False):
                 raise Exception("invalid edge. Expected syntax: 'startNode endNode' "
                                 + "OR 'startNode endNode edgeLength'")
         if verbose:
-            print line
+            print(line)
 
     if verbose:
         for graphName in sorted(graphs.keys()):
-            print graphName, ":", graphs[graphName]
+            print(graphName, ":", graphs[graphName])
 
     return graphs

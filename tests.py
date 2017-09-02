@@ -8,7 +8,7 @@ from lab2 import (generic_dfs, generic_bfs, generic_hill_climbing,
                   generic_branch_and_bound_with_extended_set, generic_a_star,
                   is_admissible, is_consistent, a_star,
                   TEST_GENERIC_BEAM, TEST_HEURISTICS)
-
+lab_number = 2
 from read_graphs import get_graphs
 all_graphs = get_graphs()
 GRAPH_0 = all_graphs['GRAPH_0']
@@ -347,7 +347,7 @@ if TEST_HEURISTICS:
 
     def test_heuristic(heuristic_dict, should_be_admissible, should_be_consistent,
                        should_be_optimal_a_star):
-        if None in heuristic_dict['G'].values(): return False
+        if None in list(heuristic_dict['G'].values()): return False
         shortest_path = ['S', 'A', 'C', 'G']
         GRAPH_FOR_HEURISTICS.set_heuristic(heuristic_dict)
         return (should_be_admissible == is_admissible(GRAPH_FOR_HEURISTICS, 'G')
