@@ -349,6 +349,17 @@ def test_online(verbosity=1):
         print("If you believe this may be a mistake, please contact a TA.\n")
         sys.exit(0)
 
+    # If tests are disabled online, the return value here will be a string
+    if isinstance(tests, str):
+        msg = tests
+        if len(msg) > 0:
+            print("\nError: Online testing is currently disabled for the following reason:")
+            print("> " + tests)
+        else:
+            print("\nError: Online testing is currently disabled.")
+        print("If you believe this may be a mistake, please contact a TA.")
+        return
+
     ntests = len(tests)
     ncorrect = 0
 
