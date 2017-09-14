@@ -349,14 +349,14 @@ def test_online(verbosity=1):
         print("If you believe this may be a mistake, please contact a TA.\n")
         sys.exit(0)
 
-    # If tests are disabled online, the return value here will be a string
+    # If something is wrong with server, the return value here will be a string
     if isinstance(tests, str):
         msg = tests
         if len(msg) > 0:
-            print("\nError: Online testing is currently disabled for the following reason:")
+            print("\nError: The server has rejected your connection request with the following message:")
             print("> " + tests)
         else:
-            print("\nError: Online testing is currently disabled.")
+            print("\nError: The server has rejected your connection request for an unknown reason.")
         print("If you believe this may be a mistake, please contact a TA.")
         return
 
