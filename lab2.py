@@ -3,6 +3,7 @@
 
 from search import Edge, UndirectedGraph, do_nothing_fn, make_generic_search
 import read_graphs
+from functools import reduce
 
 all_graphs = read_graphs.get_graphs()
 GRAPH_0 = all_graphs['GRAPH_0']
@@ -11,6 +12,8 @@ GRAPH_2 = all_graphs['GRAPH_2']
 GRAPH_3 = all_graphs['GRAPH_3']
 GRAPH_FOR_HEURISTICS = all_graphs['GRAPH_FOR_HEURISTICS']
 
+
+# Please see wiki lab page for full description of functions and API.
 
 #### PART 1: Helper Functions ##################################################
 
@@ -22,12 +25,10 @@ def path_length(graph, path):
     You can assume that all edges along the path have a valid numeric weight."""
     raise NotImplementedError
 
-
 def has_loops(path):
     """Returns True if this path has a loop in it, i.e. if it
     visits a node more than once. Returns False otherwise."""
     raise NotImplementedError
-
 
 def extensions(graph, path):
     """Returns a list of paths. Each path in the list should be a one-node
@@ -37,7 +38,6 @@ def extensions(graph, path):
     twice. The returned paths should be sorted in lexicographic order."""
     raise NotImplementedError
 
-
 def sort_by_heuristic(graph, goalNode, nodes):
     """Given a list of nodes, sorts them best-to-worst based on the heuristic
     from each node to the goal node. Here, and in general for this lab, we
@@ -45,21 +45,35 @@ def sort_by_heuristic(graph, goalNode, nodes):
     potential path to the goal. Break ties lexicographically by node name."""
     raise NotImplementedError
 
-
-# You can ignore the following line.  It allows generic_search (PART 2) to
+# You can ignore the following line.  It allows generic_search (PART 3) to
 # access the extensions and has_loops functions that you just defined in PART 1.
 generic_search = make_generic_search(extensions, has_loops)  # DO NOT CHANGE
 
 
-#### PART 2: Generic Search ####################################################
+#### PART 2: Basic Search ######################################################
 
-# Note: If you would prefer to get some practice with implementing search
-# algorithms before working on Generic Search, you are welcome to do PART 3
-# before PART 2.
+def basic_dfs(graph, start, goal):
+    """
+    Performs a depth-first search on a graph from a specified start
+    node to a specified goal node, returning a path-to-goal if it
+    exists, otherwise returning None.
+    Uses backtracking, but does not use an extended set.
+    """
+    raise NotImplementedError
+
+def basic_bfs(graph, start, goal):
+    """
+    Performs a breadth-first search on a graph from a specified start
+    node to a specified goal node, returning a path-to-goal if it
+    exists, otherwise returning None.
+    """
+    raise NotImplementedError
+
+
+#### PART 3: Generic Search ####################################################
 
 # Define your custom path-sorting functions here.
 # Each path-sorting function should be in this form:
-
 # def my_sorting_fn(graph, goalNode, paths):
 #     # YOUR CODE HERE
 #     return sorted_paths
@@ -82,6 +96,7 @@ generic_branch_and_bound_with_extended_set = [None, None, None, None]
 
 generic_a_star = [None, None, None, None]
 
+
 # Here is an example of how to call generic_search (uncomment to run):
 # my_dfs_fn = generic_search(*generic_dfs)
 # my_dfs_path = my_dfs_fn(GRAPH_2, 'S', 'G')
@@ -103,50 +118,11 @@ TEST_GENERIC_BEAM = False
 
 generic_beam = [None, None, None, None]
 
+# Creates your beam search using generic beam args. Don't edit.
+beam = generic_search(*generic_beam) if TEST_GENERIC_BEAM else None
+
 # Uncomment this to test your generic_beam search:
 # print(generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2))
-
-
-#### PART 3: Search Algorithms #################################################
-
-# Note: It's possible to implement the following algorithms by calling
-# generic_search with the arguments you defined in PART 2.  But you're also
-# welcome to code them without using generic_search if you would prefer to
-# implement the algorithms by yourself.
-
-def dfs(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def bfs(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def hill_climbing(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def best_first(graph, startNode, goalNode):
-    raise NotImplementedError
-
-def beam(graph, startNode, goalNode, beam_width):
-    raise NotImplementedError
-
-
-def branch_and_bound(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def branch_and_bound_with_heuristic(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def branch_and_bound_with_extended_set(graph, startNode, goalNode):
-    raise NotImplementedError
-
-
-def a_star(graph, startNode, goalNode):
-    raise NotImplementedError
 
 
 #### PART 4: Heuristics ########################################################
@@ -156,7 +132,6 @@ def is_admissible(graph, goalNode):
     A heuristic is admissible if it is either always exactly correct or overly
     optimistic; it never over-estimates the cost to the goal."""
     raise NotImplementedError
-
 
 def is_consistent(graph, goalNode):
     """Returns True if this graph's heuristic is consistent; else False.
@@ -171,8 +146,11 @@ def is_consistent(graph, goalNode):
 
 
 ### OPTIONAL: Picking Heuristics
-# If you want to run local tests on your heuristics, change TEST_HEURISTICS to True:
+# If you want to run local tests on your heuristics, change TEST_HEURISTICS to True.
+# Note that you MUST have completed generic a_star in order to do this:
 TEST_HEURISTICS = False
+if TEST_HEURISTICS:
+    a_star = generic_search(*generic_a_star)
 
 # heuristic_1: admissible and consistent
 
@@ -241,6 +219,7 @@ HOW_MANY_HOURS_THIS_LAB_TOOK = None
 WHAT_I_FOUND_INTERESTING = None
 WHAT_I_FOUND_BORING = None
 SUGGESTIONS = None
+
 
 
 ###########################################################

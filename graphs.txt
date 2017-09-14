@@ -90,3 +90,12 @@ A C 1
 B C 3
 C G 7
 
+graph GRAPH_FOR_HEURISTICS_TRICKY
+nodes S A B C D G
+edges
+S A 4
+A B 1
+A C 1
+B D 1
+C D 3
+D G 7
