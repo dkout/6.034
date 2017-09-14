@@ -20,14 +20,6 @@ if python_version.minor == 5 and python_version.micro <= 1:
                     + "due to bugs in their XMLRPC libraries. Detected version is: "
                     + str(sys.version))
 
-try:
-    sys.path.append('..')
-    from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
-except ImportError:
-    print("Error: Can't find your 'key.py' file!  Please go download one from")
-    print("<https://ai6034.mit.edu/labs/key.py>")
-    sys.exit(1)
-
 def test_summary(dispindex, ntests):
     return "Test %d/%d" % (dispindex, ntests)
 
