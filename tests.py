@@ -280,9 +280,6 @@ make_test(type = 'FUNCTION',  #TEST 57
           expected_val = False,
           name = 'is_admissible')
 
-# Check the oddly humorous case where someone tries to use
-# A* to check for admissibility... even though A* relies on
-# an admissible heuristic in the first case!
 test_admissible_graph = GRAPH_FOR_HEURISTICS_TRICKY.copy()
 test_admissible_graph.set_heuristic({'G': {'S': 0, 'A': 10, 'B': 5, 'C': 0, 'D': 0, 'G': 0}})
 make_test(type = 'FUNCTION',  #TEST 58
@@ -290,7 +287,6 @@ make_test(type = 'FUNCTION',  #TEST 58
           testanswer = lambda val, original_val=None: val == False,
           expected_val = "{} (This one's tricky! How are you checking a node's admissibility?)".format(False),
           name = 'is_admissible')
-
 
 make_test(type = 'FUNCTION',  #TEST 59
           getargs = [GRAPH_1, 'd'],
@@ -391,7 +387,7 @@ beam_search_tests = [['beam', GRAPH_2, 'S', 'G', 2, 'SBYCEG'],
 if TEST_GENERIC_BEAM:
     from lab2 import generic_beam, beam
     # no-path-found test for beam:
-    make_test(type = 'FUNCTION',  #TEST 39
+    make_test(type = 'FUNCTION',
               getargs = [GRAPH_2, 'C', 'G', 1],
               testanswer = (lambda val, original_val=None: val == None),
               expected_val = None,
