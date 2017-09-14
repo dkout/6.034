@@ -116,6 +116,7 @@ generic_a_star = [None, None, None, None]
 
 
 ### OPTIONAL: Generic Beam Search
+
 # If you want to run local tests for generic_beam, change TEST_GENERIC_BEAM to True:
 TEST_GENERIC_BEAM = False
 
@@ -126,8 +127,6 @@ TEST_GENERIC_BEAM = False
 
 generic_beam = [None, None, None, None]
 
-# Creates your beam search using generic beam args. Don't edit.
-beam = generic_search(*generic_beam) if TEST_GENERIC_BEAM else None
 
 # Uncomment this to test your generic_beam search:
 # print(generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2))
@@ -154,11 +153,11 @@ def is_consistent(graph, goalNode):
 
 
 ### OPTIONAL: Picking Heuristics
+
 # If you want to run local tests on your heuristics, change TEST_HEURISTICS to True.
-# Note that you MUST have completed generic a_star in order to do this:
+#  Note that you MUST have completed generic a_star in order to do this:
 TEST_HEURISTICS = False
-if TEST_HEURISTICS:
-    a_star = generic_search(*generic_a_star)
+
 
 # heuristic_1: admissible and consistent
 
@@ -253,3 +252,10 @@ generic_branch_and_bound_sort_agenda_fn = generic_branch_and_bound[2]
 generic_branch_and_bound_with_heuristic_sort_agenda_fn = generic_branch_and_bound_with_heuristic[2]
 generic_branch_and_bound_with_extended_set_sort_agenda_fn = generic_branch_and_bound_with_extended_set[2]
 generic_a_star_sort_agenda_fn = generic_a_star[2]
+
+# Creates the beam search using generic beam args, for optional beam tests
+beam = generic_search(*generic_beam) if TEST_GENERIC_BEAM else None
+
+# Creates the A* algorithm for use in testing the optional heuristics
+if TEST_HEURISTICS:
+    a_star = generic_search(*generic_a_star)
