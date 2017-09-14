@@ -319,6 +319,9 @@ make_test(type = 'FUNCTION',  #TEST 62
 
 #### PART 5: Multiple Choice ###################################################
 
+# British Museum gives an exhaustive listing of all rooms in 
+# the house. The other three algorithms would stop after
+# finding one bedroom.
 ANSWER_1_getargs = "ANSWER_1"
 def ANSWER_1_testanswer(val, original_val = None):
     if val == '':
@@ -330,6 +333,15 @@ make_test(type = 'VALUE',  #TEST 63
           expected_val = "correct value of ANSWER_1 ('1', '2', '3', or '4')",
           name = ANSWER_1_getargs)
 
+# Of 1, 2, and 4, Branch and Bound with Extended Set is the 
+# winner here. Having access to an extended set is a massive
+# advantage when stuck in a maze; BFS would just
+# continually extend redundant nodes. 
+# A* is out because we don't have access to a heuristic, and
+# hence it's no better than BB with Extended Set. You could
+# argue that the answer could be A* with a heuristic that is
+# always 0; this is a true, but the simpler answer is BB with
+# Extended Set. 
 ANSWER_2_getargs = "ANSWER_2"
 def ANSWER_2_testanswer(val, original_val = None):
     if val == '':
@@ -341,6 +353,9 @@ make_test(type = 'VALUE',  #TEST 64
           expected_val = "correct value of ANSWER_2 ('1', '2', '3', or '4')",
           name = ANSWER_2_getargs)
 
+# "As few towns as possible" should stick out to you. Recall 
+# that BFS always gives an optimal path in terms of the number
+# of nodes visited (not in terms of path length).
 ANSWER_3_getargs = "ANSWER_3"
 def ANSWER_3_testanswer(val, original_val = None):
     if val == '':
@@ -352,6 +367,8 @@ make_test(type = 'VALUE',  #TEST 65
           expected_val = "correct value of ANSWER_3 ('1', '2', '3', or '4')",
           name = ANSWER_3_getargs)
 
+# A* is the clear winner, because you have access to a heuristic 
+# and can remember how far you've travelled.
 ANSWER_4_getargs = "ANSWER_4"
 def ANSWER_4_testanswer(val, original_val = None):
     if val == '':
