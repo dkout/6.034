@@ -72,6 +72,13 @@ def basic_bfs(graph, start, goal):
 
 #### PART 3: Generic Search ####################################################
 
+# Generic search requires four arguments (see wiki for more details):
+# sort_new_paths_fn: a function that sorts new paths that are added to the agenda
+# add_paths_to_front_of_agenda: True if new paths should be added to the front of the agenda
+# sort_agenda_fn: function to sort the agenda after adding all new paths 
+# use_extended_set: True if the algorithm should utilize an extended set
+
+
 # Define your custom path-sorting functions here.
 # Each path-sorting function should be in this form:
 # def my_sorting_fn(graph, goalNode, paths):
