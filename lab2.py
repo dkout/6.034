@@ -41,8 +41,9 @@ def extensions(graph, path):
 def sort_by_heuristic(graph, goalNode, nodes):
     """Given a list of nodes, sorts them best-to-worst based on the heuristic
     from each node to the goal node. Here, and in general for this lab, we
-    consider a lower heuristic to be "better" because it represents a shorter
-    potential path to the goal. Break ties lexicographically by node name."""
+    consider a smaller heuristic value to be "better" because it represents a
+    shorter potential path to the goal. Break ties lexicographically by 
+    node name."""
     raise NotImplementedError
 
 # You can ignore the following line.  It allows generic_search (PART 3) to
