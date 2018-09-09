@@ -20,13 +20,24 @@ def path_length(graph, path):
     (That is, the list of nodes defines a path through the graph.)
     A path with fewer than 2 nodes should have length of 0.
     You can assume that all edges along the path have a valid numeric weight."""
-    raise NotImplementedError
 
+    length=0
+    for i in xrange(len(path)-1):
+        edge=graph.get_edge(path[i],path[i+1])
+        length+=edge.length
+    if len(path)<2:length=0
+    return length
 
 def has_loops(path):
     """Returns True if this path has a loop in it, i.e. if it
     visits a node more than once. Returns False otherwise."""
-    raise NotImplementedError
+    nodes=[]
+    for node in path:
+        if node in nodes:
+            return True
+        else:
+            nodes.append(node)
+    return False
 
 
 def extensions(graph, path):
@@ -35,15 +46,20 @@ def extensions(graph, path):
     by adding a neighbor node (of the final node in the path) to the path.
     Returned paths should not have loops, i.e. should not visit the same node
     twice. The returned paths should be sorted in lexicographic order."""
-    raise NotImplementedError
-
+    pathList=[]
+    for i in graph.get_neighbors(path[-1]):
+        if i not in path:
+            pathList.append(path+[i])
+    return pathList
 
 def sort_by_heuristic(graph, goalNode, nodes):
     """Given a list of nodes, sorts them best-to-worst based on the heuristic
     from each node to the goal node. Here, and in general for this lab, we
     consider a lower heuristic to be "better" because it represents a shorter
     potential path to the goal. Break ties lexicographically by node name."""
-    raise NotImplementedError
+    #nodes.sort()
+    
+    return sorted(nodes, key=lambda node: (graph.get_heuristic_value(node, goalNode), node))    
 
 
 # You can ignore the following line.  It allows generic_search (PART 2) to
@@ -64,24 +80,29 @@ generic_search = make_generic_search(extensions, has_loops)  # DO NOT CHANGE
 #     # YOUR CODE HERE
 #     return sorted_paths
 
+def hill_climbing_sort(graph, goalNode, new_paths):
+    return sorted(new_paths, key = lambda path: (graph.get_heuristic_value(path[-1], goalNode), path[-1]))
 
+def length_sort(graph, goalNode, new_paths):
+    return sorted(new_paths, key=lambda path: (path_length(graph, path), path[-1]))
+def bb_sort(graph, goalNode, new_paths):
+    return sorted(new_paths, key = lambda path: ((graph.get_heuristic_value(path[-1], goalNode)+path_length(graph, path)), path[-1]))
 
+generic_dfs = [do_nothing_fn, True, do_nothing_fn, False]
 
-generic_dfs = [None, None, None, None]
+generic_bfs = [do_nothing_fn, False, do_nothing_fn, False]
 
-generic_bfs = [None, None, None, None]
+generic_hill_climbing = [hill_climbing_sort, True, do_nothing_fn, False]
 
-generic_hill_climbing = [None, None, None, None]
+generic_best_first = [do_nothing_fn, True, hill_climbing_sort, False]
 
-generic_best_first = [None, None, None, None]
+generic_branch_and_bound = [do_nothing_fn, False, length_sort, False]
 
-generic_branch_and_bound = [None, None, None, None]
+generic_branch_and_bound_with_heuristic = [do_nothing_fn, False, bb_sort, False]
 
-generic_branch_and_bound_with_heuristic = [None, None, None, None]
+generic_branch_and_bound_with_extended_set = [do_nothing_fn, False, length_sort, True]
 
-generic_branch_and_bound_with_extended_set = [None, None, None, None]
-
-generic_a_star = [None, None, None, None]
+generic_a_star = [do_nothing_fn, False, bb_sort, True]
 
 # Here is an example of how to call generic_search (uncomment to run):
 #my_dfs_fn = generic_search(*generic_dfs)
@@ -98,11 +119,14 @@ generic_a_star = [None, None, None, None]
 TEST_GENERIC_BEAM = False
 
 # The sort_agenda_fn for beam search takes fourth argument, beam_width:
-# def my_beam_sorting_fn(graph, goalNode, paths, beam_width):
-#     # YOUR CODE HERE
-#     return sorted_beam_agenda
+def my_beam_sorting_fn(graph, goalNode, paths, beam_width):
+    for i in range(len(paths)-1):
+        if len(paths[i]) != len(paths[i+1]):
+            return paths
+    return sorted(paths, key = lambda path: graph.get_heuristic_value(path[-1], goalNode))[:beam_width]    
 
-generic_beam = [None, None, None, None]
+
+generic_beam = [do_nothing_fn, False, my_beam_sorting_fn, False]
 
 # Uncomment this to test your generic_beam search:
 #print generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2)
@@ -116,39 +140,39 @@ generic_beam = [None, None, None, None]
 # implement the algorithms by yourself.
 
 def dfs(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_dfs)(graph, startNode, goalNode)
 
 
 def bfs(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_bfs)(graph, startNode, goalNode)
 
 
 def hill_climbing(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_hill_climbing)(graph, startNode, goalNode)
 
 
 def best_first(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_best_first)(graph, startNode, goalNode)
 
 
 def beam(graph, startNode, goalNode, beam_width):
-    raise NotImplementedError
+    return generic_search(*generic_beam)(graph, startNode, goalNode, beam_width)
 
 
 def branch_and_bound(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_branch_and_bound)(graph, startNode, goalNode)
 
 
 def branch_and_bound_with_heuristic(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_branch_and_bound_with_heuristic)(graph, startNode, goalNode)
 
 
 def branch_and_bound_with_extended_set(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_branch_and_bound_with_extended_set)(graph, startNode, goalNode)
 
 
 def a_star(graph, startNode, goalNode):
-    raise NotImplementedError
+    return generic_search(*generic_a_star)(graph, startNode, goalNode)
 
 
 #### PART 4: Heuristics ########################################################
@@ -157,9 +181,11 @@ def is_admissible(graph, goalNode):
     """Returns True if this graph's heuristic is admissible; else False.
     A heuristic is admissible if it is either always exactly correct or overly
     optimistic; it never over-estimates the cost to the goal."""
-    raise NotImplementedError
-
-
+    for i in graph.nodes:
+        if graph.get_heuristic_value(i, goalNode)>path_length(graph, a_star(graph, i, goalNode)):
+            return False
+    return True
+        
 def is_consistent(graph, goalNode):
     """Returns True if this graph's heuristic is consistent; else False.
     A consistent heuristic satisfies the following property for all
@@ -169,8 +195,12 @@ def is_consistent(graph, goalNode):
     In other words, moving from one node to a neighboring node never unfairly
     decreases the heuristic.
     This is equivalent to the heuristic satisfying the triangle inequality."""
-    raise NotImplementedError
-
+    for node in graph.nodes:
+        heuristic=graph.get_heuristic_value(node, goalNode)
+        for neighbor in graph.get_neighbors(node):
+            if heuristic>graph.get_edge(node, neighbor).length+graph.get_heuristic_value(neighbor, goalNode):
+                return False
+    return True
 
 ### OPTIONAL: Picking Heuristics
 # If you want to run local tests on your heuristics, change TEST_HEURISTICS to True:
@@ -226,23 +256,23 @@ heuristic_4['G']['G'] = h4_G
 
 ##### PART 5: Multiple Choice ##################################################
 
-ANSWER_1 = ''
+ANSWER_1 = '2'
 
-ANSWER_2 = ''
+ANSWER_2 = '4'
 
-ANSWER_3 = ''
+ANSWER_3 = '1'
 
-ANSWER_4 = ''
+ANSWER_4 = '3'
 
 
 #### SURVEY ####################################################################
 
-NAME = None
-COLLABORATORS = None
-HOW_MANY_HOURS_THIS_LAB_TOOK = None
-WHAT_I_FOUND_INTERESTING = None
-WHAT_I_FOUND_BORING = None
-SUGGESTIONS = None
+NAME = 'Dimitris Koutentakis'
+COLLABORATORS = 'Carl Unger, Luana Lopes'
+HOW_MANY_HOURS_THIS_LAB_TOOK = 7
+WHAT_I_FOUND_INTERESTING = 'searching!'
+WHAT_I_FOUND_BORING ='Nothing, this lab was cool'
+SUGGESTIONS = 'None'
 
 
 ###########################################################
