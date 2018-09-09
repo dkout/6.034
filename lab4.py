@@ -8,19 +8,48 @@ from test_problems import get_pokemon_problem
 
 def has_empty_domains(csp) :
     "Returns True if the problem has one or more empty domains, otherwise False"
-    raise NotImplementedError
+
+    for element in csp.domains.values():
+        if not element:
+            return True
+    return False
 
 def check_all_constraints(csp) :
     """Return False if the problem's assigned values violate some constraint,
     otherwise True"""
-    raise NotImplementedError
-
+    # for constraint in csp.constraints:
+    #     if csp.get_assigned_value(constraint.var1) != None and csp.get_assigned_value(constraint.var2) != None:
+    #         if not constraint.check(csp.get_assigned_value(constraint.var1), csp.get_assigned_value(constraint.var2)):
+    #             return False
+    # return True
+    for element in csp.constraints:
+        c1=csp.get_assigned_value(element.var1)
+        c2=csp.get_assigned_value(element.var2)
+        if not (c1==None or c2==None):
+            if not element.check(c1,c2):
+                return False
+    return True
+#TODO:
 def solve_constraint_dfs(problem) :
     """Solves the problem using depth-first search.  Returns a tuple containing:
     1. the solution (a dictionary mapping variables to assigned values), and
     2. the number of extensions made (the number of problems popped off the agenda).
     If no solution was found, return None as the first element of the tuple."""
-    raise NotImplementedError
+    counter=0
+    queue=[problem]
+    while len(queue)>0:
+        newprob=queue.pop(0)
+        counter+=1
+        if not has_empty_domains(newprob) and check_all_constraints(newprob):
+
+            if len(newprob.unassigned_vars)==0:
+                return (newprob.assigned_values,counter)
+            newlist=[]
+            b=newprob.pop_next_unassigned_var()
+            for i in newprob.get_domain(b):
+                newlist.append(newprob.copy().set_assigned_value(b, i))
+            queue=(newlist + queue)
+    return (None, counter)
 
 
 #### PART 2: DOMAIN REDUCTION BEFORE SEARCH
@@ -31,65 +60,160 @@ def eliminate_from_neighbors(csp, var) :
     variables whose domains were reduced, with each variable appearing at most
     once.  If no domains were reduced, returns empty list.
     If a domain is reduced to size 0, quits immediately and returns None."""
-    raise NotImplementedError
+    valid=set()
+
+    nog=csp.get_neighbors(var)
+
+    for neighbor in nog:
+        for nvalue in list(csp.get_domain(neighbor)):
+            countv=0
+            for val in list(csp.get_domain(var)):
+                for constraint in csp.constraints_between(neighbor, var):
+                    if not constraint.check(nvalue,val):
+                        countv+=1
+                        #innest loop here
+
+            #start if statement
+
+            if countv==len(csp.domains[var]):
+                csp.eliminate(neighbor, nvalue)
+                #print ("eliminating ", val, " from ", neighbor)
+                if  len(csp.domains[neighbor])==0:
+                    return None
+                valid.add(neighbor)
+                #enq
+
+    return sorted(list(valid))
+
+
 
 def domain_reduction(csp, queue=None) :
-    """Uses constraints to reduce domains, modifying the original csp.
-    If queue is None, initializes propagation queue by adding all variables in
-    their default order.  Returns a list of all variables that were dequeued,
-    in the order they were removed from the queue.  Variables may appear in the
-    list multiple times.
-    If a domain is reduced to size 0, quits immediately and returns None."""
-    raise NotImplementedError
+
+    if queue is None:
+        queue = list(csp.variables)
+
+    q2=list()
+
+    while queue:
+        iteration = queue.pop(0)
+        q2.append(iteration)
+        nextval = eliminate_from_neighbors(csp, iteration)
+
+##
+        if nextval== None:
+            return None
+
+
+        for j in nextval:
+            if j not in queue:
+                queue.append(j)
+
+    return q2
 
 # QUESTION 1: How many extensions does it take to solve the Pokemon problem
 #    with dfs if you DON'T use domain reduction before solving it?
 
-# Hint: Use get_pokemon_problem() to get a new copy of the Pokemon problem
-#    each time you want to solve it with a different search method.
 
-ANSWER_1 = None
+
+
+ANSWER_1 = solve_constraint_dfs(get_pokemon_problem())[1]
 
 # QUESTION 2: How many extensions does it take to solve the Pokemon problem
 #    with dfs if you DO use domain reduction before solving it?
+extensionproblem= get_pokemon_problem()
+domain_reduction(extensionproblem)
 
-ANSWER_2 = None
+
+ANSWER_2 = solve_constraint_dfs(extensionproblem)[1]
 
 
 #### PART 3: PROPAGATION THROUGH REDUCED DOMAINS
 
 def solve_constraint_propagate_reduced_domains(problem) :
-    """Solves the problem using depth-first search with forward checking and
-    propagation through all reduced domains.  Same return type as
-    solve_constraint_dfs."""
-    raise NotImplementedError
+
+    counter=0
+    queue=[problem]
+    while len(queue)>0:
+        newprob=queue.pop(0)
+        counter+=1
+        if not has_empty_domains(newprob) and check_all_constraints(newprob):
+
+            if len(newprob.unassigned_vars)==0:
+                return (newprob.assigned_values,counter)
+            newlist=[]
+            b=newprob.pop_next_unassigned_var()
+            for i in newprob.get_domain(b):
+                newcsp=newprob.copy().set_assigned_value(b, i)
+
+                domain_reduction(newcsp, [b])
+                newlist.append(newcsp)
+            queue=(newlist + queue)
+    return (None, counter)
+
 
 # QUESTION 3: How many extensions does it take to solve the Pokemon problem
 #    with propagation through reduced domains? (Don't use domain reduction
 #    before solving it.)
 
-ANSWER_3 = None
+ANSWER_3 = solve_constraint_propagate_reduced_domains(get_pokemon_problem())[1]
 
 
 #### PART 4: PROPAGATION THROUGH SINGLETON DOMAINS
 
 def domain_reduction_singleton_domains(csp, queue=None) :
-    """Uses constraints to reduce domains, modifying the original csp.
-    Only propagates through singleton domains.
-    Same return type as domain_reduction."""
-    raise NotImplementedError
+            if queue is None:
+                queue = list(csp.variables)
+
+            q2=list()
+
+            while queue:
+                iteration = queue.pop(0)
+                q2.append(iteration)
+                nextval = eliminate_from_neighbors(csp, iteration)
+
+
+                if nextval== None:
+                    return None
+
+
+                for j in nextval:
+                    if len(csp.domains[j])==1:
+
+                        if j not in queue:
+                            queue.append(j)
+
+            return q2
 
 def solve_constraint_propagate_singleton_domains(problem) :
     """Solves the problem using depth-first search with forward checking and
     propagation through singleton domains.  Same return type as
     solve_constraint_dfs."""
-    raise NotImplementedError
+
 
 # QUESTION 4: How many extensions does it take to solve the Pokemon problem
 #    with propagation through singleton domains? (Don't use domain reduction
 #    before solving it.)
 
-ANSWER_4 = None
+    counter=0
+    queue=[problem]
+    while len(queue)>0:
+        newprob=queue.pop(0)
+        counter+=1
+        if not has_empty_domains(newprob) and check_all_constraints(newprob):
+
+            if len(newprob.unassigned_vars)==0:
+                return (newprob.assigned_values,counter)
+            newlist=[]
+            b=newprob.pop_next_unassigned_var()
+            for i in newprob.get_domain(b):
+                newcsp=newprob.copy().set_assigned_value(b, i)
+
+                domain_reduction_singleton_domains(newcsp, [b])
+                newlist.append(newcsp)
+            queue=(newlist + queue)
+    return (None, counter)
+
+ANSWER_4 = solve_constraint_propagate_singleton_domains(get_pokemon_problem())[1]
 
 
 #### PART 5: FORWARD CHECKING
@@ -98,37 +222,75 @@ def propagate(enqueue_condition_fn, csp, queue=None) :
     """Uses constraints to reduce domains, modifying the original csp.
     Uses enqueue_condition_fn to determine whether to enqueue a variable whose
     domain has been reduced.  Same return type as domain_reduction."""
-    raise NotImplementedError
+    if queue is None:
+        queue = list(csp.variables)
+
+    q2=list()
+
+    while queue:
+        iteration = queue.pop(0)
+        q2.append(iteration)
+        nextval = eliminate_from_neighbors(csp, iteration)
+
+
+        if nextval== None:
+            return None
+
+
+        for j in nextval:
+            if enqueue_condition_fn(csp,j):
+
+                if j not in queue:
+                    queue.append(j)
+
+    return q2
+
 
 def condition_domain_reduction(csp, var) :
     """Returns True if var should be enqueued under the all-reduced-domains
     condition, otherwise False"""
-    raise NotImplementedError
+    return True
 
 def condition_singleton(csp, var) :
     """Returns True if var should be enqueued under the singleton-domains
     condition, otherwise False"""
-    raise NotImplementedError
+    return len(csp.get_domain(var))==1
 
 def condition_forward_checking(csp, var) :
     """Returns True if var should be enqueued under the forward-checking
     condition, otherwise False"""
-    raise NotImplementedError
+    return False
 
 
 #### PART 6: GENERIC CSP SOLVER
 
 def solve_constraint_generic(problem, enqueue_condition=None) :
-    """Solves the problem, calling propagate with the specified enqueue
-    condition (a function).  If enqueue_condition is None, uses DFS only.
-    Same return type as solve_constraint_dfs."""
-    raise NotImplementedError
+
+    counter=0
+    queue=[problem]
+    while len(queue)>0:
+        newprob=queue.pop(0)
+        counter+=1
+        if not has_empty_domains(newprob) and check_all_constraints(newprob):
+
+            if len(newprob.unassigned_vars)==0:
+                return (newprob.assigned_values,counter)
+            newlist=[]
+            b=newprob.pop_next_unassigned_var()
+            for i in newprob.get_domain(b):
+                newcsp=newprob.copy().set_assigned_value(b, i)
+
+                if enqueue_condition != None:
+                    propagate(enqueue_condition, newcsp, [b])
+                newlist.append(newcsp)
+            queue=(newlist + queue)
+    return (None, counter)
 
 # QUESTION 5: How many extensions does it take to solve the Pokemon problem
 #    with DFS and forward checking, but no propagation? (Don't use domain
 #    reduction before solving it.)
 
-ANSWER_5 = None
+ANSWER_5 = solve_constraint_generic(get_pokemon_problem(), condition_forward_checking)[1]
 
 
 #### PART 7: DEFINING CUSTOM CONSTRAINTS
@@ -136,18 +298,29 @@ ANSWER_5 = None
 def constraint_adjacent(m, n) :
     """Returns True if m and n are adjacent, otherwise False.
     Assume m and n are ints."""
-    raise NotImplementedError
+    return abs(m-n)==1
 
 def constraint_not_adjacent(m, n) :
     """Returns True if m and n are NOT adjacent, otherwise False.
     Assume m and n are ints."""
-    raise NotImplementedError
+    return not constraint_adjacent(m,n)
 
 def all_different(variables) :
     """Returns a list of constraints, with one difference constraint between
     each pair of variables."""
-    raise NotImplementedError
+    constraints=list()
 
+    number = len(variables)
+    for i in range(number):
+        #first loop
+
+        for j in range(i+1,number):
+                #second loop
+            appendition =   Constraint(variables[i],variables[j],constraint_different)
+            constraints.append(appendition)
+
+
+    return sorted(list(constraints))
 
 #### PART 8: MOOSE PROBLEM (OPTIONAL)
 
@@ -164,12 +337,12 @@ TEST_MOOSE_PROBLEM = False
 
 #### SURVEY ###################################################
 
-NAME = None
-COLLABORATORS = None
-HOW_MANY_HOURS_THIS_LAB_TOOK = None
-WHAT_I_FOUND_INTERESTING = None
-WHAT_I_FOUND_BORING = None
-SUGGESTIONS = None
+NAME = 'Dimitris Koutentakis'
+COLLABORATORS = 'Carl Unger'
+HOW_MANY_HOURS_THIS_LAB_TOOK = 12
+WHAT_I_FOUND_INTERESTING = 'constraint propagation'
+WHAT_I_FOUND_BORING = ''
+SUGGESTIONS = 'shorter labs :)'
 
 
 ###########################################################
