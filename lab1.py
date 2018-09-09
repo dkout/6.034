@@ -6,23 +6,23 @@ from data import *
 
 #### Part 1: Multiple Choice #########################################
 
-ANSWER_1 = ''
+ANSWER_1 = '2'
 
-ANSWER_2 = ''
+ANSWER_2 = '4'
 
-ANSWER_3 = ''
+ANSWER_3 = '2'
 
-ANSWER_4 = ''
+ANSWER_4 = '0'
 
-ANSWER_5 = ''
+ANSWER_5 = '3'
 
-ANSWER_6 = ''
+ANSWER_6 = '1'
 
-ANSWER_7 = ''
+ANSWER_7 = '0'
 
 #### Part 2: Transitive Rule #########################################
 
-transitive_rule = IF( AND(), THEN() )
+transitive_rule = IF( AND('(?x) beats (?y)', '(?y) beats (?z)'), THEN('(?x) beats (?z)') )
 
 # You can test your rule by uncommenting these print statements:
 #print forward_chain([transitive_rule], abc_data)
@@ -34,10 +34,18 @@ transitive_rule = IF( AND(), THEN() )
 
 # Define your rules here:
 
+self=IF('person (?x)', THEN( 'self (?x) (?x)'))
 
+sibling1 = IF( AND('parent (?x) (?y)', 'parent (?x) (?z)', NOT ('self (?z) (?y)')), THEN ('sibling (?y) (?z)'))
+sibling2 = IF( AND('parent (?x) (?y)', 'parent (?x) (?z)', NOT ('self (?z) (?y)')), THEN ('sibling (?z) (?y)'))
+child = IF('parent (?x) (?y)', THEN( 'child (?y) (?x)'))
+cousin1 = IF(AND('parent (?x) (?y)', 'parent (?z) (?u)', 'sibling (?x) (?z)', NOT ('sibling (?y) (?u)')), THEN ('cousin (?y) (?u)'))
+cousin2 = IF(AND('parent (?x) (?y)', 'parent (?z) (?u)', 'sibling (?x) (?z)', NOT ('sibling (?y) (?u)')), THEN ('cousin (?u) (?y)'))
+grandparent = IF( AND( 'parent (?x) (?y)', 'parent (?z) (?x)'), THEN ('grandparent (?z) (?y)'))
+grandchild = IF ('grandparent (?x) (?y)', THEN('grandchild (?y) (?x)'))
 
 # Add your rules to this list:
-family_rules = [ ]
+family_rules = [self, child, sibling1, sibling2, cousin1, cousin2, grandparent, grandchild ]
 
 # Uncomment this to test your data on the Simpsons family:
 #print forward_chain(family_rules, simpsons_data, verbose=False)
@@ -75,20 +83,38 @@ def backchain_to_goal_tree(rules, hypothesis):
     (possibly with unbound variables), *not* AND or OR objects.
     Make sure to use simplify(...) to flatten trees where appropriate.
     """
-    raise NotImplementedError
+
+    tree = OR(hypothesis)
+    
+    if len(rules)==0:
+        return hypothesis
+
+    for rule in rules:
+        if match(rule.consequent()[0], hypothesis) is not None:
+            popRule = populate(rule.antecedent(), match(rule.consequent()[0], hypothesis))
+            if isinstance(popRule, (AND, OR)):
+                for i in xrange(len(popRule)):
+                    popRule[i]=backchain_to_goal_tree(rules, popRule[i])
+                tree.append(popRule)
+            else:
+                new_tree=backchain_to_goal_tree(rules, popRule)
+                tree.append(new_tree)
+    return simplify(tree)
+                    
+    
 
 # Uncomment this to run your backward chainer:
-#print backchain_to_goal_tree(zookeeper_rules, 'opus is a penguin')
+print backchain_to_goal_tree(zookeeper_rules, 'opus is a penguin')
 
 
 #### Survey #########################################
 
-NAME = None
-COLLABORATORS = None
-HOW_MANY_HOURS_THIS_LAB_TOOK = None
-WHAT_I_FOUND_INTERESTING = None
-WHAT_I_FOUND_BORING = None
-SUGGESTIONS = None
+NAME = 'Dimitris Koutentakis'
+COLLABORATORS = 'Carl Unger'
+HOW_MANY_HOURS_THIS_LAB_TOOK = 7
+WHAT_I_FOUND_INTERESTING = 'family rules'
+WHAT_I_FOUND_BORING = 'backward chaining was hard to implement'
+SUGGESTIONS = 'None'
 
 
 ###########################################################
