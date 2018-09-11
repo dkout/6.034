@@ -1,35 +1,24 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # MIT 6.034 Lab 1: Rule-Based Systems
 
-import xmlrpclib
+import xmlrpc.client
 import traceback
 import sys
 import os
 import tarfile
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import BytesIO
 
 python_version = sys.version_info
 is_windows = sys.platform in ["win32", "cygwin"]
-if python_version < (2, 3) or python_version >= (2, 8):
+if python_version.major != 3:
     raise Exception("Illegal version of Python for 6.034 lab. Detected Python "
                     + "version is: " + str(sys.version))
-elif is_windows and python_version >= (2, 6, 5) and python_version < (2, 7, 4):
-    raise Exception("Illegal version of Python for 6.034 lab. On Windows, "
-        +"Python versions between 2.6.5 and 2.7.3 (inclusive) are incompatible "
-        +"with our server. Detected Python version is: " + str(sys.version))
-
-try:
-    sys.path.append('..')
-    from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
-except ImportError:
-    print "Error: Can't find your 'key.py' file!  Please go download one from"
-    print "<https://ai6034.mit.edu/labs/key.py>"
-    sys.exit(1)
+if python_version.minor == 5 and python_version.micro <= 1:
+    raise Exception("Illegal version of Python; versions 3.5.0 and 3.5.1 are disallowed "
+                    + "due to bugs in their XMLRPC libraries. Detected version is: "
+                    + str(sys.version))
 
 def test_summary(dispindex, ntests):
     return "Test %d/%d" % (dispindex, ntests)
@@ -38,30 +27,30 @@ def show_result(testsummary, testcode, correct, got, expected, verbosity):
     """ Pretty-print test results """
     if correct:
         if verbosity > 0:
-            print "%s: Correct." % testsummary
+            print("%s: Correct." % testsummary)
         if verbosity > 1:
             print_testcode(testcode)
-            print
+            print()
     else:
-        print "%s: Incorrect." % testsummary
+        print("%s: Incorrect." % testsummary)
         print_testcode(testcode)
-        print "Got:     ", got, "\n"
-        print "Expected:", expected, "\n"
+        print("Got:     ", got, "\n")
+        print("Expected:", expected, "\n")
 
 def print_testcode(testcode):
     if isinstance(testcode, (tuple, list)) and len(testcode) >= 3:
-        print '\t', testcode[2]
+        print('\t', testcode[2])
     else:
-        print '\t', testcode
+        print('\t', testcode)
 
 def show_exception(testsummary, testcode):
     """ Pretty-print exceptions (including tracebacks) """
-    print "%s: Error." % testsummary
-    print "While running the following test case:"
+    print("%s: Error." % testsummary)
+    print("While running the following test case:")
     print_testcode(testcode)
-    print "Your code encountered the following error:"
+    print("Your code encountered the following error:")
     traceback.print_exc()
-    print
+    print()
 
 
 def get_lab_module():
@@ -73,18 +62,19 @@ def get_lab_module():
 
     if lab_number != None:
         lab = __import__('lab%s' % lab_number)
+        lab.LAB_NUMBER = lab_number
         return lab
 
     lab = None
 
-    for labnum in xrange(10):
+    for labnum in range(10):
         try:
             lab = __import__('lab%s' % labnum)
         except ImportError:
             pass
 
     if lab == None:
-        raise ImportError, "Cannot find your lab; or, error importing it.  Try loading it by running 'python labN.py' (for the appropriate value of 'N')."
+        raise ImportError("Cannot find your lab; or, error importing it.  Try loading it by running 'python labN.py' (for the appropriate value of 'N').")
 
     if not hasattr(lab, "LAB_NUMBER"):
         lab.LAB_NUMBER = labnum
@@ -101,6 +91,7 @@ def type_decode(arg, lab):
     constructor takes a list as an argument; it uses that to reconstruct the
     original data type.
     """
+<<<<<<< HEAD:lab1/lab1/tester.py
     if isinstance(arg, list) and len(arg) >= 1: # We'll leave tuples reserved for some other future magic
         try:
             mytype = arg[0]
@@ -110,6 +101,39 @@ def type_decode(arg, lab):
             return [ type_decode(x, lab) for x in arg ]
         except TypeError:
             return [ type_decode(x, lab) for x in arg ]
+=======
+    if isinstance(arg, list) and len(arg) > 1: # We'll leave tuples reserved for some other future magic
+        if isinstance(arg[0], list):
+            if len(arg[0]) > 0 and arg[0][0] == 'Edge' :
+                return [type_decode(x, lab) for x in arg]
+            return [type_decode(arg[0], lab)] + type_decode(arg[1:], lab)
+        elif arg[0] in ['UndirectedGraph'] :
+            mytype = arg[0]
+            data = arg[1:]
+            q = find_attr(lab, mytype)(*[ type_decode(x, lab) for x in data ])
+
+            return q
+
+            return [type_decode(x, lab) for x in data]
+            return [q.nodes, q.edges, q.favorite, q.combust]
+
+        elif arg[0] == 'Edge':
+            mytype = arg[0]
+            data = arg[1:]
+            q = find_attr(lab, mytype)(*[ type_decode(x, lab) for x in data ])
+            return q
+        elif arg[0] == 'Graph':
+            try:
+                mytype = arg[0]
+                data = arg[1:]
+                return find_attr(lab, mytype)(*[ type_decode(x, lab) for x in data ])
+            except AttributeError:
+                traceback.print_exc()
+            except TypeError:
+                traceback.print_exc()
+        else:
+            return arg
+>>>>>>> 098efd65a34a0f57e11eedc63c0b1fcb8f90bbbd:lab2/tester.py
     else:
         return arg
 
@@ -147,7 +171,13 @@ def run_test(test, lab):
     if mytype == 'VALUE':
         return attr
     elif mytype == 'FUNCTION':
+<<<<<<< HEAD:lab1/lab1/tester.py
         return apply(attr, args)
+=======
+        return attr(*args)
+    elif mytype == 'NESTED_FUNCTION': #for offline tests only
+        return attr(*args[0])(*args[1])
+>>>>>>> 098efd65a34a0f57e11eedc63c0b1fcb8f90bbbd:lab2/tester.py
     elif mytype == 'MULTIFUNCTION':
         return [ run_test( (id, 'FUNCTION', attr_name, FN), lab)
                 for FN in type_decode(args, lab) ]
@@ -178,7 +208,7 @@ def test_offline(verbosity=1):
 
             answer = run_test((index, type, fn_name, getargs), get_lab_module())
         except NotImplementedError:
-            print "%d: (%s: Function not yet implemented, NotImplementedError raised)" % (dispindex, testname)
+            print("%d: (%s: Function not yet implemented, NotImplementedError raised)" % (dispindex, testname))
             continue
         except Exception:
             show_exception(summary, testname)
@@ -189,7 +219,7 @@ def test_offline(verbosity=1):
         try:
             correct = testanswer(answer)
         except NotImplementedError:
-            print "%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname)
+            print("%d: (%s: No answer given, NotImplementedError raised)" % (dispindex, testname))
             continue
         except (KeyboardInterrupt, SystemExit): # Allow user to interrupt tester
             raise
@@ -198,7 +228,7 @@ def test_offline(verbosity=1):
         show_result(summary, testname, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
 
-    print "Passed %d of %d tests." % (ncorrect, ntests)
+    print("Passed %d of %d tests." % (ncorrect, ntests))
     return ncorrect == ntests
 
 
@@ -206,28 +236,28 @@ def get_target_upload_filedir():
     """ Get, via user prompting, the directory containing the current lab """
     cwd = os.getcwd() # Get current directory.  Play nice with Unicode pathnames, just in case.
 
-    print "Please specify the directory containing your lab,"
-    print "or press Enter to use the default directory."
-    print "Note that all files from this directory will be uploaded!"
-    print "Labs should not contain large amounts of data; very-large"
-    print "files will fail to upload."
-    print
-    print "The default directory is '%s'" % cwd
-    target_dir = raw_input("[%s] >>> " % cwd)
+    print("Please specify the directory containing your lab,")
+    print("or press Enter to use the default directory.")
+    print("Note that all files from this directory will be uploaded!")
+    print("Labs should not contain large amounts of data; very large")
+    print("files will fail to upload.")
+    print()
+    print("The default directory is '%s'" % cwd)
+    target_dir = input("[%s] >>> " % cwd)
 
     target_dir = target_dir.strip()
     if target_dir == '':
         target_dir = cwd
 
-    print "Ok, using '%s'." % target_dir
+    print("Ok, using '%s'." % target_dir)
 
     return target_dir
 
 def get_tarball_data(target_dir, filename):
     """ Return a binary String containing the binary data for a tarball of the specified directory """
-    print "Preparing the lab directory for transmission..."
+    print("Preparing the lab directory for transmission...")
 
-    data = StringIO()
+    data = BytesIO()
     tar = tarfile.open(filename, "w|bz2", data)
 
     top_folder_name = os.path.split(target_dir)[1]
@@ -235,7 +265,7 @@ def get_tarball_data(target_dir, filename):
     def tar_filter(filename):
         """Returns True if we should tar the file.
         Avoid uploading .pyc files or the .git subdirectory (if any)"""
-        if filename == ".git":
+        if filename in [".git",".DS_Store","__pycache__"]:
             return False
         if os.path.splitext(filename)[1] == ".pyc":
             return False
@@ -245,24 +275,24 @@ def get_tarball_data(target_dir, filename):
         for currentFile in os.listdir(currentDir):
             fullPath=os.path.join(currentDir,currentFile)
             if t_verbose:
-                print currentFile,
+                print(currentFile, end=' ')
             if tar_filter(currentFile):
                 if t_verbose:
-                    print ""
+                    print("")
                 tar.add(fullPath,arcname=fullPath.replace(target_dir, top_folder_name,1),recursive=False)
                 if os.path.isdir(fullPath):
                     add_dir(fullPath)
             elif t_verbose:
-                print "....skipped"
+                print("....skipped")
 
     add_dir(target_dir)
 
-    print "Done."
-    print
-    print "The following files have been added:"
+    print("Done.")
+    print()
+    print("The following files will be uploaded:")
 
     for f in tar.getmembers():
-        print f.name
+        print(" - {}".format(f.name))
 
     tar.close()
 
@@ -274,28 +304,48 @@ def test_online(verbosity=1):
     lab = get_lab_module()
 
     try:
-        server = xmlrpclib.Server(server_url, allow_none=True)
+        sys.path.append('..')
+        from key import USERNAME as username, PASSWORD as password, XMLRPC_URL as server_url
+    except ImportError:
+        print("Error: Can't find your 'key.py' file!  Please go download one from")
+        print(" <https://ai6034.mit.edu/labs/key.py>")
+        print("and put it into either your lab's directory, or its parent directory.")
+        sys.exit(1)
+
+    try:
+        server = xmlrpc.client.Server(server_url, allow_none=True)
         tests = server.get_tests(username, password, lab.__name__)
     except NotImplementedError: # Solaris Athena doesn't seem to support HTTPS
-        print "Your version of Python doesn't seem to support HTTPS, for"
-        print "secure test submission.  Would you like to downgrade to HTTP?"
-        print "(note that this could theoretically allow a hacker with access"
-        print "to your local network to find your 6.034 password)"
-        answer = raw_input("(Y/n) >>> ")
+        print("Your version of Python doesn't seem to support HTTPS, for")
+        print("secure test submission.  Would you like to downgrade to HTTP?")
+        print("(note that this could theoretically allow a hacker with access")
+        print("to your local network to find your 6.034 password)")
+        answer = input("(Y/n) >>> ")
         if len(answer) == 0 or answer[0] in "Yy":
-            server = xmlrpclib.Server(server_url.replace("https", "http"))
+            server = xmlrpc.client.Server(server_url.replace("https", "http"))
             tests = server.get_tests(username, password, lab.__name__)
         else:
-            print "Ok, not running your tests."
-            print "Please try again on another computer."
-            print "Linux Athena computers are known to support HTTPS,"
-            print "if you use the version of Python in the 'python' locker."
+            print("Ok, not running your tests.")
+            print("Please try again on another computer.")
+            print("Linux Athena computers are known to support HTTPS,")
+            print("if you use the version of Python in the 'python' locker.")
             sys.exit(0)
-    except xmlrpclib.Fault:
-        print "\nError: Either your key.py file is out of date, or online "
-        print "tests for " + lab.__name__ + " are not currently available."
-        print "If you believe this is may be a mistake, please contact a TA.\n"
+    except xmlrpc.client.Fault:
+        print("\nError: Either your key.py file is out of date, or online ")
+        print("tests for " + lab.__name__ + " are not currently available.")
+        print("If you believe this may be a mistake, please contact a TA.\n")
         sys.exit(0)
+
+    # If something is wrong with server, the return value here will be a string
+    if isinstance(tests, str):
+        msg = tests
+        if len(msg) > 0:
+            print("\nError: The server has rejected your connection request with the following message:")
+            print("> " + tests)
+        else:
+            print("\nError: The server has rejected your connection request for an unknown reason.")
+        print("If you believe this may be a mistake, please contact a TA.")
+        return
 
     ntests = len(tests)
     ncorrect = 0
@@ -306,12 +356,12 @@ def test_online(verbosity=1):
 
     tarball_data = get_tarball_data(target_dir, "lab%s.tar.bz2" % lab.LAB_NUMBER)
 
-    print "Submitting to the 6.034 Webserver..."
+    print("Submitting to the 6.034 Webserver...")
 
-    server.submit_code(username, password, lab.__name__, xmlrpclib.Binary(tarball_data))
+    server.submit_code(username, password, lab.__name__, xmlrpc.client.Binary(tarball_data))
 
-    print "Done submitting code."
-    print "Running test cases..."
+    print("Done submitting code.")
+    print("Running test cases...")
 
     for index, testcode in enumerate(tests):
         dispindex = index+1
@@ -328,7 +378,7 @@ def test_online(verbosity=1):
         if correct: ncorrect += 1
 
     response = server.status(username, password, lab.__name__)
-    print response
+    print(response)
 
 
 def make_test_counter_decorator():
@@ -363,7 +413,12 @@ if __name__ == '__main__':
         test_online()
     elif test_offline():
         if "IDLE" in sys.executable:
-            print "submitting and testing online..."
+            print("Submitting and testing online...")
             test_online()
         else:
+<<<<<<< HEAD:lab1/lab1/tester.py
             print "Local tests passed! Run 'python %s submit' to submit your code and have it graded." % sys.argv[0]
+=======
+            print("Local tests passed! Run 'python3 %s submit' to submit your code and have it graded." % sys.argv[0])
+
+>>>>>>> 098efd65a34a0f57e11eedc63c0b1fcb8f90bbbd:lab2/tester.py
