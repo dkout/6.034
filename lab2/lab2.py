@@ -1,8 +1,9 @@
 # MIT 6.034 Lab 2: Search
-# Written by Dylan Holmes (dxh), Jessica Noss (jmn), and 6.034 staff
+# Written by 6.034 staff
 
 from search import Edge, UndirectedGraph, do_nothing_fn, make_generic_search
 import read_graphs
+from functools import reduce
 
 all_graphs = read_graphs.get_graphs()
 GRAPH_0 = all_graphs['GRAPH_0']
@@ -11,6 +12,8 @@ GRAPH_2 = all_graphs['GRAPH_2']
 GRAPH_3 = all_graphs['GRAPH_3']
 GRAPH_FOR_HEURISTICS = all_graphs['GRAPH_FOR_HEURISTICS']
 
+
+# Please see wiki lab page for full description of functions and API.
 
 #### PART 1: Helper Functions ##################################################
 
@@ -39,43 +42,74 @@ def has_loops(path):
             nodes.append(node)
     return False
 
-
 def extensions(graph, path):
     """Returns a list of paths. Each path in the list should be a one-node
     extension of the input path, where an extension is defined as a path formed
     by adding a neighbor node (of the final node in the path) to the path.
     Returned paths should not have loops, i.e. should not visit the same node
     twice. The returned paths should be sorted in lexicographic order."""
+<<<<<<< HEAD:lab2/lab2.py
     pathList=[]
     for i in graph.get_neighbors(path[-1]):
         if i not in path:
             pathList.append(path+[i])
     return pathList
+=======
+    raise NotImplementedError
+>>>>>>> 8b435e2876ce86eb1b5106cd03fec1acaab57138:lab2.py
 
 def sort_by_heuristic(graph, goalNode, nodes):
     """Given a list of nodes, sorts them best-to-worst based on the heuristic
     from each node to the goal node. Here, and in general for this lab, we
+<<<<<<< HEAD:lab2/lab2.py
     consider a lower heuristic to be "better" because it represents a shorter
     potential path to the goal. Break ties lexicographically by node name."""
     #nodes.sort()
     
     return sorted(nodes, key=lambda node: (graph.get_heuristic_value(node, goalNode), node))    
+=======
+    consider a smaller heuristic value to be "better" because it represents a
+    shorter potential path to the goal. Break ties lexicographically by 
+    node name."""
+    raise NotImplementedError
+>>>>>>> 8b435e2876ce86eb1b5106cd03fec1acaab57138:lab2.py
 
-
-# You can ignore the following line.  It allows generic_search (PART 2) to
+# You can ignore the following line.  It allows generic_search (PART 3) to
 # access the extensions and has_loops functions that you just defined in PART 1.
 generic_search = make_generic_search(extensions, has_loops)  # DO NOT CHANGE
 
 
-#### PART 2: Generic Search ####################################################
+#### PART 2: Basic Search ######################################################
 
-# Note: If you would prefer to get some practice with implementing search
-# algorithms before working on Generic Search, you are welcome to do PART 3
-# before PART 2.
+def basic_dfs(graph, start, goal):
+    """
+    Performs a depth-first search on a graph from a specified start
+    node to a specified goal node, returning a path-to-goal if it
+    exists, otherwise returning None.
+    Uses backtracking, but does not use an extended set.
+    """
+    raise NotImplementedError
+
+def basic_bfs(graph, start, goal):
+    """
+    Performs a breadth-first search on a graph from a specified start
+    node to a specified goal node, returning a path-to-goal if it
+    exists, otherwise returning None.
+    """
+    raise NotImplementedError
+
+
+#### PART 3: Generic Search ####################################################
+
+# Generic search requires four arguments (see wiki for more details):
+# sort_new_paths_fn: a function that sorts new paths that are added to the agenda
+# add_paths_to_front_of_agenda: True if new paths should be added to the front of the agenda
+# sort_agenda_fn: function to sort the agenda after adding all new paths 
+# use_extended_set: True if the algorithm should utilize an extended set
+
 
 # Define your custom path-sorting functions here.
 # Each path-sorting function should be in this form:
-
 # def my_sorting_fn(graph, goalNode, paths):
 #     # YOUR CODE HERE
 #     return sorted_paths
@@ -88,9 +122,15 @@ def length_sort(graph, goalNode, new_paths):
 def bb_sort(graph, goalNode, new_paths):
     return sorted(new_paths, key = lambda path: ((graph.get_heuristic_value(path[-1], goalNode)+path_length(graph, path)), path[-1]))
 
+<<<<<<< HEAD:lab2/lab2.py
 generic_dfs = [do_nothing_fn, True, do_nothing_fn, False]
 
 generic_bfs = [do_nothing_fn, False, do_nothing_fn, False]
+=======
+generic_dfs = [None, None, None, None]
+
+generic_bfs = [None, None, None, None]
+>>>>>>> 8b435e2876ce86eb1b5106cd03fec1acaab57138:lab2.py
 
 generic_hill_climbing = [hill_climbing_sort, True, do_nothing_fn, False]
 
@@ -104,17 +144,19 @@ generic_branch_and_bound_with_extended_set = [do_nothing_fn, False, length_sort,
 
 generic_a_star = [do_nothing_fn, False, bb_sort, True]
 
+
 # Here is an example of how to call generic_search (uncomment to run):
-#my_dfs_fn = generic_search(*generic_dfs)
-#my_dfs_path = my_dfs_fn(GRAPH_2, 'S', 'G')
-#print my_dfs_path
+# my_dfs_fn = generic_search(*generic_dfs)
+# my_dfs_path = my_dfs_fn(GRAPH_2, 'S', 'G')
+# print(my_dfs_path)
 
 # Or, combining the first two steps:
-#my_dfs_path = generic_search(*generic_dfs)(GRAPH_2, 'S', 'G')
-#print my_dfs_path
+# my_dfs_path = generic_search(*generic_dfs)(GRAPH_2, 'S', 'G')
+# print(my_dfs_path)
 
 
 ### OPTIONAL: Generic Beam Search
+
 # If you want to run local tests for generic_beam, change TEST_GENERIC_BEAM to True:
 TEST_GENERIC_BEAM = False
 
@@ -128,6 +170,7 @@ def my_beam_sorting_fn(graph, goalNode, paths, beam_width):
 
 generic_beam = [do_nothing_fn, False, my_beam_sorting_fn, False]
 
+<<<<<<< HEAD:lab2/lab2.py
 # Uncomment this to test your generic_beam search:
 #print generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2)
 
@@ -173,6 +216,11 @@ def branch_and_bound_with_extended_set(graph, startNode, goalNode):
 
 def a_star(graph, startNode, goalNode):
     return generic_search(*generic_a_star)(graph, startNode, goalNode)
+=======
+
+# Uncomment this to test your generic_beam search:
+# print(generic_search(*generic_beam)(GRAPH_2, 'S', 'G', beam_width=2))
+>>>>>>> 8b435e2876ce86eb1b5106cd03fec1acaab57138:lab2.py
 
 
 #### PART 4: Heuristics ########################################################
@@ -181,11 +229,16 @@ def is_admissible(graph, goalNode):
     """Returns True if this graph's heuristic is admissible; else False.
     A heuristic is admissible if it is either always exactly correct or overly
     optimistic; it never over-estimates the cost to the goal."""
+<<<<<<< HEAD:lab2/lab2.py
     for i in graph.nodes:
         if graph.get_heuristic_value(i, goalNode)>path_length(graph, a_star(graph, i, goalNode)):
             return False
     return True
         
+=======
+    raise NotImplementedError
+
+>>>>>>> 8b435e2876ce86eb1b5106cd03fec1acaab57138:lab2.py
 def is_consistent(graph, goalNode):
     """Returns True if this graph's heuristic is consistent; else False.
     A consistent heuristic satisfies the following property for all
@@ -203,8 +256,11 @@ def is_consistent(graph, goalNode):
     return True
 
 ### OPTIONAL: Picking Heuristics
-# If you want to run local tests on your heuristics, change TEST_HEURISTICS to True:
+
+# If you want to run local tests on your heuristics, change TEST_HEURISTICS to True.
+#  Note that you MUST have completed generic a_star in order to do this:
 TEST_HEURISTICS = False
+
 
 # heuristic_1: admissible and consistent
 
@@ -275,6 +331,7 @@ WHAT_I_FOUND_BORING ='Nothing, this lab was cool'
 SUGGESTIONS = 'None'
 
 
+
 ###########################################################
 ### Ignore everything below this line; for testing only ###
 ###########################################################
@@ -298,3 +355,13 @@ generic_branch_and_bound_sort_agenda_fn = generic_branch_and_bound[2]
 generic_branch_and_bound_with_heuristic_sort_agenda_fn = generic_branch_and_bound_with_heuristic[2]
 generic_branch_and_bound_with_extended_set_sort_agenda_fn = generic_branch_and_bound_with_extended_set[2]
 generic_a_star_sort_agenda_fn = generic_a_star[2]
+<<<<<<< HEAD:lab2/lab2.py
+=======
+
+# Creates the beam search using generic beam args, for optional beam tests
+beam = generic_search(*generic_beam) if TEST_GENERIC_BEAM else None
+
+# Creates the A* algorithm for use in testing the optional heuristics
+if TEST_HEURISTICS:
+    a_star = generic_search(*generic_a_star)
+>>>>>>> 8b435e2876ce86eb1b5106cd03fec1acaab57138:lab2.py

@@ -45,17 +45,15 @@ class UndirectedGraph:
         pred1 =  lambda node: (startNode is None) or (node == startNode)
         pred2 =  lambda node: (endNode is None)   or (node == endNode)
 
-        return filter(
-            lambda e: e is not None,
-            [e if pred1(e.startNode) and pred2(e.endNode) else
+        return [e for e in [e if pred1(e.startNode) and pred2(e.endNode) else
              e.reverse() if pred2(e.startNode) and pred1(e.endNode)
              else None
              for e in self.edges
-        ])
+        ] if e is not None]
 
     def get_neighbors(self, node):
         "Returns an alphabetical list of neighboring nodes. Each node appears at most once."
-        return sorted(distinct(map(lambda e: e.endNode, self.get_edges(node))))
+        return sorted(distinct([e.endNode for e in self.get_edges(node)]))
 
     def get_neighboring_edges(self, startNode):
         "Returns a list of neighboring edges."
@@ -79,12 +77,12 @@ class UndirectedGraph:
     def join(self, startNode, endNode, edgeLength=None):
         # check whether edge already exists
         if self.is_neighbor(startNode, endNode):
-            print "UndirectedGraph.join: Error adding edge to graph"
+            print("UndirectedGraph.join: Error adding edge to graph")
             return self
         self.edges.append(Edge(startNode, endNode, edgeLength))
         for node in [startNode, endNode]:
             if node not in self.nodes:
-                print "UndirectedGraph.join: Adding", node, "to list of nodes"
+                print("UndirectedGraph.join: Adding", node, "to list of nodes")
                 self.nodes.append(startNode)
         return self
 
@@ -112,7 +110,7 @@ if False:
     g = UndirectedGraph()
     g.nodes = ["A","B","C","D","E"]
     g.join("A","B",5)
-    print g.get_neighboring_edges("B")
+    print(g.get_neighboring_edges("B"))
 
 
 def do_nothing_fn(graph, goalNode, paths):
